@@ -1,0 +1,48 @@
+{
+    "name": "sergix44/imagezen",
+    "description": "An image manipulation library",
+    "keywords": [
+        "image",
+        "imagezen"
+    ],
+    "homepage": "https://github.com/sergix44/imagezen",
+    "license": "AGPL-3.0-only",
+    "authors": [
+        {
+            "name": "Sergio Brighenti",
+            "email": "sergio@brighenti.me",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "SergiX44\\ImageZen\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SergiX44\\ImageZen\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --allow-risky=yes"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
