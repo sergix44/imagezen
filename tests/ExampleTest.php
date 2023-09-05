@@ -1,5 +1,7 @@
 <?php
 
 it('can test', function () {
-    expect(true)->toBeTrue();
+    $i = imagecreate(1, 1);
+    $image = new \SergiX44\ImageZen\Image($i);
+    expect($image->getCore())->toBe($i);
 });

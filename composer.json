@@ -15,7 +15,12 @@
         }
     ],
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "ext-fileinfo": "*"
+    },
+    "suggest": {
+        "ext-gd": "To use GD library based image processing.",
+        "ext-imagick": "To use Imagick based image processing."
     },
     "require-dev": {
         "pestphp/pest": "^2.0",
