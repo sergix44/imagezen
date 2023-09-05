@@ -6,7 +6,6 @@ use SergiX44\ImageZen\Driver;
 
 class Imagick implements Driver
 {
-
     public function isAvailable(): bool
     {
         return class_exists(class: \Imagick::class) && extension_loaded('imagick');

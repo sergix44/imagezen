@@ -24,6 +24,7 @@ class Image implements API
     public function blur(int $amount): self
     {
         $this->driver->apply(__FUNCTION__, $this->image, $amount);
+
         return $this;
     }
 }
