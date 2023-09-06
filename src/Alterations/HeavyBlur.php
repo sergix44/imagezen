@@ -23,7 +23,6 @@ class HeavyBlur extends Alteration implements GdAlteration
         }
     }
 
-
     public function applyWithGd(Image $image): null
     {
         for ($i = 0; $i < $this->amount; $i++) {
