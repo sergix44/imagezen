@@ -4,11 +4,17 @@ namespace SergiX44\ImageZen;
 
 use GdImage;
 use Imagick;
-use SergiX44\ImageZen\Base\Driver;
+use InvalidArgumentException;
+use SergiX44\ImageZen\Drivers\Driver;
+use SergiX44\ImageZen\Exceptions\AlterationAlreadyRegistered;
+use SergiX44\ImageZen\Exceptions\InvalidAlterationException;
 
 class Image
 {
-    use DefaultEffects;
+    use DefaultAlterations;
+
+    /** @var array<string,Alteration> */
+    protected array $alterations = [];
 
     protected GdImage|Imagick $image;
 
@@ -23,11 +29,28 @@ class Image
             $this->driver = Backend::matchFromImage($image)->getDriver();
             $this->image = $image;
         }
+        $this->registerDefaultAlterations();
     }
 
     public static function make(GdImage|Imagick|string $image, Backend $driver = Backend::GD): self
     {
         return new self($image, $driver);
+    }
+
+    public function register(string $class): self
+    {
+        if (!is_subclass_of($class, Alteration::class)) {
+            throw new InvalidAlterationException();
+        }
+        $id = $class::$id;
+
+        if (array_key_exists($id, $this->alterations)) {
+            throw new AlterationAlreadyRegistered();
+        }
+
+        $this->alterations[$class::$id] = $class;
+
+        return $this;
     }
 
     public function getCore(): GdImage|Imagick
@@ -40,9 +63,19 @@ class Image
         return $this->driver;
     }
 
-    public function effect(string $effect, ...$args): mixed
+    /**
+     * @param  string  $alteration
+     * @param ...$args
+     * @return mixed
+     */
+    public function alterate(string $alteration, ...$args): mixed
     {
-        $value = $this->driver->apply($effect, $this, $args);
+        if (!array_key_exists($alteration, $this->alterations)) {
+            throw new InvalidArgumentException('Alteration not found');
+        }
+
+        $instance = $this->alterations[$alteration]::make(...$args);
+        $value = $this->driver->apply($instance, $this);
 
         return $value ?? $this;
     }

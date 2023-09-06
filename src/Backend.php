@@ -3,7 +3,7 @@
 namespace SergiX44\ImageZen;
 
 use InvalidArgumentException;
-use SergiX44\ImageZen\Base\Driver;
+use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Drivers\Gd\Gd;
 use SergiX44\ImageZen\Drivers\Imagick\Imagick;
 

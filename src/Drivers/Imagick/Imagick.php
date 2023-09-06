@@ -3,7 +3,9 @@
 namespace SergiX44\ImageZen\Drivers\Imagick;
 
 use Imagick as ImagickBackend;
-use SergiX44\ImageZen\Base\Driver;
+use SergiX44\ImageZen\Alteration;
+use SergiX44\ImageZen\Drivers\Driver;
+use SergiX44\ImageZen\Exceptions\AlterationNotImplementedException;
 use SergiX44\ImageZen\Format;
 use SergiX44\ImageZen\Image;
 
@@ -12,6 +14,21 @@ class Imagick extends Driver
     public function isAvailable(): bool
     {
         return class_exists(class: \Imagick::class) && extension_loaded('imagick');
+    }
+
+    /**
+     * @param  Alteration  $alteration
+     * @param  Image  $image
+     * @return mixed
+     * @throws AlterationNotImplementedException
+     */
+    public function apply(Alteration $alteration, Image $image): mixed
+    {
+        if (!$alteration instanceof ImagickAlteration) {
+            throw new AlterationNotImplementedException($alteration::$id);
+        }
+
+        return $alteration->applyWithImagick($image);
     }
 
     public function loadImageFrom(string $path): ImagickBackend

@@ -3,9 +3,9 @@
 namespace SergiX44\ImageZen\Drivers\Gd;
 
 use GdImage;
-use SergiX44\ImageZen\Base\Driver;
-use SergiX44\ImageZen\Drivers\Gd\Effects\Blur;
-use SergiX44\ImageZen\Drivers\Gd\Effects\HeavyBlur;
+use SergiX44\ImageZen\Alteration;
+use SergiX44\ImageZen\Drivers\Driver;
+use SergiX44\ImageZen\Exceptions\AlterationNotImplementedException;
 use SergiX44\ImageZen\Exceptions\CannotLoadImageException;
 use SergiX44\ImageZen\Exceptions\FormatNotSupportedException;
 use SergiX44\ImageZen\Format;
@@ -13,15 +13,24 @@ use SergiX44\ImageZen\Image;
 
 class Gd extends Driver
 {
-    public function __construct()
-    {
-        $this->registerEffect(Blur::class);
-        $this->registerEffect(HeavyBlur::class);
-    }
-
     public function isAvailable(): bool
     {
         return extension_loaded('gd') && function_exists('gd_info');
+    }
+
+    /**
+     * @param  Alteration  $alteration
+     * @param  Image  $image
+     * @return mixed
+     * @throws AlterationNotImplementedException
+     */
+    public function apply(Alteration $alteration, Image $image): mixed
+    {
+        if (!$alteration instanceof GdAlteration) {
+            throw new AlterationNotImplementedException($alteration::$id);
+        }
+
+        return $alteration->applyWithGd($image);
     }
 
     /**

@@ -1,12 +1,13 @@
 <?php
 
-namespace SergiX44\ImageZen\Drivers\Gd\Effects;
+namespace SergiX44\ImageZen\Alterations;
 
 use InvalidArgumentException;
-use SergiX44\ImageZen\Base\Effect;
+use SergiX44\ImageZen\Alteration;
+use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Image;
 
-class HeavyBlur extends Effect
+class HeavyBlur extends Alteration implements GdAlteration
 {
     public static string $id = 'heavyBlur';
 
@@ -22,7 +23,8 @@ class HeavyBlur extends Effect
         }
     }
 
-    public function apply(Image $image): null
+
+    public function applyWithGd(Image $image): null
     {
         for ($i = 0; $i < $this->amount; $i++) {
             $image->blur();
