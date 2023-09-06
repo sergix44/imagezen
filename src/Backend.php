@@ -2,8 +2,9 @@
 
 namespace SergiX44\ImageZen;
 
-use SergiX44\ImageZen\Gd\Gd;
-use SergiX44\ImageZen\Imagick\Imagick;
+use SergiX44\ImageZen\Base\Driver;
+use SergiX44\ImageZen\Drivers\Gd\Gd;
+use SergiX44\ImageZen\Drivers\Imagick\Imagick;
 
 enum Backend: string
 {
