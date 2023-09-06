@@ -1,4 +1,5 @@
-# An image manipulation library
+# ImageZen
+> An image manipulation library
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sergix44/imagezen.svg?style=flat-square)](https://packagist.org/packages/sergix44/imagezen)
 [![Tests](https://img.shields.io/github/actions/workflow/status/sergix44/imagezen/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/sergix44/imagezen/actions/workflows/run-tests.yml)
