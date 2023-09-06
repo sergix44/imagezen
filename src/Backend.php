@@ -17,7 +17,7 @@ enum Backend: string
         return new ($this->value);
     }
 
-    public static function matchFromImage(mixed $image): self
+    public static function fromObject(object $image): self
     {
         return match (true) {
             $image instanceof \GdImage => self::GD,

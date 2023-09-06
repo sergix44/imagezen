@@ -16,7 +16,8 @@
     ],
     "require": {
         "php": "^8.2",
-        "ext-fileinfo": "*"
+        "ext-fileinfo": "*",
+        "guzzlehttp/psr7": "^2.6"
     },
     "suggest": {
         "ext-gd": "To use GD library based image processing.",

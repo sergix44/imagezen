@@ -5,13 +5,15 @@ namespace SergiX44\ImageZen;
 use GdImage;
 use Imagick;
 use InvalidArgumentException;
+use RuntimeException;
 use SergiX44\ImageZen\Drivers\Driver;
+use SergiX44\ImageZen\Drivers\DriverSwitcher;
 use SergiX44\ImageZen\Exceptions\AlterationAlreadyRegistered;
 use SergiX44\ImageZen\Exceptions\InvalidAlterationException;
 
 class Image
 {
-    use DefaultAlterations;
+    use DefaultAlterations, DriverSwitcher;
 
     /** @var array<string,Alteration> */
     protected array $alterations = [];
@@ -20,15 +22,25 @@ class Image
 
     protected Driver $driver;
 
-    public function __construct(GdImage|Imagick|string $image, Backend $driver = Backend::GD)
+    protected Backend $backend;
+
+    public function __construct(GdImage|Imagick|string $image, Backend $backend = Backend::GD)
     {
-        if (is_string($image) && file_exists($image)) {
-            $this->driver = $driver->getDriver();
+        if (is_object($image)) {
+            $backend = Backend::fromObject($image);
+        }
+        $this->driver = $backend->getDriver();
+
+        if (!$this->driver->isAvailable()) {
+            throw new RuntimeException('The selected backend not available.');
+        }
+
+        if (is_string($image)) {
             $this->image = $this->driver->loadImageFrom($image);
         } else {
-            $this->driver = Backend::matchFromImage($image)->getDriver();
             $this->image = $image;
         }
+        $this->backend = $backend;
         $this->registerDefaultAlterations();
     }
 
@@ -64,7 +76,7 @@ class Image
     }
 
     /**
-     * @param  string  $alteration
+     * @param string $alteration
      * @param ...$args
      * @return mixed
      */
@@ -87,7 +99,7 @@ class Image
 
     public function __call(string $name, array $arguments)
     {
-        $value = $this->driver->apply($name, $this, $arguments);
+        $value = $this->driver->alterate($name, ...$arguments);
 
         return $value ?? $this;
     }

@@ -3,6 +3,8 @@
 namespace SergiX44\ImageZen\Drivers\Gd;
 
 use GdImage;
+use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Message\StreamInterface;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Exceptions\AlterationNotImplementedException;
@@ -11,7 +13,7 @@ use SergiX44\ImageZen\Exceptions\FormatNotSupportedException;
 use SergiX44\ImageZen\Format;
 use SergiX44\ImageZen\Image;
 
-class Gd extends Driver
+class Gd implements Driver
 {
     public function isAvailable(): bool
     {
@@ -19,8 +21,8 @@ class Gd extends Driver
     }
 
     /**
-     * @param  Alteration  $alteration
-     * @param  Image  $image
+     * @param Alteration $alteration
+     * @param Image $image
      * @return mixed
      * @throws AlterationNotImplementedException
      */
@@ -38,7 +40,11 @@ class Gd extends Driver
      */
     public function loadImageFrom(string $path): GdImage
     {
-        $image = imagecreatefromstring(file_get_contents($path));
+        if (file_exists($path)) {
+            $image = imagecreatefromstring(file_get_contents($path));
+        } else {
+            $image = imagecreatefromstring($path);
+        }
 
         if ($image === false) {
             throw new CannotLoadImageException();
@@ -50,7 +56,7 @@ class Gd extends Driver
     /**
      * @throws FormatNotSupportedException
      */
-    public function save(Image $image, string $path, Format $format, int $quality): bool
+    public function save(Image $image, ?string $path, Format $format, int $quality): bool
     {
         return match ($format) {
             Format::PNG => imagepng($image->getCore(), $path, $this->mapRange($quality, 0, 100, 0, 9)),
@@ -62,13 +68,27 @@ class Gd extends Driver
         };
     }
 
-    public function getStream(Image $image, int $quality): mixed
+    public function getStream(Image $image, Format $format, int $quality): StreamInterface
     {
-        // TODO: Implement getStream() method.
+        ob_start();
+        $this->save($image, null, $format, $quality);
+        $stream = ob_get_clean();
+
+        return Utils::streamFor($stream);
     }
 
     public function clear(Image $image): void
     {
         imagedestroy($image->getCore());
+    }
+
+    private function mapRange(int $value, int $fromMin, int $fromMax, int $toMin, int $toMax): int
+    {
+        $value = min(max($value, $fromMin), $fromMax);
+        $fromRange = $fromMax - $fromMin;
+        $toRange = $toMax - $toMin;
+        $scaledValue = ($value - $fromMin) / $fromRange;
+
+        return $toMin + ($scaledValue * $toRange);
     }
 }

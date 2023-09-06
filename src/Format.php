@@ -10,4 +10,6 @@ enum Format: int
     case GIF = 3;
     case BMP = 4;
     case TIFF = 5;
+    case HEIC = 6;
+    case AVIF = 7;
 }

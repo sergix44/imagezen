@@ -5,9 +5,10 @@ namespace SergiX44\ImageZen\Alterations;
 use InvalidArgumentException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class Blur extends Alteration implements GdAlteration
+class Blur extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'blur';
 
@@ -28,6 +29,13 @@ class Blur extends Alteration implements GdAlteration
         for ($i = 0; $i < $this->amount; $i++) {
             imagefilter($image->getCore(), IMG_FILTER_GAUSSIAN_BLUR);
         }
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $image->getCore()->blurImage(1 * $this->amount, 0.5 * $this->amount);
 
         return null;
     }

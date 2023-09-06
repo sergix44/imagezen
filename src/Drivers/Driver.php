@@ -4,31 +4,22 @@ namespace SergiX44\ImageZen\Drivers;
 
 use GdImage;
 use Imagick;
+use Psr\Http\Message\StreamInterface;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Format;
 use SergiX44\ImageZen\Image;
 
-abstract class Driver
+interface Driver
 {
-    abstract public function isAvailable(): bool;
+    public function isAvailable(): bool;
 
-    abstract public function loadImageFrom(string $path): GdImage|Imagick;
+    public function loadImageFrom(string $path): GdImage|Imagick;
 
-    abstract public function save(Image $image, string $path, Format $format, int $quality): bool;
+    public function save(Image $image, string $path, Format $format, int $quality): bool;
 
-    abstract public function getStream(Image $image, int $quality): mixed;
+    public function getStream(Image $image, Format $format,  int $quality): StreamInterface;
 
-    abstract public function clear(Image $image): void;
+    public function clear(Image $image): void;
 
-    abstract public function apply(Alteration $alteration, Image $image): mixed;
-
-    protected function mapRange(int $value, int $fromMin, int $fromMax, int $toMin, int $toMax): int
-    {
-        $value = min(max($value, $fromMin), $fromMax);
-        $fromRange = $fromMax - $fromMin;
-        $toRange = $toMax - $toMin;
-        $scaledValue = ($value - $fromMin) / $fromRange;
-
-        return $toMin + ($scaledValue * $toRange);
-    }
+    public function apply(Alteration $alteration, Image $image): mixed;
 }
