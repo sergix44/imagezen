@@ -18,4 +18,3 @@ describe('gd driver', function () {
     })->with('baboon');
 
 });
-

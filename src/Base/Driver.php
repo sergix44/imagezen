@@ -27,7 +27,7 @@ abstract class Driver
 
     public function registerEffect(string $class): static
     {
-        if (!is_subclass_of($class, Effect::class)) {
+        if (! is_subclass_of($class, Effect::class)) {
             throw new InvalidEffectException();
         }
         $id = $class::$id;
@@ -50,7 +50,7 @@ abstract class Driver
      */
     public function apply(string $id, Image $image, ...$args): mixed
     {
-        if (!array_key_exists($id, $this->effects)) {
+        if (! array_key_exists($id, $this->effects)) {
             throw new EffectNotImplementedException($id);
         }
 
@@ -66,6 +66,7 @@ abstract class Driver
         $fromRange = $fromMax - $fromMin;
         $toRange = $toMax - $toMin;
         $scaledValue = ($value - $fromMin) / $fromRange;
+
         return $toMin + ($scaledValue * $toRange);
     }
 }

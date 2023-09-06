@@ -3,7 +3,6 @@
 namespace SergiX44\ImageZen\Drivers\Gd\Effects;
 
 use InvalidArgumentException;
-use SergiX44\ImageZen\Base\DefaultEffects;
 use SergiX44\ImageZen\Base\Effect;
 use SergiX44\ImageZen\Image;
 

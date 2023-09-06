@@ -11,5 +11,4 @@ class EffectAlreadyRegistered extends Exception
     {
         parent::__construct($message, $code, $previous);
     }
-
 }

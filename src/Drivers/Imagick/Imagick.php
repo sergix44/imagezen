@@ -19,7 +19,6 @@ class Imagick extends Driver
         return new ImagickBackend($path);
     }
 
-
     public function save(Image $image, string $path, Format $format, int $quality): bool
     {
         // TODO: Implement save() method.

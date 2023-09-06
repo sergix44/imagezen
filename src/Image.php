@@ -47,6 +47,7 @@ class Image
     public function effect(string $effect, ...$args): mixed
     {
         $return = $this->driver->apply($effect, $this, ...$args);
+
         return $return ?? $this;
     }
 
