@@ -4,12 +4,11 @@ namespace SergiX44\ImageZen;
 
 use GdImage;
 use Imagick;
-use SergiX44\ImageZen\Api\API;
 use SergiX44\ImageZen\Base\Driver;
 
 class Image
 {
-    use API;
+    use DefaultEffects;
 
     protected GdImage|Imagick $image;
 
@@ -19,12 +18,9 @@ class Image
     {
         if (is_string($image) && file_exists($image)) {
             $this->driver = $driver->getDriver();
-            $this->image = $this->driver->loadImageFromDisk($image);
+            $this->image = $this->driver->loadImageFrom($image);
         } else {
-            $this->driver = match (true) {
-                $image instanceof GdImage => Backend::GD->getDriver(),
-                $image instanceof Imagick => Backend::IMAGICK->getDriver()
-            };
+            $this->driver = Backend::matchFromImage($image)->getDriver();
             $this->image = $image;
         }
     }
@@ -46,13 +42,24 @@ class Image
 
     public function effect(string $effect, ...$args): mixed
     {
-        $return = $this->driver->apply($effect, $this, ...$args);
+        $value = $this->driver->apply($effect, $this, $args);
 
-        return $return ?? $this;
+        return $value ?? $this;
     }
 
     public function save(string $path, Format $format = Format::PNG, int $quality = 90): bool
     {
         return $this->driver->save($this, $path, $format, $quality);
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        $value = $this->driver->apply($name, $this, $arguments);
+        return $value ?? $this;
+    }
+
+    public function __destruct()
+    {
+        $this->driver->clear($this);
     }
 }

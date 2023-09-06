@@ -4,7 +4,8 @@ namespace SergiX44\ImageZen\Drivers\Gd;
 
 use GdImage;
 use SergiX44\ImageZen\Base\Driver;
-use SergiX44\ImageZen\Drivers\Gd\Effects\BlurEffect;
+use SergiX44\ImageZen\Drivers\Gd\Effects\Blur;
+use SergiX44\ImageZen\Drivers\Gd\Effects\HeavyBlur;
 use SergiX44\ImageZen\Exceptions\CannotLoadImageException;
 use SergiX44\ImageZen\Exceptions\FormatNotSupportedException;
 use SergiX44\ImageZen\Format;
@@ -14,7 +15,8 @@ class Gd extends Driver
 {
     public function __construct()
     {
-        $this->registerEffect(BlurEffect::class);
+        $this->registerEffect(Blur::class);
+        $this->registerEffect(HeavyBlur::class);
     }
 
     public function isAvailable(): bool
@@ -25,7 +27,7 @@ class Gd extends Driver
     /**
      * @throws CannotLoadImageException
      */
-    public function loadImageFromDisk(string $path): GdImage
+    public function loadImageFrom(string $path): GdImage
     {
         $image = imagecreatefromstring(file_get_contents($path));
 
@@ -54,5 +56,10 @@ class Gd extends Driver
     public function getStream(Image $image, int $quality): mixed
     {
         // TODO: Implement getStream() method.
+    }
+
+    public function clear(Image $image): void
+    {
+        imagedestroy($image->getCore());
     }
 }

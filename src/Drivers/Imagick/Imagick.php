@@ -14,7 +14,7 @@ class Imagick extends Driver
         return class_exists(class: \Imagick::class) && extension_loaded('imagick');
     }
 
-    public function loadImageFromDisk(string $path): ImagickBackend
+    public function loadImageFrom(string $path): ImagickBackend
     {
         return new ImagickBackend($path);
     }
@@ -27,5 +27,10 @@ class Imagick extends Driver
     public function getStream(Image $image, int $quality): mixed
     {
         // TODO: Implement getStream() method.
+    }
+
+    public function clear(Image $image): void
+    {
+        $image->getCore()->clear();
     }
 }

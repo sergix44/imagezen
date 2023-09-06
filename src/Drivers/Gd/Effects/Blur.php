@@ -6,21 +6,19 @@ use InvalidArgumentException;
 use SergiX44\ImageZen\Base\Effect;
 use SergiX44\ImageZen\Image;
 
-class BlurEffect extends Effect
+class Blur extends Effect
 {
     public static string $id = 'blur';
 
     protected int $amount = 1;
 
-    public function __construct(array $arguments)
+    public function __construct(?int $amount = null)
     {
-        parent::__construct($arguments);
-        if (isset($arguments[0]) && is_int($arguments[0])) {
-            $amount = $arguments[0];
+        if ($amount !== null) {
             if ($amount < 1 || $amount > 100) {
-                throw new InvalidArgumentException('Blur amount must be between 1 and 100');
+                throw new InvalidArgumentException('Blur $amount must be between 1 and 100');
             }
-            $this->amount = $arguments[0];
+            $this->amount = $amount;
         }
     }
 
