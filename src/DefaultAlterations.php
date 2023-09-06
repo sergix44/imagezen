@@ -14,18 +14,21 @@ trait DefaultAlterations
     public function blur(int $amount = 1): self
     {
         $this->alterate(__FUNCTION__, $amount);
+
         return $this;
     }
 
     public function heavyBlur(int $amount = 10): self
     {
         $this->alterate(__FUNCTION__, $amount);
+
         return $this;
     }
 
     public function brightness(int $level = 0): self
     {
         $this->alterate(__FUNCTION__, $level);
+
         return $this;
     }
 }
