@@ -13,7 +13,8 @@ use SergiX44\ImageZen\Exceptions\InvalidAlterationException;
 
 class Image
 {
-    use DefaultAlterations, DriverSwitcher;
+    use DefaultAlterations;
+    use DriverSwitcher;
 
     /** @var array<string,Alteration> */
     protected array $alterations = [];

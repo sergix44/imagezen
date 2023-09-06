@@ -38,6 +38,7 @@ class Imagick implements Driver
     public function loadImageFrom(string $path): ImagickBackend
     {
         $imagick = new ImagickBackend();
+
         try {
             if (file_exists($path)) {
                 $imagick->readImage($path);
@@ -59,12 +60,14 @@ class Imagick implements Driver
     public function save(Image $image, string $path, Format $format, int $quality): bool
     {
         $imagick = $this->processFormat($image->getCore(), $format, $quality);
+
         return $imagick->writeImage($path);
     }
 
     public function getStream(Image $image, Format $format, int $quality): StreamInterface
     {
         $imagick = $this->processFormat($image->getCore(), $format, $quality);
+
         return Utils::streamFor($imagick->getImageBlob());
     }
 

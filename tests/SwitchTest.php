@@ -34,4 +34,3 @@ it('can switch from imagick to gd', function ($file) {
 
     unlink($out);
 })->with('baboon');
-
