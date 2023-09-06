@@ -22,7 +22,6 @@ class HeavyBlur extends Effect
         }
     }
 
-
     public function apply(Image $image): null
     {
         for ($i = 0; $i < $this->amount; $i++) {

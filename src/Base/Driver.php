@@ -33,7 +33,7 @@ abstract class Driver
      */
     public function registerEffect(string $class): static
     {
-        if (! is_subclass_of($class, Effect::class)) {
+        if (!is_subclass_of($class, Effect::class)) {
             throw new InvalidEffectException();
         }
         $id = $class::$id;

@@ -55,6 +55,7 @@ class Image
     public function __call(string $name, array $arguments)
     {
         $value = $this->driver->apply($name, $this, $arguments);
+
         return $value ?? $this;
     }
 
