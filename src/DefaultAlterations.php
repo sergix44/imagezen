@@ -14,6 +14,7 @@ trait DefaultAlterations
         $this->register(Alterations\EllipseShape::class);
         $this->register(Alterations\CircleShape::class);
         $this->register(Alterations\Colorize::class);
+        $this->register(Alterations\Contrast::class);
     }
 
     public function blur(int $amount = 1): self
@@ -54,6 +55,13 @@ trait DefaultAlterations
     public function colorize(int $red, int $green, int $blue): self
     {
         $this->alterate(__FUNCTION__, $red, $green, $blue);
+
+        return $this;
+    }
+
+    public function contrast(int $level): self
+    {
+        $this->alterate(__FUNCTION__, $level);
 
         return $this;
     }

@@ -24,7 +24,7 @@ composer require sergix44/imagezen
 - [x] canvas()
 - [x] circle()
 - [x] colorize()
-- [ ] contrast()
+- [x] contrast()
 - [ ] crop()
 - [x] destroy()
 - [x] ellipse()

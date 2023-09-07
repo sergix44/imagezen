@@ -67,7 +67,7 @@ it('can blur an image with a custom amount', function ($file) {
     $filename = 'baboon_blur_50';
     $out = __DIR__."/Tmp/$filename.png";
     Image::make($file)
-        ->blur(50)
+        ->blur(5)
         ->save($out, quality: 100);
 
     expect($out)
@@ -81,7 +81,7 @@ it('can heavy blur an image with a custom amount', function ($file) {
     $filename = 'baboon_heavy_blur_50';
     $out = __DIR__."/Tmp/$filename.png";
     Image::make($file)
-        ->heavyBlur(50)
+        ->heavyBlur(11)
         ->save($out, quality: 100);
 
     expect($out)
@@ -170,5 +170,18 @@ it('can colorize an image', function ($file) {
         ->toBeFile()
         ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
 
+    unlink($out);
+})->with('baboon');
+
+it('can change image contrast', function ($file) {
+    $filename = 'baboon_contrast_50';
+    $out = __DIR__."/Tmp/$filename.png";
+    Image::make($file)
+        ->contrast(50)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
     unlink($out);
 })->with('baboon');

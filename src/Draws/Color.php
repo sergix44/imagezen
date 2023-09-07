@@ -45,7 +45,7 @@ readonly class Color
         return new self(red: $red, green: $green, blue: $blue, alpha: $alpha);
     }
 
-    public function differs(COlor $color, int $tolerance = 0): bool
+    public function differs(Color $color, int $tolerance = 0): bool
     {
         $colorDeltaMax = round($tolerance * 2.55);
         $alphaDeltaMax = round($tolerance * 1.27);
