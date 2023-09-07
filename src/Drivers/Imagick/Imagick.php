@@ -52,9 +52,12 @@ class Imagick implements Driver
         return $imagick;
     }
 
-    public function clear(Image $image): void
+    public function clear(?Image $image = null, ?object $raw = null): void
     {
-        $image->getCore()->clear();
+        $image?->getCore()->clear();
+        if ($raw instanceof ImagickBackend) {
+            $raw->clear();
+        }
     }
 
     public function save(Image $image, string $path, Format $format, int $quality): bool
@@ -233,5 +236,10 @@ class Imagick implements Driver
         $imagick->setImageCompressionQuality($quality);
 
         return $imagick;
+    }
+
+    public function clone(Image $image): ImagickBackend
+    {
+        return $image->getCore()->clone();
     }
 }

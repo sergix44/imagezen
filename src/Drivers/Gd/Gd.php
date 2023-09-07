@@ -77,9 +77,15 @@ class Gd implements Driver
         return Utils::streamFor($stream);
     }
 
-    public function clear(Image $image): void
+    public function clear(?Image $image = null, ?object $raw = null): void
     {
-        imagedestroy($image->getCore());
+        if ($image !== null) {
+            imagedestroy($image->getCore());
+        }
+
+        if ($raw instanceof GdImage) {
+            imagedestroy($raw);
+        }
     }
 
     private function mapRange(int $value, int $fromMin, int $fromMax, int $toMin, int $toMax): int
@@ -90,5 +96,15 @@ class Gd implements Driver
         $scaledValue = ($value - $fromMin) / $fromRange;
 
         return $toMin + ($scaledValue * $toRange);
+    }
+
+    public function clone(Image $image): GdImage
+    {
+        $sourceImage = $image->getCore();
+        $clonedImage = imagecreatetruecolor(imagesx($sourceImage), imagesy($sourceImage));
+
+        imagecopy($clonedImage, $sourceImage, 0, 0, 0, 0, imagesx($sourceImage), imagesy($sourceImage));
+
+        return $clonedImage;
     }
 }

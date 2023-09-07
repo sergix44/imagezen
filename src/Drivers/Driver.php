@@ -17,9 +17,11 @@ interface Driver
 
     public function save(Image $image, string $path, Format $format, int $quality): bool;
 
-    public function getStream(Image $image, Format $format,  int $quality): StreamInterface;
+    public function getStream(Image $image, Format $format, int $quality): StreamInterface;
 
-    public function clear(Image $image): void;
+    public function clone(Image $image): GdImage|Imagick;
+
+    public function clear(?Image $image = null, ?object $raw = null): void;
 
     public function apply(Alteration $alteration, Image $image): mixed;
 }

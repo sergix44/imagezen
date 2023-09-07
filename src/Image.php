@@ -5,6 +5,7 @@ namespace SergiX44\ImageZen;
 use GdImage;
 use Imagick;
 use InvalidArgumentException;
+use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Drivers\DriverSwitcher;
@@ -19,11 +20,15 @@ class Image
     /** @var array<string,Alteration> */
     protected array $alterations = [];
 
+    protected array $snapshots = [];
+
     protected GdImage|Imagick $image;
 
     protected Driver $driver;
 
     protected Backend $backend;
+
+    protected ?string $basePath = null;
 
     public function __construct(GdImage|Imagick|string $image, Backend $backend = Backend::GD)
     {
@@ -37,6 +42,10 @@ class Image
         }
 
         if (is_string($image)) {
+            if (file_exists($image)) {
+                $this->basePath = $image;
+            }
+
             $this->image = $this->driver->loadImageFrom($image);
         } else {
             $this->image = $image;
@@ -93,9 +102,50 @@ class Image
         return $value ?? $this;
     }
 
+    public function backup(?string $name = null): self
+    {
+        if ($name === null) {
+            $this->snapshots[] = $this->driver->clone($this);
+        } else {
+            $this->snapshots[$name] = $this->driver->clone($this);
+        }
+
+        return $this;
+    }
+
+    public function reset(?string $name = null): self
+    {
+        if ($name !== null) {
+            if (!array_key_exists($name, $this->snapshots)) {
+                throw new InvalidArgumentException("Snapshot '$name' not found.");
+            }
+            $this->driver->clear($this);
+            $this->image = $this->snapshots[$name];
+            unset($this->snapshots[$name]);
+        } else {
+            if (empty($this->snapshots)) {
+                throw new InvalidArgumentException('No snapshots found.');
+            }
+            $this->driver->clear($this);
+            $this->image = array_pop($this->snapshots);
+        }
+
+        return $this;
+    }
+
     public function save(string $path, Format $format = Format::PNG, int $quality = 90): bool
     {
         return $this->driver->save($this, $path, $format, $quality);
+    }
+
+    public function stream(Format $format = Format::PNG, int $quality = 90): StreamInterface
+    {
+        return $this->driver->getStream($this, $format, $quality);
+    }
+
+    public function basePath(): ?string
+    {
+        return $this->basePath;
     }
 
     public function __call(string $name, array $arguments)
@@ -107,6 +157,7 @@ class Image
 
     public function __destruct()
     {
+        array_map(fn($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
         $this->driver->clear($this);
     }
 }
