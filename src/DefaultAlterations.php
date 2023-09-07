@@ -13,6 +13,7 @@ trait DefaultAlterations
         $this->register(Alterations\Brightness::class);
         $this->register(Alterations\EllipseShape::class);
         $this->register(Alterations\CircleShape::class);
+        $this->register(Alterations\Colorize::class);
     }
 
     public function blur(int $amount = 1): self
@@ -46,6 +47,13 @@ trait DefaultAlterations
     public function circle(int $radius, int $x, int $y, Closure $callback): self
     {
         $this->alterate(__FUNCTION__, $radius, $x, $y, $callback);
+
+        return $this;
+    }
+
+    public function colorize(int $red, int $green, int $blue): self
+    {
+        $this->alterate(__FUNCTION__, $red, $green, $blue);
 
         return $this;
     }

@@ -15,12 +15,64 @@ You can install the package via composer:
 composer require sergix44/imagezen
 ```
 
+## TODO API
+- [x] backup()
+- [x] basePath()
+- [x] blur()
+- [x] brightness()
+- ~~cache()~~
+- [x] canvas()
+- [x] circle()
+- [x] colorize()
+- [ ] contrast()
+- [ ] crop()
+- [x] destroy()
+- [x] ellipse()
+- ~~encode()~~
+- [ ] exif()
+- [ ] filesize()
+- [ ] fill()
+- [ ] filter()
+- [ ] fit()
+- [ ] flip()
+- [ ] gamma()
+- [x] getCore()
+- [ ] greyscale()
+- [ ] height()
+- [ ] heighten()
+- [ ] insert()
+- [ ] interlace()
+- [ ] invert()
+- [ ] iptc()
+- [ ] limitColors()
+- [ ] line()
+- [x] make()
+- [ ] mask()
+- [ ] mime()
+- [ ] opacity()
+- [ ] orientate()
+- [ ] pickColor()
+- [ ] pixel()
+- [ ] pixelate()
+- [ ] polygon()
+- [ ] psrResponse()
+- [ ] rectangle()
+- [x] reset()
+- [ ] resize()
+- [ ] resizeCanvas()
+- [ ] response()
+- [ ] rotate()
+- [x] save()
+- [ ] sharpen()
+- [x] stream()
+- [ ] text()
+- [ ] trim()
+- [ ] widen()
+- [ ] width()
+
 ## Usage
 
-```php
-$skeleton = new SergiX44\ImageZen();
-echo $skeleton->echoPhrase('Hello, SergiX44!');
-```
+> WIP
 
 ## Testing
 

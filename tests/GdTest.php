@@ -140,3 +140,35 @@ it('can draw a circle', function () {
 
     unlink($out);
 });
+
+it('can draw a circle on a image', function ($file) {
+    $filename = 'circle_on_image';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->circle(50, 50, 50, function (Circle $draw) {
+            $draw->background(Color::teal())
+                ->border(2, Color::black());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+
+    unlink($out);
+})->with('baboon');
+
+it('can colorize an image', function ($file) {
+    $filename = 'baboon_colorize';
+    $out = __DIR__."/Tmp/$filename.png";
+    Image::make($file)
+        ->colorize(0, 0, 20)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+
+    unlink($out);
+})->with('baboon');

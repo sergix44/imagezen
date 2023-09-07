@@ -94,7 +94,7 @@ class Image
     }
 
     /**
-     * @param string $alteration
+     * @param  string  $alteration
      * @param ...$args
      * @return mixed
      */
@@ -161,6 +161,11 @@ class Image
         $value = $this->driver->alterate($name, ...$arguments);
 
         return $value ?? $this;
+    }
+
+    public function destroy(): void
+    {
+        $this->__destruct();
     }
 
     public function __destruct()
