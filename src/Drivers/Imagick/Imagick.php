@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Utils;
 use Imagick as ImagickBackend;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\ImageZen\Alteration;
+use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Exceptions\AlterationNotImplementedException;
 use SergiX44\ImageZen\Exceptions\CannotLoadImageException;
@@ -21,8 +22,8 @@ class Imagick implements Driver
     }
 
     /**
-     * @param Alteration $alteration
-     * @param Image $image
+     * @param  Alteration  $alteration
+     * @param  Image  $image
      * @return mixed
      * @throws AlterationNotImplementedException
      */
@@ -50,6 +51,22 @@ class Imagick implements Driver
         }
 
         return $imagick;
+    }
+
+    public function newImage(int $width, int $height, Color $color): ImagickBackend
+    {
+        $core = new ImagickBackend();
+        $core->newImage($width, $height, $this->parseColor($color)->getPixel(), 'png');
+        $core->setType(ImagickBackend::IMGTYPE_UNDEFINED);
+        $core->setImageType(ImagickBackend::IMGTYPE_UNDEFINED);
+        $core->setColorspace(ImagickBackend::COLORSPACE_UNDEFINED);
+
+        return $core;
+    }
+
+    public function parseColor(Color $color): ImagickColor
+    {
+        return new ImagickColor($color);
     }
 
     public function clear(?Image $image = null, ?object $raw = null): void

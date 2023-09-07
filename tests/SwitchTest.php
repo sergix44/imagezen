@@ -3,6 +3,8 @@
 use SergiX44\ImageZen\Backend;
 use SergiX44\ImageZen\Image;
 
+beforeEach()->skip(fn() => !extension_loaded('imagick'), 'imagick extension not loaded.');
+
 it('can switch from gd to imagick', function ($file) {
     $filename = 'baboon_blur';
 

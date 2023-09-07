@@ -6,6 +6,7 @@ use GdImage;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\ImageZen\Alteration;
+use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Exceptions\AlterationNotImplementedException;
 use SergiX44\ImageZen\Exceptions\CannotLoadImageException;
@@ -21,8 +22,8 @@ class Gd implements Driver
     }
 
     /**
-     * @param Alteration $alteration
-     * @param Image $image
+     * @param  Alteration  $alteration
+     * @param  Image  $image
      * @return mixed
      * @throws AlterationNotImplementedException
      */
@@ -33,6 +34,19 @@ class Gd implements Driver
         }
 
         return $alteration->applyWithGd($image);
+    }
+
+    public function newImage(int $width, int $height, Color $color): GdImage
+    {
+        $core = imagecreatetruecolor($width, $height);
+        imagefill($core, 0, 0, $this->parseColor($color)->getInt());
+
+        return $core;
+    }
+
+    public function parseColor(Color $color): GdColor
+    {
+        return new GdColor($color);
     }
 
     /**

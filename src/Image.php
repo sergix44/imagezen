@@ -7,6 +7,7 @@ use Imagick;
 use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
+use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Drivers\DriverSwitcher;
 use SergiX44\ImageZen\Exceptions\AlterationAlreadyRegistered;
@@ -57,6 +58,13 @@ class Image
     public static function make(GdImage|Imagick|string $image, Backend $driver = Backend::GD): self
     {
         return new self($image, $driver);
+    }
+
+    public static function canvas(int $width, int $height, Color $color = null, Backend $backend = Backend::GD): self
+    {
+        $image = $backend->getDriver()->newImage($width, $height, $color ?? Color::white());
+
+        return new self($image, $backend);
     }
 
     public function register(string $class): self
