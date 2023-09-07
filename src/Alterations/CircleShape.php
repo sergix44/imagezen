@@ -12,5 +12,4 @@ class CircleShape extends EllipseShape
     {
         parent::__construct($width, $width, $x, $y, $callback);
     }
-
 }

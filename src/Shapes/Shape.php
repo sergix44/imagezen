@@ -46,6 +46,4 @@ abstract class Shape
     {
         return $this->borderWidth;
     }
-
-
 }

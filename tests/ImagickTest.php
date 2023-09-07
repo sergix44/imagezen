@@ -3,7 +3,7 @@
 use SergiX44\ImageZen\Backend;
 use SergiX44\ImageZen\Image;
 
-beforeEach()->skip(fn() => !extension_loaded('imagick'), 'imagick extension not loaded.');
+beforeEach()->skip(fn () => !extension_loaded('imagick'), 'imagick extension not loaded.');
 
 it('can blur an image', function ($file) {
     $filename = 'baboon_blur';

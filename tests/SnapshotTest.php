@@ -29,7 +29,8 @@ it('can create a snapshot with gd', function ($file) {
         ->imageSimilarTo($file);
 
     unlink($out);
-})->with('baboon')->skip(fn() => !extension_loaded('gd'), 'gd extension not loaded.');;
+})->with('baboon')->skip(fn () => !extension_loaded('gd'), 'gd extension not loaded.');
+;
 
 it('can create a snapshot with imagick', function ($file) {
     $filename = 'baboon_blur';
@@ -57,4 +58,4 @@ it('can create a snapshot with imagick', function ($file) {
         ->imageSimilarTo($file);
 
     unlink($out);
-})->with('baboon')->skip(fn() => !extension_loaded('imagick'), 'imagick extension not loaded.');
+})->with('baboon')->skip(fn () => !extension_loaded('imagick'), 'imagick extension not loaded.');
