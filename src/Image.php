@@ -157,7 +157,7 @@ class Image
 
     public function __destruct()
     {
-        array_map(fn($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
+        array_map(fn ($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
         $this->driver->clear($this);
     }
 }

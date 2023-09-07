@@ -2,7 +2,6 @@
 
 use SergiX44\ImageZen\Image;
 
-
 it('can blur an image', function ($file) {
     $filename = 'baboon_blur';
     $out = __DIR__ . "/Tmp/$filename.png";
@@ -72,4 +71,3 @@ it('can change brightness of an image', function ($file) {
 
     unlink($out);
 })->with('baboon');
-
