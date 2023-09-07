@@ -2,6 +2,7 @@
 
 use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Shapes\Circle;
 use SergiX44\ImageZen\Shapes\Ellipse;
 
 beforeEach()->skip(fn () => !extension_loaded('gd'), 'gd extension not loaded.');
@@ -127,7 +128,7 @@ it('can draw a circle', function () {
     $out = __DIR__."/Tmp/$filename.png";
 
     Image::canvas(100, 100)
-        ->circle(50, 50, 50, function (Ellipse $draw) {
+        ->circle(50, 50, 50, function (Circle $draw) {
             $draw->background(Color::black())
                 ->border(2, Color::gold());
         })

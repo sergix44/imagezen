@@ -14,6 +14,9 @@ use SergiX44\ImageZen\Shapes\Ellipse;
 class EllipseShape extends Alteration implements GdAlteration
 {
     public static string $id = 'ellipse';
+
+    public static string $shape = Ellipse::class;
+
     private int $width;
     private int $height;
     private int $x;
@@ -32,7 +35,7 @@ class EllipseShape extends Alteration implements GdAlteration
     public function applyWithGd(Image $image): null
     {
 
-        $shape = new Ellipse();
+        $shape = new static::$shape();
         if ($this->callback instanceof Closure) {
             $this->callback->call($this, $shape);
         }
