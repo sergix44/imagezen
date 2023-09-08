@@ -264,50 +264,59 @@ class Box
             case Position::TOP_MIDDLE:
                 $x = (int) ($this->width / 2);
                 $y = $offsetY;
+
                 break;
 
             case Position::TOP_RIGHT:
                 $x = $this->width - $offsetX;
                 $y = $offsetY;
+
                 break;
 
             case Position::LEFT:
             case Position::CENTER_LEFT:
                 $x = $offsetX;
                 $y = (int) ($this->height / 2);
+
                 break;
 
             case Position::RIGHT:
             case Position::CENTER_RIGHT:
                 $x = $this->width - $offsetX;
                 $y = (int) ($this->height / 2);
+
                 break;
 
             case Position::BOTTOM_LEFT:
                 $x = $offsetX;
                 $y = $this->height - $offsetY;
+
                 break;
 
             case Position::BOTTOM:
             case Position::BOTTOM_MIDDLE:
                 $x = (int) ($this->width / 2);
                 $y = $this->height - $offsetY;
+
                 break;
 
             case Position::BOTTOM_RIGHT:
                 $x = $this->width - $offsetX;
                 $y = $this->height - $offsetY;
+
                 break;
 
             case Position::CENTER:
             case Position::CENTER_MIDDLE:
                 $x = ((int) $this->width / 2) + $offsetX;
                 $y = ((int) $this->height / 2) + $offsetY;
+
                 break;
 
             default:
                 $x = $offsetX;
                 $y = $offsetY;
+
                 break;
         }
 

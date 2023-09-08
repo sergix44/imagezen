@@ -2,7 +2,6 @@
 
 namespace SergiX44\ImageZen\Getters;
 
-use Intervention\Image\Exception\NotSupportedException;
 use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;

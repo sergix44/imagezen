@@ -10,7 +10,6 @@ use SergiX44\ImageZen\Image;
 
 class GetExif extends Alteration implements GdAlteration, ImagickAlteration
 {
-
     public static string $id = 'exif';
 
     public function __construct(protected ?string $key = null)

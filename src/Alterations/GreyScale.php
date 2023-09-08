@@ -13,7 +13,7 @@ class GreyScale extends Alteration implements GdAlteration
     public function applyWithGd(Image $image): null
     {
         imagefilter($image->getCore(), IMG_FILTER_GRAYSCALE);
+
         return null;
     }
-
 }

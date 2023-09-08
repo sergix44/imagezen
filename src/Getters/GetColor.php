@@ -24,6 +24,7 @@ class GetColor extends Alteration implements GdAlteration
         if (!imageistruecolor($image->getCore())) {
             $colorArray = imagecolorsforindex($image->getCore(), $colorInt);
             $colorArray['alpha'] = round(1 - $colorArray['alpha'] / 127, 2);
+
             return Color::rgba($colorArray['red'], $colorArray['green'], $colorArray['blue'], $colorArray['alpha']);
         }
 

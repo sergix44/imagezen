@@ -17,7 +17,7 @@ class Gamma extends Alteration implements GdAlteration
     public function applyWithGd(Image $image): null
     {
         imagegammacorrect($image->getCore(), 1, $this->correction);
+
         return null;
     }
-
 }

@@ -9,7 +9,6 @@ use SergiX44\ImageZen\Image;
 
 class Insert extends Alteration implements GdAlteration
 {
-
     public static string $id = 'insert';
 
     public function __construct(

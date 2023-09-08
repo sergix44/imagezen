@@ -225,6 +225,4 @@ trait DefaultAlterations
 
         return $this;
     }
-
-
 }

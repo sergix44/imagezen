@@ -6,7 +6,6 @@ use GdImage;
 
 trait GdCoreResize
 {
-
     protected function coreResize(
         GdImage $gd,
         int $newX,
@@ -50,5 +49,4 @@ trait GdCoreResize
 
         return $modified;
     }
-
 }

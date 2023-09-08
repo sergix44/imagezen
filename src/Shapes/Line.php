@@ -31,5 +31,4 @@ class Line extends Shape
     {
         throw new InvalidArgumentException('A line cannot have a background color');
     }
-
 }
