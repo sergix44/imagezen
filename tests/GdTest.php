@@ -1,11 +1,12 @@
 <?php
 
 use SergiX44\ImageZen\Draws\Color;
+use SergiX44\ImageZen\Draws\Position;
 use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Circle;
 use SergiX44\ImageZen\Shapes\Ellipse;
 
-beforeEach()->skip(fn () => !extension_loaded('gd'), 'gd extension not loaded.');
+beforeEach()->skip(fn() => !extension_loaded('gd'), 'gd extension not loaded.');
 
 it('can create an empty canvas', function () {
     $filename = 'empty_canvas';
@@ -178,6 +179,76 @@ it('can change image contrast', function ($file) {
     $out = __DIR__."/Tmp/$filename.png";
     Image::make($file)
         ->contrast(50)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can crop an image', function ($file) {
+    $filename = 'baboon_crop';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->crop(100, 100)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can fill a canvas with a color', function () {
+    $filename = 'canvas_color_fill';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::canvas(100, 100)
+        ->fill(Color::red())
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+});
+
+it('can fill a canvas with a image', function ($file) {
+    $filename = 'canvas_image_fill';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::canvas(800, 800)
+        ->fill(Image::make($file))
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can fill an image with a color', function ($file) {
+    $filename = 'image_color_fill';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->fill(Color::teal(), 9, 9)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('tile');
+
+it('can fit an image into another', function ($file) {
+    $filename = 'baboon_fit';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->fit(500, 1000, position: Position::BOTTOM_RIGHT)
         ->save($out, quality: 100);
 
     expect($out)

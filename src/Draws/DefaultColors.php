@@ -16,7 +16,7 @@ trait DefaultColors
 
     public static function transparent(): self
     {
-        return new self(red: 0, green: 0, blue: 0, alpha: 127);
+        return new self(red: 255, green: 255, blue: 255, alpha: 0);
     }
 
     public static function red(): self

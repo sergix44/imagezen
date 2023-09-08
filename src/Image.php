@@ -7,6 +7,7 @@ use Imagick;
 use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
+use SergiX44\ImageZen\Draws\Box;
 use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Drivers\DriverSwitcher;
@@ -62,7 +63,7 @@ class Image
 
     public static function canvas(int $width, int $height, Color $color = null, Backend $backend = Backend::GD): self
     {
-        $image = $backend->getDriver()->newImage($width, $height, $color ?? Color::white());
+        $image = $backend->getDriver()->newImage($width, $height, $color ?? Color::transparent());
 
         return new self($image, $backend);
     }
@@ -107,6 +108,12 @@ class Image
         $instance = $this->alterations[$alteration]::make(...$args);
         $value = $this->driver->apply($instance, $this);
 
+        return $value ?? $this;
+    }
+
+    public function filter(Filter $filter)
+    {
+        $value = $filter->apply($this);
         return $value ?? $this;
     }
 
@@ -158,9 +165,7 @@ class Image
 
     public function __call(string $name, array $arguments)
     {
-        $value = $this->driver->alterate($name, ...$arguments);
-
-        return $value ?? $this;
+        return $this->alterate($name, ...$arguments);
     }
 
     public function destroy(): void
@@ -168,9 +173,14 @@ class Image
         $this->__destruct();
     }
 
+    public function getBox(): Box
+    {
+        return new Box($this->width(), $this->height());
+    }
+
     public function __destruct()
     {
-        array_map(fn ($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
+        array_map(fn($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
         $this->driver->clear($this);
     }
 }

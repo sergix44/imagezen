@@ -55,16 +55,16 @@ class Gd implements Driver
     public function loadImageFrom(string $path): GdImage
     {
         if (file_exists($path)) {
-            $image = imagecreatefromstring(file_get_contents($path));
+            $resource = imagecreatefromstring(file_get_contents($path));
         } else {
-            $image = imagecreatefromstring($path);
+            $resource = imagecreatefromstring($path);
         }
 
-        if ($image === false) {
+        if ($resource === false) {
             throw new CannotLoadImageException();
         }
 
-        return $image;
+        return $this->toTrueColor($resource);
     }
 
     /**
@@ -72,12 +72,22 @@ class Gd implements Driver
      */
     public function save(Image $image, ?string $path, Format $format, int $quality): bool
     {
+        if (in_array($format, [Format::PNG, Format::WEBP, Format::AVIF], true)) {
+            imagesavealpha($image->getCore(), true);
+            imagealphablending($image->getCore(), $format !== Format::PNG);
+        }
+
+        if (in_array($format, [Format::WEBP, Format::AVIF], true)) {
+            imagepalettetotruecolor($image->getCore());
+        }
+
         return match ($format) {
             Format::PNG => imagepng($image->getCore(), $path, $this->mapRange($quality, 0, 100, 0, 9)),
             Format::JPG => imagejpeg($image->getCore(), $path, $quality),
             Format::WEBP => imagewebp($image->getCore(), $path, $quality),
             Format::GIF => imagegif($image->getCore(), $path),
             Format::BMP => imagebmp($image->getCore(), $path, $quality === 0),
+            Format::AVIF => imageavif($image->getCore(), $path, $quality),
             default => throw new FormatNotSupportedException()
         };
     }
@@ -114,11 +124,27 @@ class Gd implements Driver
 
     public function clone(Image $image): GdImage
     {
-        $sourceImage = $image->getCore();
-        $clonedImage = imagecreatetruecolor(imagesx($sourceImage), imagesy($sourceImage));
+        return $this->toTrueColor($image->getCore());
+    }
 
-        imagecopy($clonedImage, $sourceImage, 0, 0, 0, 0, imagesx($sourceImage), imagesy($sourceImage));
+    private function toTrueColor(GdImage $resource): GdImage
+    {
+        $width = imagesx($resource);
+        $height = imagesy($resource);
 
-        return $clonedImage;
+        // new canvas
+        $canvas = imagecreatetruecolor($width, $height);
+
+        // fill with transparent color
+        imagealphablending($canvas, false);
+        $transparent = imagecolorallocatealpha($canvas, 255, 255, 255, 127);
+        imagefilledrectangle($canvas, 0, 0, $width, $height, $transparent);
+        imagecolortransparent($canvas, $transparent);
+        imagealphablending($canvas, true);
+
+        // copy original
+        imagecopy($canvas, $resource, 0, 0, 0, 0, $width, $height);
+
+        return $canvas;
     }
 }

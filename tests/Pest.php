@@ -16,3 +16,7 @@ expect()->extend('imageSimilarTo', function ($expected, $threshold = 99) {
 dataset('baboon', [
     [__DIR__.'/Images/baboon.png'],
 ]);
+
+dataset('tile', [
+    [__DIR__.'/Images/tile.png'],
+]);

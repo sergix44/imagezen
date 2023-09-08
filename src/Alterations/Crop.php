@@ -3,23 +3,51 @@
 namespace SergiX44\ImageZen\Alterations;
 
 use SergiX44\ImageZen\Alteration;
+use SergiX44\ImageZen\Draws\Box;
+use SergiX44\ImageZen\Draws\Position;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Gd\GdCoreResize;
 use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Shapes\Point;
 
 class Crop extends Alteration implements GdAlteration
 {
+    use GdCoreResize;
+
     public static string $id = 'crop';
 
     public function __construct(
-        public int $x,
-        public int $y,
-        public ?int $width = null,
-        public ?int $height = null,
+        protected int $width,
+        protected int $height,
+        protected ?int $x = null,
+        protected ?int $y = null,
     ) {
     }
 
-    public function applyWithGd(Image $image): mixed
+    public function applyWithGd(Image $image): null
     {
-        // TODO: Implement applyWithGd() method.
+        $cropped = new Box($this->width, $this->height);
+
+        if ($this->x !== null && $this->y !== null) {
+            $position = new Point($this->x, $this->y);
+        } else {
+            $position = $image->getBox()->align(Position::CENTER)->relativePosition($cropped->align(Position::CENTER));
+        }
+
+        $new = $this->coreResize(
+            $image->getCore(),
+            0,
+            0,
+            $position->x,
+            $position->y,
+            $cropped->width,
+            $cropped->height,
+            $cropped->width,
+            $cropped->height
+        );
+
+        $this->replaceCore($image, $new);
+
+        return null;
     }
 }
