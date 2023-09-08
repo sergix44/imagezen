@@ -327,3 +327,96 @@ it('can insert an image on top of another', function ($file, $file2) {
         ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
     unlink($out);
 })->with('fruit', 'baboon');
+
+it('can interlace an image', function ($file) {
+    $filename = 'fruit_interlace';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->interlace()
+        ->save($out, quality: 100);
+
+
+    $handle = fopen($out, 'rb');
+    $contents = fread($handle, 32);
+    fclose($handle);
+    $isInterlaced = ord($contents[28]) !== 0;
+
+    expect($out)
+        ->toBeFile()
+        ->and($isInterlaced)->toBeTrue();
+
+    unlink($out);
+})->with('fruit');
+
+it('can invert an image', function ($file) {
+    $filename = 'baboon_inverted';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->invert()
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can limit colors of an image', function ($file) {
+    $filename = 'baboon_color_limited';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->limitColors(4)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can draw a line on an image', function ($file) {
+    $filename = 'baboon_with_line';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->line(10, 10, 100, 100, function ($draw) {
+            $draw->color(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can change a pixel an image', function ($file) {
+    $filename = 'tile_with_pixel';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->pixel(Color::fuchsia(), 10, 10)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('tile');
+
+it('can mask an image with of another', function ($file, $file2) {
+    $filename = 'fruit_with_baboon_mask';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->mask(Image::make($file2), false)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon', 'fruit');

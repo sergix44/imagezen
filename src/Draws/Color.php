@@ -4,7 +4,7 @@ namespace SergiX44\ImageZen\Draws;
 
 use InvalidArgumentException;
 
-readonly class Color
+class Color
 {
     use DefaultColors;
 
@@ -33,6 +33,16 @@ readonly class Color
     public static function from(string $hex): self
     {
         return new self(string: $hex);
+    }
+
+    public static function fromInt(int $value): self
+    {
+        return new self(
+            red: ($value >> 16) & 0xFF,
+            green: ($value >> 8) & 0xFF,
+            blue: $value & 0xFF,
+            alpha: ($value >> 24) & 0xFF
+        );
     }
 
     public static function rgb(int $red, int $green, int $blue): self

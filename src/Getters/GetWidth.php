@@ -1,17 +1,17 @@
 <?php
 
-namespace SergiX44\ImageZen\Alterations;
+namespace SergiX44\ImageZen\Getters;
 
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Image;
 
-class GetHeight extends Alteration implements GdAlteration
+class GetWidth extends Alteration implements GdAlteration
 {
-    public static string $id = 'height';
+    public static string $id = 'width';
 
     public function applyWithGd(Image $image): int
     {
-        return imagesy($image->getCore());
+        return imagesx($image->getCore());
     }
 }

@@ -332,4 +332,9 @@ class Box
 
         return $constraint;
     }
+
+    public function equals(Box $box): bool
+    {
+        return $this->width === $box->width && $this->height === $box->height;
+    }
 }

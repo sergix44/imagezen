@@ -18,11 +18,11 @@ trait DefaultAlterations
         $this->register(Alterations\CircleShape::class);
         $this->register(Alterations\Colorize::class);
         $this->register(Alterations\Contrast::class);
-        $this->register(Alterations\GetWidth::class);
-        $this->register(Alterations\GetHeight::class);
+        $this->register(Getters\GetWidth::class);
+        $this->register(Getters\GetHeight::class);
         $this->register(Alterations\Crop::class);
-        $this->register(Alterations\GetExif::class);
-        $this->register(Alterations\GetFilesize::class);
+        $this->register(Getters\GetExif::class);
+        $this->register(Getters\GetFilesize::class);
         $this->register(Alterations\Fill::class);
         $this->register(Alterations\Fit::class);
         $this->register(Alterations\Flip::class);
@@ -30,6 +30,15 @@ trait DefaultAlterations
         $this->register(Alterations\GreyScale::class);
         $this->register(Alterations\Heighten::class);
         $this->register(Alterations\Insert::class);
+        $this->register(Alterations\Interlace::class);
+        $this->register(Alterations\Invert::class);
+        $this->register(Getters\GetIptc::class);
+        $this->register(Alterations\LimitColors::class);
+        $this->register(Alterations\LineShape::class);
+        $this->register(Alterations\Mask::class);
+
+        $this->register(Getters\GetColor::class);
+        $this->register(Alterations\Pixel::class);
         $this->register(Alterations\Resize::class);
     }
 
@@ -151,6 +160,65 @@ trait DefaultAlterations
         return $this;
     }
 
+    public function insert(Image $image, Position $position = Position::CENTER, ?int $x = null, ?int $y = null): self
+    {
+        $this->alterate(__FUNCTION__, $image, $position, $x, $y);
+
+        return $this;
+    }
+
+    public function interlace(bool $interlace = true): self
+    {
+        $this->alterate(__FUNCTION__, $interlace);
+
+        return $this;
+    }
+
+    public function invert(): self
+    {
+        $this->alterate(__FUNCTION__);
+
+        return $this;
+    }
+
+    public function iptc(?string $key = null): array|string|null
+    {
+        return $this->alterate(__FUNCTION__, $key);
+    }
+
+    public function limitColors(int $count, ?Color $matte = null): self
+    {
+        $this->alterate(__FUNCTION__, $count, $matte);
+
+        return $this;
+    }
+
+    public function line(int $x1, int $y1, int $x2, int $y2, Closure $callback): self
+    {
+        $this->alterate(__FUNCTION__, $x1, $y1, $x2, $y2, $callback);
+
+        return $this;
+    }
+
+    public function mask(Image $mask, bool $withAlpha): self
+    {
+        $this->alterate(__FUNCTION__, $mask, $withAlpha);
+
+        return $this;
+    }
+
+    public function pickColor(int $x, int $y): Color
+    {
+        return $this->alterate(__FUNCTION__, $x, $y);
+    }
+
+    public function pixel(Color $color, int $x, int $y): self
+    {
+        $this->alterate(__FUNCTION__, $color, $x, $y);
+
+        return $this;
+    }
+
     public function resize(int $width, int $height, Closure $constraints = null): self
     {
         $this->alterate(__FUNCTION__, $width, $height, $constraints);
@@ -158,10 +226,5 @@ trait DefaultAlterations
         return $this;
     }
 
-    public function insert(Image $image, Position $position = Position::CENTER, ?int $x = null, ?int $y = null): self
-    {
-        $this->alterate(__FUNCTION__, $image, $position, $x, $y);
 
-        return $this;
-    }
 }

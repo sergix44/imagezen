@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\ImageZen\Alterations;
+namespace SergiX44\ImageZen\Getters;
 
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
