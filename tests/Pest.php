@@ -20,3 +20,6 @@ dataset('baboon', [
 dataset('tile', [
     [__DIR__.'/Images/tile.png'],
 ]);
+dataset('fruit', [
+    [__DIR__.'/Images/fruit_tray.gif'],
+]);

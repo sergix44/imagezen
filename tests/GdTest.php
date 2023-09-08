@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\ImageZen\Draws\Color;
+use SergiX44\ImageZen\Draws\Flip;
 use SergiX44\ImageZen\Draws\Position;
 use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Circle;
@@ -256,3 +257,73 @@ it('can fit an image into another', function ($file) {
         ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
     unlink($out);
 })->with('baboon');
+
+it('can flip an image', function ($file) {
+    $filename = 'baboon_flip';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->flip(Flip::VERTICAL)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can change the gamma of an image', function ($file) {
+    $filename = 'baboon_gamma_02';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->gamma(0.2)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can change an image to greyscale', function ($file) {
+    $filename = 'baboon_greyscale';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->greyscale()
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can heighten an image', function ($file) {
+    $filename = 'fruit_heighten';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->heighten(200)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit');
+
+it('can insert an image on top of another', function ($file, $file2) {
+    $filename = 'fruit_with_baboon';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->insert(Image::make($file2))
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit', 'baboon');

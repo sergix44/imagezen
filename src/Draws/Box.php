@@ -250,12 +250,14 @@ class Box
      * and moves point automatically by offset.
      *
      * @param  Position  $position
-     * @param  int  $offsetX
-     * @param  int  $offsetY
+     * @param  int|null  $offsetX
+     * @param  int|null  $offsetY
      * @return Box
      */
-    public function align(Position $position, int $offsetX = 0, int $offsetY = 0): self
+    public function align(Position $position, ?int $offsetX = 0, ?int $offsetY = 0): self
     {
+        $offsetX ??= 0;
+        $offsetY ??= 0;
         switch ($position) {
 
             case Position::TOP:
