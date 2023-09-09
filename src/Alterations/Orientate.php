@@ -31,6 +31,7 @@ class Orientate extends Alteration implements GdAlteration
     public function applyWithGd(Image $image): null
     {
         $this->apply($image);
+
         return null;
     }
 }

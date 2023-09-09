@@ -9,7 +9,6 @@ use SergiX44\ImageZen\Image;
 
 class GetMime extends Alteration implements GdAlteration
 {
-
     public static string $id = 'mime';
 
     protected function getMimeType(Image $image): string

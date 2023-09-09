@@ -3,7 +3,6 @@
 namespace SergiX44\ImageZen\Alterations;
 
 use Closure;
-use Intervention\Image\Gd\Color;
 use InvalidArgumentException;
 use RuntimeException;
 use SergiX44\ImageZen\Alteration;
