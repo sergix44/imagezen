@@ -7,7 +7,7 @@ use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Circle;
 use SergiX44\ImageZen\Shapes\Ellipse;
 
-beforeEach()->skip(fn () => !extension_loaded('gd'), 'gd extension not loaded.');
+beforeEach()->skip(fn() => !extension_loaded('gd'), 'gd extension not loaded.');
 
 it('can create an empty canvas', function () {
     $filename = 'empty_canvas';
@@ -505,6 +505,48 @@ it('can rotate an image', function ($file) {
 
     Image::make($file)
         ->rotate(56, Color::fuchsia())
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can resize canvas of an image small', function ($file) {
+    $filename = 'fruit_resize_canvas_small';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->resizeCanvas(200, 200, Position::CENTER, false, Color::fuchsia())
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit');
+
+it('can resize canvas of an image big', function ($file) {
+    $filename = 'fruit_resize_canvas_big';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->resizeCanvas(800, 900, Position::CENTER, false, Color::fuchsia())
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit');
+
+it('can sharpen an image', function ($file) {
+    $filename = 'baboon_sharpen';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->sharpen()
         ->save($out, quality: 100);
 
     expect($out)

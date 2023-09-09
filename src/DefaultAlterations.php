@@ -47,6 +47,10 @@ trait DefaultAlterations
         $this->register(Alterations\Resize::class);
         $this->register(Alterations\ResizeCanvas::class);
         $this->register(Alterations\Rotate::class);
+        $this->register(Alterations\Sharpen::class);
+        //        $this->register(Alterations\DrawText::class);
+        //        $this->register(Alterations\Trim::class);
+        //        $this->register(Alterations\Widen::class);
     }
 
     public function blur(int $amount = 1): self
@@ -266,9 +270,23 @@ trait DefaultAlterations
         return $this;
     }
 
+    public function resizeCanvas(?int $width, ?int $height, Position $anchor = Position::CENTER, bool $relative = false, Color $background = null): self
+    {
+        $this->alterate(__FUNCTION__, $width, $height, $anchor, $relative, $background ?? Color::transparent());
+
+        return $this;
+    }
+
     public function rotate(float $angle, ?Color $background = null): self
     {
         $this->alterate(__FUNCTION__, $angle, $background ?? Color::transparent());
+
+        return $this;
+    }
+
+    public function sharpen(int $amount = 10): self
+    {
+        $this->alterate(__FUNCTION__, $amount);
 
         return $this;
     }
