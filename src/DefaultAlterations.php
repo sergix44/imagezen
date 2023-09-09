@@ -43,8 +43,9 @@ trait DefaultAlterations
         $this->register(Alterations\Pixel::class);
         $this->register(Alterations\Pixelate::class);
         $this->register(Alterations\PolygonShape::class);
-
+        $this->register(Alterations\RectangleShape::class);
         $this->register(Alterations\Resize::class);
+        $this->register(Alterations\ResizeCanvas::class);
         $this->register(Alterations\Rotate::class);
     }
 
@@ -247,6 +248,13 @@ trait DefaultAlterations
     public function polygon(array $points, Closure $callback): self
     {
         $this->alterate(__FUNCTION__, $points, $callback);
+
+        return $this;
+    }
+
+    public function rectangle(int $x1, int $y1, int $x2, int $y2, Closure $callback): self
+    {
+        $this->alterate(__FUNCTION__, $x1, $y1, $x2, $y2, $callback);
 
         return $this;
     }

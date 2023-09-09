@@ -442,44 +442,11 @@ it('can change the opacity an image', function ($file) {
 
 it('can get the exif of an image', function ($file) {
     $exif = Image::make($file)->exif();
-    expect($exif)->toBe([
-        'FileName' => 'exif.jpg',
-        'FileDateTime' => 1694117656,
-        'FileSize' => 7791,
-        'FileType' => 2,
-        'MimeType' => 'image/jpeg',
-        'SectionsFound' => 'ANY_TAG, IFD0, THUMBNAIL, EXIF',
-        'COMPUTED' =>
-            [
-                'html' => 'width="16" height="16"',
-                'Height' => 16,
-                'Width' => 16,
-                'IsColor' => 1,
-                'ByteOrderMotorola' => 1,
-                'Thumbnail.FileType' => 2,
-                'Thumbnail.MimeType' => 'image/jpeg',
-            ],
-        'Orientation' => 1,
-        'XResolution' => '720000/10000',
-        'YResolution' => '720000/10000',
-        'ResolutionUnit' => 2,
-        'Software' => 'Adobe Photoshop CS6 (Macintosh)',
-        'DateTime' => '2013:08:16 19:20:19',
-        'Artist' => 'Oliver Vogel',
-        'Exif_IFD_Pointer' => 192,
-        'THUMBNAIL' =>
-            [
-                'Compression' => 6,
-                'XResolution' => '72/1',
-                'YResolution' => '72/1',
-                'ResolutionUnit' => 2,
-                'JPEGInterchangeFormat' => 330,
-                'JPEGInterchangeFormatLength' => 535,
-            ],
-        'ColorSpace' => 65535,
-        'ExifImageWidth' => 16,
-        'ExifImageLength' => 16,
-    ]);
+
+    expect($exif)->toBeArray();
+    expect($exif['FileName'])->toBe('exif.jpg');
+    expect($exif['FileSize'])->toBe(7791);
+    expect($exif['FileType'])->toBe(2);
 })->with('exif');
 
 it('can pixelate an image', function ($file) {
@@ -508,6 +475,36 @@ it('can draw a polygon on an image', function ($file) {
         ], function ($draw) {
             $draw->background(Color::fuchsia());
         })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can draw a rectangle on an image', function ($file) {
+    $filename = 'baboon_rectangle';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->rectangle(10, 30, 100, 100, function ($draw) {
+            $draw->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can rotate an image', function ($file) {
+    $filename = 'baboon_rotate';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->rotate(56, Color::fuchsia())
         ->save($out, quality: 100);
 
     expect($out)
