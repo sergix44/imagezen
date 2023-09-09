@@ -3,8 +3,10 @@
 namespace SergiX44\ImageZen;
 
 use GdImage;
+use GuzzleHttp\Psr7\Response;
 use Imagick;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 use SergiX44\ImageZen\Draws\Box;
@@ -164,6 +166,17 @@ class Image
         return $this->basePath;
     }
 
+    public function response(Format $format, int $quality = 90): ResponseInterface
+    {
+        return new Response(
+            status: 200,
+            headers: [
+                'Content-Type' => $this->mime(),
+            ],
+            body: $this->stream($format, $quality),
+        );
+    }
+
     public function __call(string $name, array $arguments)
     {
         return $this->alterate($name, ...$arguments);
@@ -181,7 +194,7 @@ class Image
 
     public function __destruct()
     {
-        array_map(fn ($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
+        array_map(fn($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
         $this->driver->clear($this);
     }
 }

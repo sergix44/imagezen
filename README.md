@@ -60,7 +60,7 @@ composer require sergix44/imagezen
 - [x] reset()
 - [x] resize()
 - [ ] resizeCanvas()
-- [ ] response()
+- [x] response()
 - [x] rotate()
 - [x] save()
 - [ ] sharpen()
