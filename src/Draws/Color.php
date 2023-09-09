@@ -37,11 +37,12 @@ class Color
 
     public static function fromInt(int $value): self
     {
+        $alpha = ($value >> 24) & 0xFF;
         return new self(
             red: ($value >> 16) & 0xFF,
             green: ($value >> 8) & 0xFF,
             blue: $value & 0xFF,
-            alpha: ($value >> 24) & 0xFF
+            alpha: round(1 - $alpha / 127, 2)
         );
     }
 

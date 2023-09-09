@@ -7,7 +7,7 @@ use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Circle;
 use SergiX44\ImageZen\Shapes\Ellipse;
 
-beforeEach()->skip(fn () => !extension_loaded('gd'), 'gd extension not loaded.');
+beforeEach()->skip(fn() => !extension_loaded('gd'), 'gd extension not loaded.');
 
 it('can create an empty canvas', function () {
     $filename = 'empty_canvas';
@@ -420,3 +420,98 @@ it('can mask an image with of another', function ($file, $file2) {
         ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
     unlink($out);
 })->with('baboon', 'fruit');
+
+it('can get the mime of an image', function ($file) {
+    $mime = Image::make($file)->mime();
+    expect($mime)->toBe('image/png');
+})->with('baboon');
+
+it('can change the opacity an image', function ($file) {
+    $filename = 'baboon_opacity_70';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->opacity(70)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can get the exif of an image', function ($file) {
+    $exif = Image::make($file)->exif();
+    expect($exif)->toBe([
+        'FileName' => 'exif.jpg',
+        'FileDateTime' => 1694117656,
+        'FileSize' => 7791,
+        'FileType' => 2,
+        'MimeType' => 'image/jpeg',
+        'SectionsFound' => 'ANY_TAG, IFD0, THUMBNAIL, EXIF',
+        'COMPUTED' =>
+            [
+                'html' => 'width="16" height="16"',
+                'Height' => 16,
+                'Width' => 16,
+                'IsColor' => 1,
+                'ByteOrderMotorola' => 1,
+                'Thumbnail.FileType' => 2,
+                'Thumbnail.MimeType' => 'image/jpeg',
+            ],
+        'Orientation' => 1,
+        'XResolution' => '720000/10000',
+        'YResolution' => '720000/10000',
+        'ResolutionUnit' => 2,
+        'Software' => 'Adobe Photoshop CS6 (Macintosh)',
+        'DateTime' => '2013:08:16 19:20:19',
+        'Artist' => 'Oliver Vogel',
+        'Exif_IFD_Pointer' => 192,
+        'THUMBNAIL' =>
+            [
+                'Compression' => 6,
+                'XResolution' => '72/1',
+                'YResolution' => '72/1',
+                'ResolutionUnit' => 2,
+                'JPEGInterchangeFormat' => 330,
+                'JPEGInterchangeFormatLength' => 535,
+            ],
+        'ColorSpace' => 65535,
+        'ExifImageWidth' => 16,
+        'ExifImageLength' => 16,
+    ]);
+})->with('exif');
+
+it('can pixelate an image', function ($file) {
+    $filename = 'baboon_pixeled';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->pixelate(10)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');
+
+it('can draw a polygon on an image', function ($file) {
+    $filename = 'baboon_polygon';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->polygon([
+            10, 10,
+            100, 100,
+            10, 100,
+        ], function ($draw) {
+            $draw->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('baboon');

@@ -23,3 +23,6 @@ dataset('tile', [
 dataset('fruit', [
     [__DIR__.'/Images/fruit_tray.gif'],
 ]);
+dataset('exif', [
+    [__DIR__.'/Images/exif.jpg'],
+]);

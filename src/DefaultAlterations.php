@@ -36,10 +36,16 @@ trait DefaultAlterations
         $this->register(Alterations\LimitColors::class);
         $this->register(Alterations\LineShape::class);
         $this->register(Alterations\Mask::class);
-
+        $this->register(Getters\GetMime::class);
+        $this->register(Alterations\Opacity::class);
+        $this->register(Alterations\Orientate::class);
         $this->register(Getters\GetColor::class);
         $this->register(Alterations\Pixel::class);
+        $this->register(Alterations\Pixelate::class);
+        $this->register(Alterations\PolygonShape::class);
+
         $this->register(Alterations\Resize::class);
+        $this->register(Alterations\Rotate::class);
     }
 
     public function blur(int $amount = 1): self
@@ -207,6 +213,18 @@ trait DefaultAlterations
         return $this;
     }
 
+    public function mime(): string
+    {
+        return $this->alterate(__FUNCTION__);
+    }
+
+    public function opacity(int $transparency): self
+    {
+        $this->alterate(__FUNCTION__, $transparency);
+
+        return $this;
+    }
+
     public function pickColor(int $x, int $y): Color
     {
         return $this->alterate(__FUNCTION__, $x, $y);
@@ -219,9 +237,30 @@ trait DefaultAlterations
         return $this;
     }
 
+    public function pixelate(int $size): self
+    {
+        $this->alterate(__FUNCTION__, $size);
+
+        return $this;
+    }
+
+    public function polygon(array $points, Closure $callback): self
+    {
+        $this->alterate(__FUNCTION__, $points, $callback);
+
+        return $this;
+    }
+
     public function resize(int $width, int $height, Closure $constraints = null): self
     {
         $this->alterate(__FUNCTION__, $width, $height, $constraints);
+
+        return $this;
+    }
+
+    public function rotate(float $angle, ?Color $background = null): self
+    {
+        $this->alterate(__FUNCTION__, $angle, $background ?? Color::transparent());
 
         return $this;
     }

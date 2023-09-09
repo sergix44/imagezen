@@ -22,7 +22,7 @@ class GetExif extends Alteration implements GdAlteration, ImagickAlteration
             throw new RuntimeException("Reading Exif data is not supported by this PHP installation.");
         }
 
-        $stream = $image->stream()->detach();
+        $stream = $image->basePath() ?? $image->stream()->detach();
         $data = @exif_read_data($stream);
 
         if (is_array($data) && $this->key !== null) {

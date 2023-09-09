@@ -6,7 +6,7 @@ use SergiX44\ImageZen\Draws\Color;
 
 abstract class ColorDialect
 {
-    public function __construct(public readonly Color $color)
+    public function __construct(public Color $color)
     {
     }
 }

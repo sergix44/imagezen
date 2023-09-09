@@ -69,10 +69,11 @@ class Mask extends Alteration implements GdAlteration
                 }
 
                 // replace alpha value
-                $color->alpha = $alphaValue;
+                $parsedColor = $driver->parseColor($color);
+                $parsedColor->setAlpha($alphaValue);
 
                 // redraw pixel
-                imagesetpixel($canvas, $x, $y, $driver->parseColor($color)->getInt());
+                imagesetpixel($canvas, $x, $y, $parsedColor->getInt());
             }
         }
 
