@@ -2,10 +2,8 @@
 
 namespace SergiX44\ImageZen\Alterations;
 
-use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Color;
-use SergiX44\ImageZen\Drivers\Gd\Gd;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Image;
 
@@ -42,38 +40,29 @@ class Mask extends Alteration implements GdAlteration
             imagefilter($mask->getCore(), IMG_FILTER_GRAYSCALE);
         }
 
-        $driver = $image->getDriver();
-        if (!($driver instanceof Gd)) {
-            throw new RuntimeException('Invalid driver for this alteration');
-        }
-
-        // redraw old image pixel by pixel considering alpha map
+        // Perform pixel-based alpha map application
         for ($x = 0; $x < $imageBox->width; $x++) {
             for ($y = 0; $y < $imageBox->height; $y++) {
-
-                $color = $image->pickColor($x, $y);
-                $alpha = $mask->pickColor($x, $y);
+                $alpha = imagecolorsforindex($mask->getCore(), imagecolorat($mask->getCore(), $x, $y));
+                $color = imagecolorsforindex($image->getCore(), imagecolorat($image->getCore(), $x, $y));
 
                 if ($this->withAlpha) {
-                    $alphaValue = $alpha->alpha; // use alpha channel as mask
-                } elseif ($alpha->alpha === 0) {
-                    $alphaValue = 0; // transparent as black
+                    $alpha = $alpha['alpha'];
                 } else {
-                    // image is greyscale, so channel doesn't matter (use red channel)
-                    $alphaValue = round($alpha->red / 255, 2);
+                    $alpha = 127 - floor($alpha['red'] / 2);
                 }
 
-                // preserve alpha of original image...
-                if ($color->alpha < $alpha) {
-                    $alphaValue = $color->alpha;
+                if ($color['alpha'] > $alpha) {
+                    $alpha = $color['alpha'];
                 }
 
-                // replace alpha value
-                $parsedColor = $driver->parseColor($color);
-                $parsedColor->setAlpha($alphaValue);
+                if ($alpha === 127) {
+                    $color['red'] = 0;
+                    $color['blue'] = 0;
+                    $color['green'] = 0;
+                }
 
-                // redraw pixel
-                imagesetpixel($canvas, $x, $y, $parsedColor->getInt());
+                imagesetpixel($canvas, $x, $y, imagecolorallocatealpha($canvas, $color['red'], $color['green'], $color['blue'], $alpha));
             }
         }
 
