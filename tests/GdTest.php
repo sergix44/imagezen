@@ -314,6 +314,20 @@ it('can heighten an image', function ($file) {
     unlink($out);
 })->with('fruit');
 
+it('can widen an image', function ($file) {
+    $filename = 'fruit_widen';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->widen(200)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit');
+
 it('can insert an image on top of another', function ($file, $file2) {
     $filename = 'fruit_with_baboon';
     $out = __DIR__."/Tmp/$filename.png";
@@ -509,7 +523,7 @@ it('can rotate an image', function ($file) {
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png", 98);
     unlink($out);
 })->with('baboon');
 

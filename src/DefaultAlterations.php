@@ -48,9 +48,9 @@ trait DefaultAlterations
         $this->register(Alterations\ResizeCanvas::class);
         $this->register(Alterations\Rotate::class);
         $this->register(Alterations\Sharpen::class);
-        //        $this->register(Alterations\DrawText::class);
+        // $this->register(Alterations\DrawText::class);
         //        $this->register(Alterations\Trim::class);
-        //        $this->register(Alterations\Widen::class);
+        $this->register(Alterations\Widen::class);
     }
 
     public function blur(int $amount = 1): self
@@ -287,6 +287,13 @@ trait DefaultAlterations
     public function sharpen(int $amount = 10): self
     {
         $this->alterate(__FUNCTION__, $amount);
+
+        return $this;
+    }
+
+    public function widen(int $width, Closure $callback = null): self
+    {
+        $this->alterate(__FUNCTION__, $width, $callback);
 
         return $this;
     }

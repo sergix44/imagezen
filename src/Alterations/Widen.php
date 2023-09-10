@@ -5,15 +5,15 @@ namespace SergiX44\ImageZen\Alterations;
 use Closure;
 use SergiX44\ImageZen\Draws\Constraint;
 
-class Heighten extends Resize
+class Widen extends Resize
 {
-    public static string $id = 'heighten';
+    public static string $id = 'widen';
 
-    public function __construct(?int $height, ?Closure $callback = null)
+    public function __construct(?int $width, ?Closure $callback = null)
     {
         parent::__construct(
+            $width,
             null,
-            $height,
             static function (Constraint $constraint) use ($callback) {
                 $constraint->aspectRatio();
                 if (is_callable($callback)) {
