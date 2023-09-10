@@ -47,43 +47,52 @@ class DrawText extends Alteration implements GdAlteration
                     case Position::TOP_MIDDLE:
                         $x -= round(($box->upperLeft->x + $box->upperRight->x) / 2);
                         $y -= round(($box->upperLeft->y + $box->upperRight->y) / 2);
+
                         break;
                     case Position::RIGHT:
                     case Position::TOP_RIGHT:
                         $x -= $box->upperRight->x;
                         $y -= $box->upperRight->y;
+
                         break;
                     case Position::LEFT:
                     case Position::TOP_LEFT:
                         $x -= $box->upperLeft->x;
                         $y -= $box->upperLeft->y;
+
                         break;
                     case Position::CENTER_MIDDLE:
                     case Position::CENTER:
                         $x -= round(($box->lowerLeft->x + $box->upperRight->x) / 2);
                         $y -= round(($box->lowerLeft->y + $box->upperRight->y) / 2);
+
                         break;
                     case Position::CENTER_RIGHT:
                         $x -= round(($box->lowerRight->x + $box->upperRight->x) / 2);
                         $y -= round(($box->lowerRight->y + $box->upperRight->y) / 2);
+
                         break;
 
                     case Position::CENTER_LEFT:
                         $x -= round(($box->lowerLeft->x + $box->upperLeft->x) / 2);
                         $y -= round(($box->lowerLeft->y + $box->upperLeft->y) / 2);
+
                         break;
                     case Position::BOTTOM:
                     case Position::BOTTOM_MIDDLE:
                         $x -= round(($box->lowerLeft->x + $box->lowerRight->x) / 2);
                         $y -= round(($box->lowerLeft->y + $box->lowerRight->y) / 2);
+
                         break;
                     case Position::BOTTOM_RIGHT:
                         $x -= $box->lowerRight->x;
                         $y -= $box->lowerRight->y;
+
                         break;
                     case Position::BOTTOM_LEFT:
                         $x -= $box->lowerLeft->x;
                         $y -= $box->lowerLeft->y;
+
                         break;
                 }
             }
@@ -121,6 +130,7 @@ class DrawText extends Alteration implements GdAlteration
             case Position::TOP_MIDDLE:
             case Position::BOTTOM_MIDDLE:
                 $x = ceil($x - ($width / 2));
+
                 break;
 
             case Position::RIGHT:
@@ -128,6 +138,7 @@ class DrawText extends Alteration implements GdAlteration
             case Position::TOP_RIGHT:
             case Position::BOTTOM_RIGHT:
                 $x = ceil($x - $width) + 1;
+
                 break;
         }
 
@@ -138,6 +149,7 @@ class DrawText extends Alteration implements GdAlteration
             case Position::CENTER_LEFT:
             case Position::CENTER_RIGHT:
                 $y = ceil($y - ($height / 2));
+
                 break;
 
             case Position::TOP:
@@ -145,6 +157,7 @@ class DrawText extends Alteration implements GdAlteration
             case Position::TOP_LEFT:
             case Position::TOP_RIGHT:
                 $y = ceil($y - $topFix);
+
                 break;
 
             default:
@@ -153,6 +166,7 @@ class DrawText extends Alteration implements GdAlteration
             case Position::BOTTOM_LEFT:
             case Position::BOTTOM_RIGHT:
                 $y = round($y - $height + $bottomFix);
+
                 break;
         }
 

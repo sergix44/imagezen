@@ -8,7 +8,7 @@ use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Circle;
 use SergiX44\ImageZen\Shapes\Ellipse;
 
-beforeEach()->skip(fn() => !extension_loaded('gd'), 'gd extension not loaded.');
+beforeEach()->skip(fn () => !extension_loaded('gd'), 'gd extension not loaded.');
 
 it('can create an empty canvas', function () {
     $filename = 'empty_canvas';

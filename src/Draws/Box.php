@@ -27,5 +27,4 @@ class Box
             $this->upperLeft
         );
     }
-
 }

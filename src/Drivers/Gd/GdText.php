@@ -21,6 +21,7 @@ class GdText extends Text
             }
 
             $this->internalFont = $ifont;
+
             return parent::font(null);
         }
 
@@ -75,6 +76,7 @@ class GdText extends Text
         // represented as is.
         // eg: &amp;#160; will render &#160; rather than its character.
         $text = preg_replace('/&(#(?:x[a-fA-F0-9]+|[0-9]+);)/', '&#38;\1', $this->text);
+
         return mb_encode_numericentity($text, [0x0080, 0xffff, 0, 0xffff], 'UTF-8');
     }
 
