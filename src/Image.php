@@ -9,8 +9,8 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
-use SergiX44\ImageZen\Draws\Box;
 use SergiX44\ImageZen\Draws\Color;
+use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Drivers\DriverSwitcher;
 use SergiX44\ImageZen\Exceptions\AlterationAlreadyRegistered;
@@ -187,9 +187,9 @@ class Image
         $this->__destruct();
     }
 
-    public function getBox(): Box
+    public function getSize(): Size
     {
-        return new Box($this->width(), $this->height());
+        return new Size($this->width(), $this->height());
     }
 
     public function __destruct()

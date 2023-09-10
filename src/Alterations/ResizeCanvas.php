@@ -3,9 +3,9 @@
 namespace SergiX44\ImageZen\Alterations;
 
 use SergiX44\ImageZen\Alteration;
-use SergiX44\ImageZen\Draws\Box;
 use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Draws\Position;
+use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Image;
 
@@ -24,9 +24,9 @@ class ResizeCanvas extends Alteration implements GdAlteration
 
     public function applyWithGd(Image $image): null
     {
-        $originalBox = $image->getBox();
-        $originalWidth = $originalBox->width;
-        $originalHeight = $originalBox->height;
+        $size = $image->getSize();
+        $originalWidth = $size->width;
+        $originalHeight = $size->height;
 
         // check of only width or height is set
         $width = $this->width ?? $originalWidth;
@@ -44,11 +44,11 @@ class ResizeCanvas extends Alteration implements GdAlteration
 
         // create new canvas
         $canvas = $image->getDriver()->newImage($width, $height, $this->background);
-        $canvasBox = new Box($width, $height);
+        $canvasSize = new Size($width, $height);
 
         // set copy position
-        $canvasSize = $canvasBox->align($this->anchor);
-        $imageSize = $originalBox->align($this->anchor);
+        $canvasSize = $canvasSize->align($this->anchor);
+        $imageSize = $size->align($this->anchor);
         $canvasPosition = $imageSize->relativePosition($canvasSize);
         $imagePosition = $canvasSize->relativePosition($imageSize);
 

@@ -21,10 +21,10 @@ class LimitColors extends Alteration implements GdAlteration
 
     public function applyWithGd(Image $image): null
     {
-        $box = $image->getBox();
+        $size = $image->getSize();
 
         // create empty canvas
-        $resource = imagecreatetruecolor($box->width, $box->height);
+        $resource = imagecreatetruecolor($size->width, $size->height);
 
         // define matte
         if ($this->matte === null) {
@@ -44,7 +44,7 @@ class LimitColors extends Alteration implements GdAlteration
         imagecolortransparent($resource, $matte);
 
         // copy original image
-        imagecopy($resource, $image->getCore(), 0, 0, 0, 0, $box->width, $box->height);
+        imagecopy($resource, $image->getCore(), 0, 0, 0, 0, $size->width, $size->height);
 
         if ($this->count <= 256) {
             // decrease colors

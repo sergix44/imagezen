@@ -3,8 +3,8 @@
 namespace SergiX44\ImageZen\Alterations;
 
 use SergiX44\ImageZen\Alteration;
-use SergiX44\ImageZen\Draws\Box;
 use SergiX44\ImageZen\Draws\Position;
+use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdCoreResize;
 use SergiX44\ImageZen\Image;
@@ -26,12 +26,12 @@ class Crop extends Alteration implements GdAlteration
 
     public function applyWithGd(Image $image): null
     {
-        $cropped = new Box($this->width, $this->height);
+        $cropped = new Size($this->width, $this->height);
 
         if ($this->x !== null && $this->y !== null) {
             $position = new Point($this->x, $this->y);
         } else {
-            $position = $image->getBox()->align(Position::CENTER)->relativePosition($cropped->align(Position::CENTER));
+            $position = $image->getSize()->align(Position::CENTER)->relativePosition($cropped->align(Position::CENTER));
         }
 
         $new = $this->coreResize(

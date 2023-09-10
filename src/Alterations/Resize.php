@@ -24,7 +24,7 @@ class Resize extends Alteration implements GdAlteration
     public function applyWithGd(Image $image): null
     {
 
-        $resized = $image->getBox()->resize(
+        $resized = $image->getSize()->resize(
             $this->width,
             $this->height,
             $this->constraints

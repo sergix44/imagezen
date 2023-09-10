@@ -3,11 +3,12 @@
 use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Draws\Flip;
 use SergiX44\ImageZen\Draws\Position;
+use SergiX44\ImageZen\Draws\Text;
 use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Circle;
 use SergiX44\ImageZen\Shapes\Ellipse;
 
-beforeEach()->skip(fn () => !extension_loaded('gd'), 'gd extension not loaded.');
+beforeEach()->skip(fn() => !extension_loaded('gd'), 'gd extension not loaded.');
 
 it('can create an empty canvas', function () {
     $filename = 'empty_canvas';
@@ -568,3 +569,20 @@ it('can sharpen an image', function ($file) {
         ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
     unlink($out);
 })->with('baboon');
+
+it('can write text on image', function ($file) {
+    $filename = 'fruit_base_text';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->text('Hello World', 10, 10, function (Text $text) {
+            $text->angle(45)
+                ->size(18);
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit')->skip();

@@ -3,10 +3,9 @@
 namespace SergiX44\ImageZen\Alterations;
 
 use Closure;
-use Intervention\Image\Size;
 use SergiX44\ImageZen\Alteration;
-use SergiX44\ImageZen\Draws\Box;
 use SergiX44\ImageZen\Draws\Position;
+use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdCoreResize;
 use SergiX44\ImageZen\Image;
@@ -30,7 +29,7 @@ class Fit extends Alteration implements GdAlteration
         $this->height ??= $this->width;
 
         // calculate size
-        $cropped = $image->getBox()->fit(new Box($this->width, $this->height), $this->position);
+        $cropped = $image->getSize()->fit(new Size($this->width, $this->height), $this->position);
         $resized = clone $cropped;
         $resized = $resized->resize($this->width, $this->height, $this->constraints);
 

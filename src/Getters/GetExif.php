@@ -39,6 +39,6 @@ class GetExif extends Alteration implements GdAlteration, ImagickAlteration
 
     public function applyWithImagick(Image $image): mixed
     {
-        $this->getExif($image);
+        return $this->getExif($image);
     }
 }

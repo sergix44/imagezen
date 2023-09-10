@@ -17,7 +17,7 @@ class Constraint
     /**
      * Constraint size
      */
-    private Box $size;
+    private Size $size;
 
     /**
      * Integer value of fixed parameters
@@ -29,9 +29,9 @@ class Constraint
     /**
      * Create a new constraint based on size
      *
-     * @param  Box  $size
+     * @param  Size  $size
      */
-    public function __construct(Box $size)
+    public function __construct(Size $size)
     {
         $this->size = $size;
     }
@@ -39,9 +39,9 @@ class Constraint
     /**
      * Returns current size of constraint
      *
-     * @return Box
+     * @return Size
      */
-    public function getBox(): Box
+    public function getSize(): Size
     {
         return $this->size;
     }

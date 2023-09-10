@@ -22,8 +22,8 @@ class Insert extends Alteration implements GdAlteration
     public function applyWithGd(Image $image): null
     {
         // define insertion point
-        $imageSize = $image->getBox()->align($this->position, $this->x, $this->y);
-        $sourceSize = $this->source->getBox()->align($this->position);
+        $imageSize = $image->getSize()->align($this->position, $this->x, $this->y);
+        $sourceSize = $this->source->getSize()->align($this->position);
         $target = $imageSize->relativePosition($sourceSize);
 
         // insert image at position

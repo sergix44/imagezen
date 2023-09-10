@@ -20,7 +20,7 @@ class Flip extends Alteration implements GdAlteration
 
     public function applyWithGd(Image $image): null
     {
-        $size = $image->getBox();
+        $size = $image->getSize();
         $final = clone $size;
 
         if ($this->mode === FlipDraw::VERTICAL) {

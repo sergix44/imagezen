@@ -19,18 +19,18 @@ class Mask extends Alteration implements GdAlteration
 
     public function applyWithGd(Image $image): null
     {
-        $imageBox = $image->getBox();
+        $size = $image->getSize();
 
         // create empty canvas
-        $canvas = $image->getDriver()->newImage($imageBox->width, $imageBox->height, Color::rgba(0, 0, 0, 0));
+        $canvas = $image->getDriver()->newImage($size->width, $size->height, Color::rgba(0, 0, 0, 0));
 
         // build mask image from source
         $mask = $this->source;
-        $maskBox = $mask->getBox();
+        $maskSize = $mask->getSize();
 
         // resize mask to size of current image (if necessary)
-        if (!$maskBox->equals($imageBox)) {
-            $mask->resize($imageBox->width, $imageBox->height);
+        if (!$maskSize->equals($size)) {
+            $mask->resize($size->width, $size->height);
         }
 
         imagealphablending($canvas, false);
@@ -41,8 +41,8 @@ class Mask extends Alteration implements GdAlteration
         }
 
         // Perform pixel-based alpha map application
-        for ($x = 0; $x < $imageBox->width; $x++) {
-            for ($y = 0; $y < $imageBox->height; $y++) {
+        for ($x = 0; $x < $size->width; $x++) {
+            for ($y = 0; $y < $size->height; $y++) {
                 $alpha = imagecolorsforindex($mask->getCore(), imagecolorat($mask->getCore(), $x, $y));
                 $color = imagecolorsforindex($image->getCore(), imagecolorat($image->getCore(), $x, $y));
 
