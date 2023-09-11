@@ -7,10 +7,11 @@ use SergiX44\ImageZen\Draws\Position;
 use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdEditCore;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Point;
 
-class Crop extends Alteration implements GdAlteration
+class Crop extends Alteration implements GdAlteration, ImagickAlteration
 {
     use GdEditCore;
 
@@ -47,6 +48,22 @@ class Crop extends Alteration implements GdAlteration
         );
 
         $this->replaceCore($image, $new);
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $cropped = new Size($this->width, $this->height);
+
+        if ($this->x !== null && $this->y !== null) {
+            $position = new Point($this->x, $this->y);
+        } else {
+            $position = $image->getSize()->align(Position::CENTER)->relativePosition($cropped->align(Position::CENTER));
+        }
+
+        $image->getCore()->cropImage($cropped->width, $cropped->height, $position->x, $position->y);
+        $image->getCore()->setImagePage(0, 0, 0, 0);
 
         return null;
     }
