@@ -5,9 +5,10 @@ namespace SergiX44\ImageZen\Alterations;
 use InvalidArgumentException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class HeavyBlur extends Alteration implements GdAlteration
+class HeavyBlur extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'heavyBlur';
 
@@ -31,6 +32,13 @@ class HeavyBlur extends Alteration implements GdAlteration
                 imagefilter($image->getCore(), IMG_FILTER_SMOOTH, 0);
             }
         }
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $image->getCore()->adaptiveBlurImage($this->amount * 1.5, $this->amount / 2);
 
         return null;
     }

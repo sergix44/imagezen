@@ -25,4 +25,12 @@ enum Backend: string
             default => throw new InvalidArgumentException('Unable to match backend from image.')
         };
     }
+
+    public function name(): string
+    {
+        return match ($this) {
+            self::GD => 'Gd',
+            self::IMAGICK => 'Imagick',
+        };
+    }
 }
