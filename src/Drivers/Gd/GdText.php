@@ -10,7 +10,7 @@ use SergiX44\ImageZen\Shapes\Point;
 
 class GdText extends Text
 {
-    protected ?int $internalFont = null;
+    protected ?int $internalFont = 1;
 
     public function font(?string $font): self
     {
@@ -41,20 +41,7 @@ class GdText extends Text
 
         if ($this->hasFont()) {
             $text = $this->parsedText();
-
-            // get bounding box with angle 0
-            $box = imagettfbbox($this->getPointSize(), 0, $this->fontPath, $text);
-
-            // rotate points manually
-            if ($this->angle !== 0) {
-                $angle = M_PI * 2 - $this->angle * M_PI * 2 / 360;
-                for ($i = 0; $i < 4; $i++) {
-                    $x = $box[$i * 2];
-                    $y = $box[$i * 2 + 1];
-                    $box[$i * 2] = cos($angle) * $x - sin($angle) * $y;
-                    $box[$i * 2 + 1] = sin($angle) * $x + cos($angle) * $y;
-                }
-            }
+            $box = imagettfbbox($this->getPointSize(), $this->angle, $this->fontPath, $text);
 
             return new Box(new Point($box[0], $box[1]), new Point($box[2], $box[3]), new Point($box[4], $box[5]), new Point($box[6], $box[7]));
         }

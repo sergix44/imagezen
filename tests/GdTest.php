@@ -575,9 +575,8 @@ it('can write text on image', function ($file) {
     $out = __DIR__."/Tmp/$filename.png";
 
     Image::make($file)
-        ->text('Hello World', 10, 10, function (Text $text) {
-            $text->angle(45)
-                ->size(18);
+        ->text('Hello World!', 100, 100, function (Text $text) {
+            $text->font(5);
         })
         ->save($out, quality: 100);
 
@@ -585,4 +584,23 @@ it('can write text on image', function ($file) {
         ->toBeFile()
         ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
     unlink($out);
-})->with('fruit')->skip();
+})->with('fruit');
+
+it('can write text ttf on image', function ($file) {
+    $filename = 'fruit_base_text_ttf';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->text('Hello World!', 100, 200, function (Text $text) {
+            $text->angle(-30)
+                ->color(Color::gold())
+                ->font(__DIR__.'/Images/arial.ttf')
+                ->size(24);
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit');
