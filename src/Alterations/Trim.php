@@ -43,11 +43,13 @@ class Trim extends Alteration implements GdAlteration
         switch ($this->base) {
             case TrimFrom::TRANSPARENT:
                 $transparency = true;
+
                 break;
 
             case TrimFrom::BOTTOM_RIGHT:
                 $x = $size->width - 1;
                 $y = $size->height - 1;
+
                 break;
 
             case TrimFrom::TOP_LEFT:
@@ -78,6 +80,7 @@ class Trim extends Alteration implements GdAlteration
 
                     if ($color->differs($checkColor, $this->tolerance)) {
                         $topY = max(0, $y - $this->feather);
+
                         break 2;
                     }
 
@@ -101,6 +104,7 @@ class Trim extends Alteration implements GdAlteration
 
                     if ($color->differs($checkColor, $this->tolerance)) {
                         $topX = max(0, $x - $this->feather);
+
                         break 2;
                     }
 
@@ -125,6 +129,7 @@ class Trim extends Alteration implements GdAlteration
 
                     if ($color->differs($checkColor, $this->tolerance)) {
                         $bottomY = min($size->height, $y + 1 + $this->feather);
+
                         break 2;
                     }
 
@@ -149,6 +154,7 @@ class Trim extends Alteration implements GdAlteration
 
                     if ($color->differs($checkColor, $this->tolerance)) {
                         $bottomX = min($size->width, $x + 1 + $this->feather);
+
                         break 2;
                     }
                 }
