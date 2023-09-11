@@ -4,9 +4,9 @@ namespace SergiX44\ImageZen\Drivers\Gd;
 
 use GdImage;
 
-trait GdCoreResize
+trait GdEditCore
 {
-    protected function coreResize(
+    protected function gdEdit(
         GdImage $gd,
         int $newX,
         int $newY,

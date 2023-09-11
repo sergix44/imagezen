@@ -11,7 +11,7 @@ use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdText;
 use SergiX44\ImageZen\Image;
 
-class DrawText extends Alteration implements GdAlteration
+class WriteText extends Alteration implements GdAlteration
 {
     public static string $id = 'text';
 

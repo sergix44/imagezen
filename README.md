@@ -66,7 +66,7 @@ composer require sergix44/imagezen
 - [x] sharpen()
 - [x] stream()
 - [x] text()
-- [ ] trim()
+- [x] trim()
 - [x] widen()
 - [x] width()
 

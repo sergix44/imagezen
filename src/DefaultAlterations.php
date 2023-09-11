@@ -6,7 +6,7 @@ use Closure;
 use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Draws\Flip;
 use SergiX44\ImageZen\Draws\Position;
-use SergiX44\ImageZen\Draws\TrimPosition;
+use SergiX44\ImageZen\Draws\TrimFrom;
 
 trait DefaultAlterations
 {
@@ -49,8 +49,8 @@ trait DefaultAlterations
         $this->register(Alterations\ResizeCanvas::class);
         $this->register(Alterations\Rotate::class);
         $this->register(Alterations\Sharpen::class);
-        $this->register(Alterations\DrawText::class);
-        //$this->register(Alterations\Trim::class);
+        $this->register(Alterations\WriteText::class);
+        $this->register(Alterations\Trim::class);
         $this->register(Alterations\Widen::class);
     }
 
@@ -299,8 +299,12 @@ trait DefaultAlterations
         return $this;
     }
 
-    public function trim(TrimPosition $base = TrimPosition::TOP_LEFT, ?Position $away = null, int $tolerance = 0, int $feather = 0): self
+    public function trim(TrimFrom $base = TrimFrom::TOP_LEFT, Position|array|null $away = null, int $tolerance = 0, int $feather = 0): self
     {
+        if (!is_array($away)) {
+            $away = $away !== null ? [$away] : [Position::TOP, Position::RIGHT, Position::BOTTOM, Position::LEFT];
+        }
+
         $this->alterate(__FUNCTION__, $base, $away, $tolerance, $feather);
 
         return $this;

@@ -5,12 +5,12 @@ namespace SergiX44\ImageZen\Alterations;
 use Closure;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
-use SergiX44\ImageZen\Drivers\Gd\GdCoreResize;
+use SergiX44\ImageZen\Drivers\Gd\GdEditCore;
 use SergiX44\ImageZen\Image;
 
 class Resize extends Alteration implements GdAlteration
 {
-    use GdCoreResize;
+    use GdEditCore;
 
     public static string $id = 'resize';
 
@@ -30,7 +30,7 @@ class Resize extends Alteration implements GdAlteration
             $this->constraints
         );
 
-        $new = $this->coreResize(
+        $new = $this->gdEdit(
             $image->getCore(),
             0,
             0,

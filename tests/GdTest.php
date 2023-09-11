@@ -604,3 +604,17 @@ it('can write text ttf on image', function ($file) {
         ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
     unlink($out);
 })->with('fruit');
+
+it('can trim an image', function ($file) {
+    $filename = 'fruit_trim_tolerance_80';
+    $out = __DIR__."/Tmp/$filename.png";
+
+    Image::make($file)
+        ->trim(tolerance: 80)
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo(__DIR__."/Images/Gd/$filename.png");
+    unlink($out);
+})->with('fruit');

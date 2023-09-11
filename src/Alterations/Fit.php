@@ -7,12 +7,12 @@ use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Position;
 use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
-use SergiX44\ImageZen\Drivers\Gd\GdCoreResize;
+use SergiX44\ImageZen\Drivers\Gd\GdEditCore;
 use SergiX44\ImageZen\Image;
 
 class Fit extends Alteration implements GdAlteration
 {
-    use GdCoreResize;
+    use GdEditCore;
 
     public static string $id = 'fit';
 
@@ -34,7 +34,7 @@ class Fit extends Alteration implements GdAlteration
         $resized = $resized->resize($this->width, $this->height, $this->constraints);
 
         // resize image
-        $new = $this->coreResize($image->getCore(), 0, 0, $cropped->pivot->x, $cropped->pivot->y, $resized->getWidth(), $resized->getHeight(), $cropped->getWidth(), $cropped->getHeight());
+        $new = $this->gdEdit($image->getCore(), 0, 0, $cropped->pivot->x, $cropped->pivot->y, $resized->getWidth(), $resized->getHeight(), $cropped->getWidth(), $cropped->getHeight());
         $this->replaceCore($image, $new);
 
         return null;
