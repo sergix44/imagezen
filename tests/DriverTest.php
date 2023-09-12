@@ -11,7 +11,7 @@ use SergiX44\ImageZen\Shapes\Ellipse;
 
 function prepare($instance, string $name, Backend $driver, string $ext = 'png'): array
 {
-    if (!$driver->getDriver()->isAvailable() || $driver === Backend::IMAGICK) {
+    if (!$driver->getDriver()->isAvailable()) {
         $instance->markTestSkipped("{$driver->name()} is not available.");
     }
 
@@ -89,7 +89,7 @@ it('can blur an image with a custom amount', function ($driver, $file) {
 })->with('drivers', 'baboon');
 
 it('can heavy blur an image with a custom amount', function ($driver, $file) {
-    [$out, $expected] = prepare($this, 'baboon_heavy_blur_50', $driver);
+    [$out, $expected] = prepare($this, 'baboon_heavy_blur_11', $driver);
     Image::make($file, $driver)
         ->heavyBlur(11)
         ->save($out, quality: 100);
@@ -597,3 +597,13 @@ it('can trim an image', function ($driver, $file) {
         ->imageSimilarTo($expected);
     unlink($out);
 })->with('drivers', 'fruit');
+
+it('can get a color of a pixel', function ($driver, $file) {
+    $color = Image::make($file, $driver)->pickColor(9, 1);
+
+    expect($color)->toBeInstanceOf(Color::class);
+    expect($color->red)->toBe(68);
+    expect($color->green)->toBe(81);
+    expect($color->blue)->toBe(96);
+    expect($color->alpha)->toBe(1);
+})->with('drivers', 'tile');
