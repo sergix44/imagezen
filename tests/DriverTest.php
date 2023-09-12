@@ -11,7 +11,7 @@ use SergiX44\ImageZen\Shapes\Ellipse;
 
 function prepare($instance, string $name, Backend $driver, string $ext = 'png'): array
 {
-    if (!$driver->getDriver()->isAvailable()) {
+    if (!$driver->getDriver()->isAvailable() || $driver === Backend::IMAGICK) {
         $instance->markTestSkipped("{$driver->name()} is not available.");
     }
 
@@ -88,19 +88,18 @@ it('can blur an image with a custom amount', function ($driver, $file) {
     unlink($out);
 })->with('drivers', 'baboon');
 
-it('can heavy blur an image with a custom amount', function ($file) {
-    $filename = 'baboon_heavy_blur_50';
-    $out = __DIR__ . "/Tmp/$filename.png";
-    Image::make($file)
+it('can heavy blur an image with a custom amount', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_heavy_blur_50', $driver);
+    Image::make($file, $driver)
         ->heavyBlur(11)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
 
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
 it('can change brightness of an image', function ($driver, $file) {
     [$out, $expected] = prepare($this, 'baboon_brightness_50', $driver);
@@ -135,7 +134,7 @@ it('can draw an ellipse', function ($driver) {
 it('can draw a circle', function ($driver) {
     [$out, $expected] = prepare($this, 'circle_on_canvas', $driver);
 
-    Image::canvas(100, 100)
+    Image::canvas(100, 100, backend: $driver)
         ->circle(50, 50, 50, function (Circle $draw) {
             $draw->background(Color::black())
                 ->border(2, Color::gold());
@@ -193,165 +192,153 @@ it('can change image contrast', function ($driver, $file) {
     unlink($out);
 })->with('drivers', 'baboon');
 
-it('can crop an image', function ($file) {
-    $filename = 'baboon_crop';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can crop an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_crop', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->crop(100, 100)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can fill a canvas with a color', function () {
-    $filename = 'canvas_color_fill';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can fill a canvas with a color', function ($driver) {
+    [$out, $expected] = prepare($this, 'canvas_color_fill', $driver);
 
-    Image::canvas(100, 100)
+    Image::canvas(100, 100, backend: $driver)
         ->fill(Color::red())
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-});
+})->with('drivers');
 
-it('can fill a canvas with a image', function ($file) {
-    $filename = 'canvas_image_fill';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can fill a canvas with a image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'canvas_image_fill', $driver);
 
-    Image::canvas(800, 800)
-        ->fill(Image::make($file))
+    Image::canvas(800, 800, backend: $driver)
+        ->fill(Image::make($file, $driver))
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can fill an image with a color', function ($file) {
-    $filename = 'image_color_fill';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can fill an image with a color', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'image_color_fill', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->fill(Color::teal(), 9, 9)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('tile');
+})->with('drivers', 'tile');
 
-it('can fit an image into another', function ($file) {
-    $filename = 'baboon_fit';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can fit an image into another', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_fit', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->fit(500, 1000, position: Position::BOTTOM_RIGHT)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can flip an image', function ($file) {
-    $filename = 'baboon_flip';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can flip an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_flip', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->flip(Flip::VERTICAL)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can change the gamma of an image', function ($file) {
-    $filename = 'baboon_gamma_02';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can change the gamma of an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_gamma_02', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->gamma(0.2)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can change an image to greyscale', function ($file) {
-    $filename = 'baboon_greyscale';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can change an image to greyscale', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_greyscale', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->greyscale()
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can heighten an image', function ($file) {
-    $filename = 'fruit_heighten';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can heighten an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_heighten', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->heighten(200)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
 
-it('can widen an image', function ($file) {
-    $filename = 'fruit_widen';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can widen an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_widen', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->widen(200)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
 
-it('can insert an image on top of another', function ($file, $file2) {
-    $filename = 'fruit_with_baboon';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can insert an image on top of another', function ($driver, $file, $file2) {
+    [$out, $expected] = prepare($this, 'fruit_with_baboon', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->insert(Image::make($file2))
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit', 'baboon');
+})->with('drivers', 'fruit', 'baboon');
 
-it('can interlace an image', function ($file) {
-    $filename = 'fruit_interlace';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can interlace an image', function ($driver, $file) {
+    [$out,] = prepare($this, 'fruit_interlace', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->interlace()
         ->save($out, quality: 100);
 
@@ -366,41 +353,38 @@ it('can interlace an image', function ($file) {
         ->and($isInterlaced)->toBeTrue();
 
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
 
-it('can invert an image', function ($file) {
-    $filename = 'baboon_inverted';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can invert an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_inverted', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->invert()
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can limit colors of an image', function ($file) {
-    $filename = 'baboon_color_limited';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can limit colors of an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_color_limited', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->limitColors(4)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can draw a line on an image', function ($file) {
-    $filename = 'baboon_with_line';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can draw a line on an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_with_line', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->line(10, 10, 100, 100, function ($draw) {
             $draw->color(Color::fuchsia());
         })
@@ -408,85 +392,81 @@ it('can draw a line on an image', function ($file) {
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can change a pixel an image', function ($file) {
-    $filename = 'tile_with_pixel';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can change a pixel an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'tile_with_pixel', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->pixel(Color::fuchsia(), 10, 10)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('tile');
+})->with('drivers', 'tile');
 
-it('can mask an image with of another', function ($file, $file2) {
-    $filename = 'fruit_with_baboon_mask';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can mask an image with of another', function ($driver, $file, $file2) {
+    [$out, $expected] = prepare($this, 'fruit_with_baboon_mask', $driver);
 
-    Image::make($file)
-        ->mask(Image::make($file2), false)
+    Image::make($file, $driver)
+        ->mask(Image::make($file2, $driver), false)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon', 'fruit');
+})->with('drivers', 'baboon', 'fruit');
 
-it('can get the mime of an image', function ($file) {
-    $mime = Image::make($file)->mime();
+it('can get the mime of an image', function ($driver, $file) {
+    prepare($this, '_', $driver);
+    $mime = Image::make($file, $driver)->mime();
     expect($mime)->toBe('image/png');
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can change the opacity an image', function ($file) {
-    $filename = 'baboon_opacity_70';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can change the opacity an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_opacity_70', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->opacity(70)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can get the exif of an image', function ($file) {
-    $exif = Image::make($file)->exif();
+it('can get the exif of an image', function ($driver, $file) {
+    $exif = Image::make($file, $driver)->exif();
 
     expect($exif)->toBeArray();
     expect($exif['FileName'])->toBe('exif.jpg');
     expect($exif['FileSize'])->toBe(7791);
     expect($exif['FileType'])->toBe(2);
-})->with('exif');
+})->with('drivers', 'exif');
 
-it('can pixelate an image', function ($file) {
-    $filename = 'baboon_pixeled';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can pixelate an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_pixeled', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->pixelate(10)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can draw a polygon on an image', function ($file) {
-    $filename = 'baboon_polygon';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can draw a polygon on an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_polygon', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->polygon([
             10,
             10,
@@ -501,15 +481,14 @@ it('can draw a polygon on an image', function ($file) {
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can draw a rectangle on an image', function ($file) {
-    $filename = 'baboon_rectangle';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can draw a rectangle on an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_rectangle', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->rectangle(10, 30, 100, 100, function ($draw) {
             $draw->background(Color::fuchsia());
         })
@@ -517,71 +496,66 @@ it('can draw a rectangle on an image', function ($file) {
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can rotate an image', function ($file) {
-    $filename = 'baboon_rotate';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can rotate an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_rotate', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->rotate(56, Color::fuchsia())
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png", 98);
+        ->imageSimilarTo($expected, 98);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can resize canvas of an image small', function ($file) {
-    $filename = 'fruit_resize_canvas_small';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can resize canvas of an image small', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_resize_canvas_small', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->resizeCanvas(200, 200, Position::CENTER, false, Color::fuchsia())
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
 
-it('can resize canvas of an image big', function ($file) {
-    $filename = 'fruit_resize_canvas_big';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can resize canvas of an image big', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_resize_canvas_big', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->resizeCanvas(800, 900, Position::CENTER, false, Color::fuchsia())
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
 
-it('can sharpen an image', function ($file) {
-    $filename = 'baboon_sharpen';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can sharpen an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_sharpen', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->sharpen()
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('baboon');
+})->with('drivers', 'baboon');
 
-it('can write text on image', function ($file) {
-    $filename = 'fruit_base_text';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can write text on image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_base_text', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->text('Hello World!', 100, 100, function (Text $text) {
             $text->font(5);
         })
@@ -589,15 +563,14 @@ it('can write text on image', function ($file) {
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
 
-it('can write text ttf on image', function ($file) {
-    $filename = 'fruit_base_text_ttf';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can write text ttf on image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_base_text_ttf', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->text('Hello World!', 100, 200, function (Text $text) {
             $text->angle(-30)
                 ->color(Color::gold())
@@ -608,20 +581,19 @@ it('can write text ttf on image', function ($file) {
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
 
-it('can trim an image', function ($file) {
-    $filename = 'fruit_trim_tolerance_80';
-    $out = __DIR__ . "/Tmp/$filename.png";
+it('can trim an image', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_trim_tolerance_80', $driver);
 
-    Image::make($file)
+    Image::make($file, $driver)
         ->trim(tolerance: 80)
         ->save($out, quality: 100);
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo(__DIR__ . "/Images/Gd/$filename.png");
+        ->imageSimilarTo($expected);
     unlink($out);
-})->with('fruit');
+})->with('drivers', 'fruit');
