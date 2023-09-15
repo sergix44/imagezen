@@ -13,6 +13,7 @@ use SergiX44\ImageZen\Exceptions\CannotLoadImageException;
 use SergiX44\ImageZen\Exceptions\FormatNotSupportedException;
 use SergiX44\ImageZen\Format;
 use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Support\Common;
 
 class Gd implements Driver
 {
@@ -82,7 +83,7 @@ class Gd implements Driver
         }
 
         return match ($format) {
-            Format::PNG => imagepng($image->getCore(), $path, $this->mapRange($quality, 0, 100, 0, 9)),
+            Format::PNG => imagepng($image->getCore(), $path, Common::mapRange($quality, 0, 100, 0, 9)),
             Format::JPG => imagejpeg($image->getCore(), $path, $quality),
             Format::WEBP => imagewebp($image->getCore(), $path, $quality),
             Format::GIF => imagegif($image->getCore(), $path),
@@ -110,16 +111,6 @@ class Gd implements Driver
         if ($raw instanceof GdImage) {
             imagedestroy($raw);
         }
-    }
-
-    private function mapRange(int $value, int $fromMin, int $fromMax, int $toMin, int $toMax): int
-    {
-        $value = min(max($value, $fromMin), $fromMax);
-        $fromRange = $fromMax - $fromMin;
-        $toRange = $toMax - $toMin;
-        $scaledValue = ($value - $fromMin) / $fromRange;
-
-        return $toMin + ($scaledValue * $toRange);
     }
 
     public function clone(Image $image): GdImage

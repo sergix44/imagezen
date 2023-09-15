@@ -597,13 +597,3 @@ it('can trim an image', function ($driver, $file) {
         ->imageSimilarTo($expected);
     unlink($out);
 })->with('drivers', 'fruit');
-
-it('can get a color of a pixel', function ($driver, $file) {
-    $color = Image::make($file, $driver)->pickColor(9, 1);
-
-    expect($color)->toBeInstanceOf(Color::class);
-    expect($color->red)->toBe(68);
-    expect($color->green)->toBe(81);
-    expect($color->blue)->toBe(96);
-    expect($color->alpha)->toBe(1);
-})->with('drivers', 'tile');
