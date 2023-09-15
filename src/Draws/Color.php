@@ -11,14 +11,14 @@ class Color
     public int $red;
     public int $green;
     public int $blue;
-    public int $alpha;
+    public float $alpha;
 
     private function __construct(
         ?string $string = null,
         int $red = 0,
         int $green = 0,
         int $blue = 0,
-        int $alpha = 1
+        float $alpha = 1.0
     ) {
         if ($string !== null) {
             [$red, $green, $blue, $alpha] = $this->rgbaFromString($string);
@@ -52,7 +52,7 @@ class Color
         return new self(red: $red, green: $green, blue: $blue);
     }
 
-    public static function rgba(int $red, int $green, int $blue, int $alpha): self
+    public static function rgba(int $red, int $green, int $blue, float $alpha): self
     {
         return new self(red: $red, green: $green, blue: $blue, alpha: $alpha);
     }
@@ -78,7 +78,7 @@ class Color
     /**
      * Reads RGBA values from string into array
      *
-     * @param  string  $value
+     * @param string $value
      * @return array
      */
     protected function rgbaFromString($value)
@@ -94,19 +94,19 @@ class Color
 
         $result = [];
         if (preg_match($hexPattern, $value, $matches)) {
-            $result[0] = strlen($matches[1]) === 1 ? hexdec($matches[1].$matches[1]) : hexdec($matches[1]);
-            $result[1] = strlen($matches[2]) === 1 ? hexdec($matches[2].$matches[2]) : hexdec($matches[2]);
-            $result[2] = strlen($matches[3]) === 1 ? hexdec($matches[3].$matches[3]) : hexdec($matches[3]);
+            $result[0] = strlen($matches[1]) === 1 ? hexdec($matches[1] . $matches[1]) : hexdec($matches[1]);
+            $result[1] = strlen($matches[2]) === 1 ? hexdec($matches[2] . $matches[2]) : hexdec($matches[2]);
+            $result[2] = strlen($matches[3]) === 1 ? hexdec($matches[3] . $matches[3]) : hexdec($matches[3]);
             $result[3] = 1;
         } elseif (preg_match($rgbPattern, $value, $matches)) {
-            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int) $matches[1] : 0;
-            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int) $matches[2] : 0;
-            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int) $matches[3] : 0;
+            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int)$matches[1] : 0;
+            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int)$matches[2] : 0;
+            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int)$matches[3] : 0;
             $result[3] = 1;
         } elseif (preg_match($rgbaPattern, $value, $matches)) {
-            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int) $matches[1] : 0;
-            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int) $matches[2] : 0;
-            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int) $matches[3] : 0;
+            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int)$matches[1] : 0;
+            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int)$matches[2] : 0;
+            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int)$matches[3] : 0;
             $result[3] = ($matches[4] >= 0 && $matches[4] <= 1) ? $matches[4] : 0;
         } else {
             throw new InvalidArgumentException("Unable to read color ({$value}).");

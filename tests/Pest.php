@@ -34,3 +34,6 @@ dataset('fruit', [
 dataset('exif', [
     [__DIR__ . '/Images/exif.jpg'],
 ]);
+dataset('semi', [
+    [__DIR__ . '/Images/semitransparent.png'],
+]);

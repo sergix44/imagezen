@@ -24,7 +24,7 @@ class GetColor extends Alteration implements GdAlteration, ImagickAlteration
 
         if (!imageistruecolor($image->getCore())) {
             $colorArray = imagecolorsforindex($image->getCore(), $colorInt);
-            $colorArray['alpha'] = round(1 - $colorArray['alpha'] / 127);
+            $colorArray['alpha'] = round(1 - $colorArray['alpha'] / 127, 2);
 
             return Color::rgba($colorArray['red'], $colorArray['green'], $colorArray['blue'], $colorArray['alpha']);
         }
@@ -35,13 +35,9 @@ class GetColor extends Alteration implements GdAlteration, ImagickAlteration
     public function applyWithImagick(Image $image): Color
     {
         $pixel = $image->getCore()->getImagePixelColor($this->x, $this->y);
-        $colors = $pixel->getColor(2);
+        $colors = $pixel->getColor();
+        $colors['a'] = round($pixel->getColorValue(\Imagick::COLOR_ALPHA), 2);
 
-        return Color::rgba(
-            round($pixel->getColorValue(\Imagick::COLOR_RED) * 255),
-            round($pixel->getColorValue(\Imagick::COLOR_GREEN) * 255),
-            round($pixel->getColorValue(\Imagick::COLOR_BLUE) * 255),
-            round($pixel->getColorValue(\Imagick::COLOR_ALPHA) + 1)
-        );
+        return Color::rgba(...array_values($colors));
     }
 }
