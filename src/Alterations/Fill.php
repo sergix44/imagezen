@@ -90,13 +90,13 @@ class Fill extends Alteration implements GdAlteration, ImagickAlteration
             // flood fill with texture
             if ($this->tile !== null) {
                 // create tile
-                $tile = $image->getCore()->clone();
+                $tile = clone $image->getCore();
 
                 // mask away color at position
                 $tile->transparentPaintImage($tile->getImagePixelColor($this->x, $this->y), 0, 0, false);
 
                 // create canvas
-                $canvas = $image->getCore()->clone();
+                $canvas = clone $image->getCore();
 
                 // fill canvas with texture
                 $canvas = $canvas->textureImage($this->tile->getCore());
@@ -119,13 +119,13 @@ class Fill extends Alteration implements GdAlteration, ImagickAlteration
                 );
 
                 // create tile to put on top
-                $tile = $image->getCore()->clone();
+                $tile = clone $image->getCore();
 
                 // mask away color at pos.
                 $tile->transparentPaintImage($tile->getImagePixelColor($this->x, $this->y), 0, 0, false);
 
                 // save alpha channel of original image
-                $alpha = $image->getCore()->clone();
+                $alpha = clone $image->getCore();
 
                 // merge original with canvas and tile
                 $image->getCore()->compositeImage($canvas, \Imagick::COMPOSITE_DEFAULT, 0, 0);

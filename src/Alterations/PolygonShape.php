@@ -51,7 +51,7 @@ class PolygonShape extends Alteration implements GdAlteration, ImagickAlteration
         }
         $background = $driver->parseColor($polygon->getBackground());
 
-        imagefilledpolygon($image->getCore(), $this->points, (int) (count($this->points) / 2), $background->getInt());
+        imagefilledpolygon($image->getCore(), $this->points, $background->getInt());
 
         if ($polygon->hasBorder()) {
             $color = $driver->parseColor($polygon->getBorderColor());

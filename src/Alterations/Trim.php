@@ -156,7 +156,7 @@ class Trim extends Alteration implements GdAlteration, ImagickAlteration
 
         [$size, $transparency, $color] = $this->getParams($image);
 
-        $trimmed = $image->getCore()->clone();
+        $trimmed = clone $image->getCore();
 
         // add border to trim specific color
         $trimmed->borderImage($driver->parseColor($color)->getPixel(), 1, 1);

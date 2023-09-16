@@ -63,7 +63,7 @@ class LimitColors extends Alteration implements GdAlteration, ImagickAlteration
         $size = $image->getSize();
 
         // build 2 color alpha mask from original alpha
-        $alpha = $image->getCore()->clone();
+        $alpha = clone $image->getCore();
         $alpha->separateImageChannel(\Imagick::CHANNEL_ALPHA);
         $alpha->transparentPaintImage('#ffffff', 0, 0, false);
         $alpha->separateImageChannel(\Imagick::CHANNEL_ALPHA);

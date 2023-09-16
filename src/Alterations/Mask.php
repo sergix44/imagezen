@@ -76,11 +76,11 @@ class Mask extends Alteration implements GdAlteration, ImagickAlteration
         }
 
         // get alpha channel of original as greyscale image
-        $original = $image->getCore()->clone();
+        $original = clone $image->getCore();
         $original->separateImageChannel(\Imagick::CHANNEL_ALPHA);
 
         // use red channel from mask ask alpha
-        $maskAlpha = $mask->getCore()->clone();
+        $maskAlpha = clone $mask->getCore();
         $maskAlpha->compositeImage($mask->getCore(), \Imagick::COMPOSITE_DEFAULT, 0, 0);
         $maskAlpha->separateImageChannel(\Imagick::CHANNEL_ALL);
 

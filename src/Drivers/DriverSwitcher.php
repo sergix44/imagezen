@@ -21,6 +21,7 @@ trait DriverSwitcher
         }
 
         $data = $this->driver->getStream($this, Format::PNG, 100)->getContents();
+        $this->driver->clear(raw: $this->image);
         array_map(fn ($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
 
         $this->snapshots = [];
