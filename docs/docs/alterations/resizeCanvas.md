@@ -1,7 +1,7 @@
 # `resizeCanvas()`
 
 ```
-->resizeCanvas(?int $width, ?int $height, [SergiX44\ImageZen\Draws\Position $anchor = SergiX44\ImageZen\Draws\Position::CENTER], [bool $relative = ], [?SergiX44\ImageZen\Draws\Color $background = null]): self
+->resizeCanvas(?int $width, ?int $height, [SergiX44\ImageZen\Draws\Position $anchor = SergiX44\ImageZen\Draws\Position::CENTER], [bool $relative = false], [?SergiX44\ImageZen\Draws\Color $background = null]): self
 ```
 ## Parameters
 
@@ -22,6 +22,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->resizeCanvas(?int $width, ?int $height, [SergiX44\ImageZen\Draws\Position $anchor = SergiX44\ImageZen\Draws\Position::CENTER], [bool $relative = ], [?SergiX44\ImageZen\Draws\Color $background = null]);
+    ->resizeCanvas(?int $width, ?int $height, [SergiX44\ImageZen\Draws\Position $anchor = SergiX44\ImageZen\Draws\Position::CENTER], [bool $relative = false], [?SergiX44\ImageZen\Draws\Color $background = null]);
 
 ```

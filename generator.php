@@ -37,7 +37,7 @@ foreach ($availableMethods as $method) {
 
     $file = __DIR__ . "/docs/docs/alterations/$id.md";
     if (file_exists($file) && AVOID_OVERWRITE) {
-        return;
+        continue;
     }
 
 
@@ -65,6 +65,10 @@ foreach ($availableMethods as $method) {
             if (enum_exists($parameter->getType()->getName())) {
                 $e = new ReflectionEnumBackedCase($parameter->getType()->getName(), $val->name);
                 $val = "{$e->getDeclaringClass()->getName()}::{$e->getName()}";
+            }
+
+            if (is_bool($val)) {
+                $val = $val ? 'true' : 'false';
             }
 
             $params .= "[{$parameter->getType()} \${$parameter->getName()} = {$val}]";

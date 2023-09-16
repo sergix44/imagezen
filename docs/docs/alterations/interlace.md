@@ -1,7 +1,7 @@
 # `interlace()`
 
 ```
-->interlace([bool $interlace = 1]): self
+->interlace([bool $interlace = true]): self
 ```
 ## Parameters
 
@@ -18,6 +18,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->interlace([bool $interlace = 1]);
+    ->interlace([bool $interlace = true]);
 
 ```
