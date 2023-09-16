@@ -11,6 +11,6 @@ class Common
         $toRange = $toMax - $toMin;
         $scaledValue = ($value - $fromMin) / $fromRange;
 
-        return $toMin + ($scaledValue * $toRange);
+        return $toMin + round($scaledValue * $toRange);
     }
 }

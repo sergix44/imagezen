@@ -62,7 +62,7 @@ class EllipseShape extends Alteration implements GdAlteration, ImagickAlteration
             imagesetthickness($image->getCore(), $shape->getBorderWidth());
 
             $borderColor = $driver->parseColor($shape->getBorderColor());
-            imagearc($image->getCore(), $this->x, $this->y, $this->width, $this->height, 0, 359.99, $borderColor->getInt());
+            imagearc($image->getCore(), $this->x, $this->y, $this->width, $this->height, 0, 360, $borderColor->getInt());
         } else {
             imagefilledellipse($image->getCore(), $this->x, $this->y, $this->width, $this->height, $background->getInt());
         }

@@ -259,6 +259,6 @@ class Imagick implements Driver
 
     public function clone(Image $image): ImagickBackend
     {
-        return $image->getCore()->clone();
+        return clone $image->getCore();
     }
 }

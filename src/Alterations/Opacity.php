@@ -28,7 +28,7 @@ class Opacity extends Alteration implements GdAlteration, ImagickAlteration
         imagealphablending($image->getCore(), false); // imagesavealpha can only be used by doing this for some reason
         imagesavealpha($image->getCore(), true); // this one helps you keep the alpha.
         $transparency = 1 - $opacity;
-        imagefilter($image->getCore(), IMG_FILTER_COLORIZE, 0, 0, 0, 127 * $transparency); // the fourth parameter is alpha
+        imagefilter($image->getCore(), IMG_FILTER_COLORIZE, 0, 0, 0, round(127 * $transparency)); // the fourth parameter is alpha
 
         return null;
     }
