@@ -210,6 +210,7 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
             case Position::TOP_MIDDLE:
             case Position::BOTTOM_MIDDLE:
                 $align = \Imagick::ALIGN_CENTER;
+
                 break;
 
             case Position::RIGHT:
@@ -217,6 +218,7 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
             case Position::TOP_RIGHT:
             case Position::BOTTOM_RIGHT:
                 $align = \Imagick::ALIGN_RIGHT;
+
                 break;
             default:
             case Position::LEFT:
@@ -224,6 +226,7 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
             case Position::TOP_LEFT:
             case Position::BOTTOM_LEFT:
                 $align = \Imagick::ALIGN_LEFT;
+
                 break;
         }
 
