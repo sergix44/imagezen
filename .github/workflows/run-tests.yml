@@ -40,6 +40,7 @@ jobs:
       - name: Upload images in case of failure
         if: steps.tests.outcome == 'failure'
         uses: actions/upload-artifact@v3
+        run: exit 1
         with:
           name: failures
           path: tests/Tmp/
