@@ -8,9 +8,10 @@ use SergiX44\ImageZen\Draws\Position;
 use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdEditCore;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class Fit extends Alteration implements GdAlteration
+class Fit extends Alteration implements GdAlteration, ImagickAlteration
 {
     use GdEditCore;
 
@@ -26,6 +27,50 @@ class Fit extends Alteration implements GdAlteration
 
     public function applyWithGd(Image $image): null
     {
+        [$cropped, $resized] = $this->calculateSize($image);
+
+        // resize image
+        $new = $this->gdEdit(
+            $image->getCore(),
+            0,
+            0,
+            $cropped->pivot->x,
+            $cropped->pivot->y,
+            $resized->getWidth(),
+            $resized->getHeight(),
+            $cropped->getWidth(),
+            $cropped->getHeight()
+        );
+        $this->replaceCore($image, $new);
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        [$cropped, $resized] = $this->calculateSize($image);
+
+        // crop image
+        $image->getCore()->cropImage(
+            $cropped->width,
+            $cropped->height,
+            $cropped->pivot->x,
+            $cropped->pivot->y
+        );
+
+        // resize image
+        $image->getCore()->scaleImage($resized->getWidth(), $resized->getHeight());
+        $image->getCore()->setImagePage(0, 0, 0, 0);
+
+        return null;
+    }
+
+    /**
+     * @param Image $image
+     * @return array
+     */
+    public function calculateSize(Image $image): array
+    {
         $this->height ??= $this->width;
 
         // calculate size
@@ -33,10 +78,6 @@ class Fit extends Alteration implements GdAlteration
         $resized = clone $cropped;
         $resized = $resized->resize($this->width, $this->height, $this->constraints);
 
-        // resize image
-        $new = $this->gdEdit($image->getCore(), 0, 0, $cropped->pivot->x, $cropped->pivot->y, $resized->getWidth(), $resized->getHeight(), $cropped->getWidth(), $cropped->getHeight());
-        $this->replaceCore($image, $new);
-
-        return null;
+        return [$cropped, $resized];
     }
 }

@@ -8,9 +8,12 @@ use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Drivers\Gd\Gd;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\Imagick;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
+use SergiX44\ImageZen\Format;
 use SergiX44\ImageZen\Image;
 
-class Fill extends Alteration implements GdAlteration
+class Fill extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'fill';
 
@@ -70,6 +73,78 @@ class Fill extends Alteration implements GdAlteration
         } else {
             // fill whole image otherwise
             imagefilledrectangle($resource, 0, 0, $width - 1, $height - 1, $filling);
+        }
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $driver = $image->getDriver();
+        if (!($driver instanceof Imagick)) {
+            throw new RuntimeException('Invalid driver for this alteration');
+        }
+
+        // flood fill if coordinates are set
+        if ($this->x !== null && $this->y !== null) {
+            // flood fill with texture
+            if ($this->tile !== null) {
+                // create tile
+                $tile = $image->getCore()->clone();
+
+                // mask away color at position
+                $tile->transparentPaintImage($tile->getImagePixelColor($this->x, $this->y), 0, 0, false);
+
+                // create canvas
+                $canvas = $image->getCore()->clone();
+
+                // fill canvas with texture
+                $canvas = $canvas->textureImage($this->tile->getCore());
+
+                // merge canvas and tile
+                $canvas->compositeImage($tile, \Imagick::COMPOSITE_DEFAULT, 0, 0);
+
+                // replace image core
+                $this->replaceCore($image, $canvas);
+                // flood fill with color
+            } elseif ($this->color !== null) {
+                // create canvas with filling
+                $canvas = new \Imagick();
+
+                $canvas->newImage(
+                    $image->width(),
+                    $image->height(),
+                    $driver->parseColor($this->color)->getPixel(),
+                    Format::PNG
+                );
+
+                // create tile to put on top
+                $tile = $image->getCore()->clone();
+
+                // mask away color at pos.
+                $tile->transparentPaintImage($tile->getImagePixelColor($this->x, $this->y), 0, 0, false);
+
+                // save alpha channel of original image
+                $alpha = $image->getCore()->clone();
+
+                // merge original with canvas and tile
+                $image->getCore()->compositeImage($canvas, \Imagick::COMPOSITE_DEFAULT, 0, 0);
+                $image->getCore()->compositeImage($tile, \Imagick::COMPOSITE_DEFAULT, 0, 0);
+
+                // restore alpha channel of original image
+                $image->getCore()->compositeImage($alpha, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
+            }
+        } else {
+            if ($this->tile !== null) {
+                // fill whole image with texture
+                $this->replaceCore($image, $image->getCore()->textureImage($this->tile->getCore()));
+            } elseif ($this->color !== null) {
+                // fill whole image with color
+                $draw = new \ImagickDraw();
+                $draw->setFillColor($driver->parseColor($this->color)->getPixel());
+                $draw->rectangle(0, 0, $image->width(), $image->height());
+                $image->getCore()->drawImage($draw);
+            }
         }
 
         return null;

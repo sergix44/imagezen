@@ -6,9 +6,10 @@ use Closure;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdEditCore;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class Resize extends Alteration implements GdAlteration
+class Resize extends Alteration implements GdAlteration, ImagickAlteration
 {
     use GdEditCore;
 
@@ -23,7 +24,6 @@ class Resize extends Alteration implements GdAlteration
 
     public function applyWithGd(Image $image): null
     {
-
         $resized = $image->getSize()->resize(
             $this->width,
             $this->height,
@@ -43,6 +43,18 @@ class Resize extends Alteration implements GdAlteration
         );
 
         $this->replaceCore($image, $new);
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $resized = $image->getSize()->resize(
+            $this->width,
+            $this->height,
+            $this->constraints
+        );
+        $image->getCore()->scaleImage($resized->getWidth(), $resized->getHeight());
 
         return null;
     }

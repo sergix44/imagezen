@@ -4,9 +4,10 @@ namespace SergiX44\ImageZen\Alterations;
 
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class Sharpen extends Alteration implements GdAlteration
+class Sharpen extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'sharpen';
 
@@ -31,6 +32,13 @@ class Sharpen extends Alteration implements GdAlteration
 
         // apply the matrix
         imageconvolution($image->getCore(), $matrix, $div, 0);
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $image->getCore()->unsharpMaskImage(1, 1, $this->amount / 6.25, 0);
 
         return null;
     }
