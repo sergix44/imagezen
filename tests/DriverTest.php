@@ -379,7 +379,7 @@ it('can limit colors of an image', function ($driver, $file) {
         ->toBeFile()
         ->imageSimilarTo($expected);
     unlink($out);
-})->with('drivers', 'baboon');
+})->with('drivers', 'baboon')->skipOnWindows()->skipOnMac();
 
 it('can draw a line on an image', function ($driver, $file) {
     [$out, $expected] = prepare($this, 'baboon_with_line', $driver);
@@ -420,7 +420,7 @@ it('can mask an image with of another', function ($driver, $file, $file2) {
         ->toBeFile()
         ->imageSimilarTo($expected);
     unlink($out);
-})->with('drivers', 'baboon', 'fruit');
+})->with('drivers', 'baboon', 'fruit')->skipOnWindows()->skipOnMac();
 
 it('can get the mime of an image', function ($driver, $file) {
     prepare($this, '_', $driver);
