@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'ImageZen',
-    tagline: 'ImageZen is a free and open-source image processing library for PHP',
+    tagline: 'Yet another image manipulation library',
     favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
