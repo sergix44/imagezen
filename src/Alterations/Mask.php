@@ -4,10 +4,12 @@ namespace SergiX44\ImageZen\Alterations;
 
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Color;
+use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class Mask extends Alteration implements GdAlteration
+class Mask extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'mask';
 
@@ -20,18 +22,8 @@ class Mask extends Alteration implements GdAlteration
     public function applyWithGd(Image $image): null
     {
         $size = $image->getSize();
-
-        // create empty canvas
-        $canvas = $image->getDriver()->newImage($size->width, $size->height, Color::rgba(0, 0, 0, 0));
-
-        // build mask image from source
-        $mask = $this->source;
-        $maskSize = $mask->getSize();
-
-        // resize mask to size of current image (if necessary)
-        if (!$maskSize->equals($size)) {
-            $mask->resize($size->width, $size->height);
-        }
+        $canvas = $image->getDriver()->newImage($size->width, $size->height, Color::transparent());
+        $mask = $this->getMask($size);
 
         imagealphablending($canvas, false);
 
@@ -69,5 +61,53 @@ class Mask extends Alteration implements GdAlteration
         $this->replaceCore($image, $canvas);
 
         return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $mask = $this->getMask($image->getSize());
+
+        $image->getCore()->setImageMatte(true);
+
+        if ($this->withAlpha) {
+            $image->getCore()->compositeImage($mask->getCore(), \Imagick::COMPOSITE_DSTIN, 0, 0);
+
+            return null;
+        }
+
+        // get alpha channel of original as greyscale image
+        $original = $image->getCore()->clone();
+        $original->separateImageChannel(\Imagick::CHANNEL_ALPHA);
+
+        // use red channel from mask ask alpha
+        $maskAlpha = $mask->getCore()->clone();
+        $maskAlpha->compositeImage($mask->getCore(), \Imagick::COMPOSITE_DEFAULT, 0, 0);
+        $maskAlpha->separateImageChannel(\Imagick::CHANNEL_ALL);
+
+        // combine both alphas from original and mask
+        $original->compositeImage($maskAlpha, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
+
+        // mask the image with the alpha combination
+        $image->getCore()->compositeImage($original, \Imagick::COMPOSITE_DSTIN, 0, 0);
+
+        return null;
+    }
+
+    /**
+     * @param  Size  $size
+     * @return Image
+     */
+    private function getMask(Size $size): Image
+    {
+        // build mask image from source
+        $mask = $this->source;
+        $maskSize = $mask->getSize();
+
+        // resize mask to size of current image (if necessary)
+        if (!$maskSize->equals($size)) {
+            $mask->resize($size->width, $size->height);
+        }
+
+        return $mask;
     }
 }

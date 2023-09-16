@@ -10,7 +10,7 @@ use SergiX44\ImageZen\Shapes\Point;
 
 class GdText extends Text
 {
-    protected ?int $internalFont = 1;
+    protected ?int $internalFont = 5;
 
     public function font(?string $font): self
     {

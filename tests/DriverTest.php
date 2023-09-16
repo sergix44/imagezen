@@ -15,8 +15,8 @@ function prepare($instance, string $name, Backend $driver, string $ext = 'png'):
         $instance->markTestSkipped("{$driver->name()} is not available.");
     }
 
-    $out = __DIR__ . "/Tmp/{$driver->name()}/$name.$ext";
-    $expected = __DIR__ . "/Images/{$driver->name()}/$name.$ext";
+    $out = __DIR__."/Tmp/{$driver->name()}/$name.$ext";
+    $expected = __DIR__."/Images/{$driver->name()}/$name.$ext";
 
     return [$out, $expected];
 }
@@ -556,8 +556,10 @@ it('can write text on image', function ($driver, $file) {
     [$out, $expected] = prepare($this, 'fruit_base_text', $driver);
 
     Image::make($file, $driver)
-        ->text('Hello World!', 100, 100, function (Text $text) {
-            $text->font(5);
+        ->text('Hello World!', 100, 100, function (Text $text) use ($driver) {
+            if ($driver === Backend::GD) {
+                $text->font(5);
+            }
         })
         ->save($out, quality: 100);
 
@@ -574,7 +576,6 @@ it('can write text ttf on image', function ($driver, $file) {
         ->text('Hello World!', 100, 200, function (Text $text) {
             $text->angle(-30)
                 ->color(Color::gold())
-                ->font(__DIR__ . '/Images/arial.ttf')
                 ->size(24);
         })
         ->save($out, quality: 100);

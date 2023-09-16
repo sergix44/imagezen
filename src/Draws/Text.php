@@ -28,7 +28,7 @@ class Text
         int $angle = 0,
     ) {
         $this->text = $text;
-        $this->fontPath = $fontPath;
+        $this->fontPath = $fontPath ?? __DIR__.'/../../assets/LiberationSans-Regular.ttf';
         $this->size = $size;
         $this->color = $color ?? Color::black();
         $this->align = $align;

@@ -6,12 +6,15 @@ use Closure;
 use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Position;
+use SergiX44\ImageZen\Draws\Text;
 use SergiX44\ImageZen\Drivers\Gd\Gd;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdText;
+use SergiX44\ImageZen\Drivers\Imagick\Imagick;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class WriteText extends Alteration implements GdAlteration
+class WriteText extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'text';
 
@@ -172,6 +175,86 @@ class WriteText extends Alteration implements GdAlteration
 
         // draw text
         imagestring($image->getCore(), $text->getInternalFont(), $x, $y, $this->text, $color->getInt());
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $text = new Text($this->text);
+        if ($this->callback instanceof Closure) {
+            $this->callback->call($this, $text);
+        }
+
+        $x = $this->x;
+        $y = $this->y;
+
+        $driver = $image->getDriver();
+        if (!($driver instanceof Imagick)) {
+            throw new RuntimeException('Invalid driver for this alteration');
+        }
+
+        $color = $driver->parseColor($text->color);
+
+        $draw = new \ImagickDraw();
+        $draw->setStrokeAntialias(true);
+        $draw->setTextAntialias(true);
+        $draw->setFont($text->fontPath);
+        $draw->setFontSize($text->size);
+        $draw->setFillColor($color->getPixel());
+        $draw->setTextKerning(0);
+
+        switch ($text->align) {
+            case Position::CENTER:
+            case Position::CENTER_MIDDLE:
+            case Position::TOP_MIDDLE:
+            case Position::BOTTOM_MIDDLE:
+                $align = \Imagick::ALIGN_CENTER;
+                break;
+
+            case Position::RIGHT:
+            case Position::CENTER_RIGHT:
+            case Position::TOP_RIGHT:
+            case Position::BOTTOM_RIGHT:
+                $align = \Imagick::ALIGN_RIGHT;
+                break;
+            default:
+            case Position::LEFT:
+            case Position::CENTER_LEFT:
+            case Position::TOP_LEFT:
+            case Position::BOTTOM_LEFT:
+                $align = \Imagick::ALIGN_LEFT;
+                break;
+        }
+
+        $draw->setTextAlignment($align);
+
+        switch ($text->align) {
+            case Position::CENTER:
+            case Position::CENTER_MIDDLE:
+            case Position::CENTER_LEFT:
+            case Position::CENTER_RIGHT:
+            case Position::TOP:
+            case Position::TOP_MIDDLE:
+            case Position::TOP_LEFT:
+            case Position::TOP_RIGHT:
+                $dimensions = $image->getCore()->queryFontMetrics($draw, $this->text);
+                $y = $y + $dimensions['textHeight'] * 0.65 / 2;
+
+                break;
+
+            default:
+            case Position::BOTTOM:
+            case Position::BOTTOM_MIDDLE:
+            case Position::BOTTOM_LEFT:
+            case Position::BOTTOM_RIGHT:
+                $dimensions = $image->getCore()->queryFontMetrics($draw, $this->text, false);
+                $y += $dimensions['characterHeight'];
+
+                break;
+        }
+
+        $image->getCore()->annotateImage($draw, $x, $y, $text->angle * (-1), $this->text);
 
         return null;
     }
