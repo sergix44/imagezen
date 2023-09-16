@@ -2,7 +2,7 @@
 
 namespace SergiX44\ImageZen\Draws;
 
-class Text
+abstract class Text
 {
     protected string $text;
     public ?string $fontPath;
@@ -34,6 +34,8 @@ class Text
         $this->align = $align;
         $this->angle = $angle;
     }
+
+    abstract public function getBox(): Box;
 
     public function font(?string $font): self
     {

@@ -6,12 +6,12 @@ use Closure;
 use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Position;
-use SergiX44\ImageZen\Draws\Text;
 use SergiX44\ImageZen\Drivers\Gd\Gd;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Gd\GdText;
 use SergiX44\ImageZen\Drivers\Imagick\Imagick;
 use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickText;
 use SergiX44\ImageZen\Image;
 
 class WriteText extends Alteration implements GdAlteration, ImagickAlteration
@@ -181,7 +181,7 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
 
     public function applyWithImagick(Image $image): null
     {
-        $text = new Text($this->text);
+        $text = new ImagickText($this->text);
         if ($this->callback instanceof Closure) {
             $this->callback->call($this, $text);
         }
@@ -202,7 +202,7 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
         $draw->setFont($text->fontPath);
         $draw->setFontSize($text->size);
         $draw->setFillColor($color->getPixel());
-        $draw->setTextKerning(0);
+        $draw->setTextKerning($text->kerning);
 
         switch ($text->align) {
             case Position::CENTER:
