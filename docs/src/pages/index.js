@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import logo from '@site/static/img/logo.png';
 
 import styles from './index.module.css';
 
@@ -11,7 +12,7 @@ function HomepageHeader() {
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
             <div className="container">
-                <img className={styles.logo} src="/img/logo.png" width={360} alt="Imagezen Logo"/>
+                <img className={styles.logo} src={logo} width={360} alt="Imagezen Logo"/>
                 {/*<h1 className="hero__title">{siteConfig.title}</h1>*/}
                 <p className="hero__subtitle"><i>{siteConfig.tagline}</i></p>
                 <div className={styles.buttons}>
