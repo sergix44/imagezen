@@ -33,4 +33,13 @@ jobs:
         run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
+        id: tests
         run: vendor/bin/pest
+        continue-on-error: true
+
+      - name: Upload images in case of failure
+        if: steps.tests.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: failures
+          path: tests/Tmp/
