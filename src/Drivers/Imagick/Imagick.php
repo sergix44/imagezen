@@ -39,10 +39,12 @@ class Imagick implements Driver
     public function loadImageFrom(string $path): ImagickBackend
     {
         $imagick = new ImagickBackend();
+        $imagick->setBackgroundColor(new \ImagickPixel('transparent'));
 
         try {
             if (file_exists($path)) {
                 $imagick->readImage($path);
+                $imagick->setImageType(defined('\Imagick::IMGTYPE_TRUECOLORALPHA') ? \Imagick::IMGTYPE_TRUECOLORALPHA : \Imagick::IMGTYPE_TRUECOLORMATTE);
             } else {
                 $imagick->readImageBlob($path);
             }

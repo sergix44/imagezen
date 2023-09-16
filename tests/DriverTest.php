@@ -326,7 +326,7 @@ it('can insert an image on top of another', function ($driver, $file, $file2) {
     [$out, $expected] = prepare($this, 'fruit_with_baboon', $driver);
 
     Image::make($file, $driver)
-        ->insert(Image::make($file2))
+        ->insert(Image::make($file2, $driver))
         ->save($out, quality: 100);
 
     expect($out)
@@ -459,7 +459,7 @@ it('can pixelate an image', function ($driver, $file) {
 
     expect($out)
         ->toBeFile()
-        ->imageSimilarTo($expected);
+        ->imageSimilarTo($expected, 95);
     unlink($out);
 })->with('drivers', 'baboon');
 

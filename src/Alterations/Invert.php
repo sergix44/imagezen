@@ -20,7 +20,7 @@ class Invert extends Alteration implements GdAlteration, ImagickAlteration
 
     public function applyWithImagick(Image $image): null
     {
-        $image->getCore()->negateImage(false);
+        $image->getCore()->negateImage(false, \Imagick::CHANNEL_ALL - \Imagick::CHANNEL_ALPHA);
 
         return null;
     }

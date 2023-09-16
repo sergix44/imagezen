@@ -7,10 +7,12 @@ use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\Gd;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\Imagick;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Rectangle;
 
-class RectangleShape extends Alteration implements GdAlteration
+class RectangleShape extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'rectangle';
 
@@ -43,6 +45,34 @@ class RectangleShape extends Alteration implements GdAlteration
             imagesetthickness($image->getCore(), $rectangle->getBorderWidth());
             imagerectangle($image->getCore(), $this->x1, $this->y1, $this->x2, $this->y2, $color->getInt());
         }
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $rectangle = new Rectangle();
+        if ($this->callback instanceof Closure) {
+            $this->callback->call($this, $rectangle);
+        }
+
+        $driver = $image->getDriver();
+        if (!($driver instanceof Imagick)) {
+            throw new RuntimeException('Invalid driver for this alteration');
+        }
+        $background = $driver->parseColor($rectangle->getBackground());
+
+        $draw = new \ImagickDraw();
+        $draw->setFillColor($background->getPixel());
+
+        if ($rectangle->hasBorder()) {
+            $draw->setStrokeWidth($rectangle->getBorderWidth());
+            $draw->setStrokeColor($driver->parseColor($rectangle->getBorderColor())->getPixel());
+        }
+
+        $draw->rectangle($this->x1, $this->y1, $this->x2, $this->y2);
+
+        $image->getCore()->drawImage($draw);
 
         return null;
     }

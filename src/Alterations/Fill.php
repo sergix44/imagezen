@@ -115,7 +115,7 @@ class Fill extends Alteration implements GdAlteration, ImagickAlteration
                     $image->width(),
                     $image->height(),
                     $driver->parseColor($this->color)->getPixel(),
-                    Format::PNG
+                    Format::PNG->name()
                 );
 
                 // create tile to put on top

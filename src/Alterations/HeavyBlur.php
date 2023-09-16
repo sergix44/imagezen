@@ -38,7 +38,7 @@ class HeavyBlur extends Alteration implements GdAlteration, ImagickAlteration
 
     public function applyWithImagick(Image $image): null
     {
-        $image->getCore()->adaptiveBlurImage($this->amount * 1.5, $this->amount / 4);
+        $image->getCore()->blurImage($this->amount * 1.5, $this->amount / 4);
 
         return null;
     }

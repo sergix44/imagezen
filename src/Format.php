@@ -12,4 +12,18 @@ enum Format: int
     case TIFF = 5;
     case HEIC = 6;
     case AVIF = 7;
+
+    public function name(): string
+    {
+        return match ($this) {
+            self::PNG => 'png',
+            self::JPG => 'jpg',
+            self::WEBP => 'webp',
+            self::GIF => 'gif',
+            self::BMP => 'bmp',
+            self::TIFF => 'tiff',
+            self::HEIC => 'heic',
+            self::AVIF => 'avif',
+        };
+    }
 }

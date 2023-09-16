@@ -3,15 +3,18 @@
 namespace SergiX44\ImageZen\Alterations;
 
 use Closure;
+use Intervention\Image\Imagick\Color;
 use InvalidArgumentException;
 use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\Gd;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\Imagick;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 use SergiX44\ImageZen\Shapes\Polygon;
 
-class PolygonShape extends Alteration implements GdAlteration
+class PolygonShape extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'polygon';
 
@@ -56,6 +59,40 @@ class PolygonShape extends Alteration implements GdAlteration
             imagesetthickness($image->getCore(), $polygon->getBorderWidth());
             imagepolygon($image->getCore(), $this->points, (int) (count($this->points) / 2), $color->getInt());
         }
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): mixed
+    {
+        $polygon = new Polygon();
+        if ($this->callback instanceof Closure) {
+            $this->callback->call($this, $polygon);
+        }
+
+        $driver = $image->getDriver();
+        if (!($driver instanceof Imagick)) {
+            throw new RuntimeException('Invalid driver for this alteration');
+        }
+        $background = $driver->parseColor($polygon->getBackground());
+
+        $draw = new \ImagickDraw();
+        $draw->setFillColor($background->getPixel());
+
+        if ($polygon->hasBorder()) {
+            $draw->setStrokeWidth($polygon->getBorderWidth());
+            $draw->setStrokeColor($driver->parseColor($polygon->getBorderColor())->getPixel());
+        }
+
+        $coordinates = [];
+        $count = count($this->points);
+        for ($i = 0; $i < $count; $i += 2) {
+            $coordinates[] = ['x' => $this->points[$i], 'y' => $this->points[$i + 1]];
+        }
+
+        $draw->polygon($coordinates);
+
+        $image->getCore()->drawImage($draw);
 
         return null;
     }

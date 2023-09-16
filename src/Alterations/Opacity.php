@@ -5,9 +5,10 @@ namespace SergiX44\ImageZen\Alterations;
 use InvalidArgumentException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class Opacity extends Alteration implements GdAlteration
+class Opacity extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'opacity';
 
@@ -28,6 +29,14 @@ class Opacity extends Alteration implements GdAlteration
         imagesavealpha($image->getCore(), true); // this one helps you keep the alpha.
         $transparency = 1 - $opacity;
         imagefilter($image->getCore(), IMG_FILTER_COLORIZE, 0, 0, 0, 127 * $transparency); // the fourth parameter is alpha
+
+        return null;
+    }
+
+    public function applyWithImagick(Image $image): null
+    {
+        $opacity = $this->transparency > 0 ? (100 / $this->transparency) : 1000;
+        $image->getCore()->evaluateImage(\Imagick::EVALUATE_DIVIDE, $opacity, \Imagick::CHANNEL_ALPHA);
 
         return null;
     }

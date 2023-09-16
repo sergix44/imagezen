@@ -5,9 +5,10 @@ namespace SergiX44\ImageZen\Getters;
 use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
+use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
 
-class GetIptc extends Alteration implements GdAlteration
+class GetIptc extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'iptc';
 
@@ -16,6 +17,20 @@ class GetIptc extends Alteration implements GdAlteration
     }
 
     public function applyWithGd(Image $image): mixed
+    {
+        return $this->getIptc($image);
+    }
+
+    public function applyWithImagick(Image $image): mixed
+    {
+        return $this->getIptc($image);
+    }
+
+    /**
+     * @param  Image  $image
+     * @return array|false|mixed|null
+     */
+    private function getIptc(Image $image): mixed
     {
         if (!function_exists('iptcparse')) {
             throw new RuntimeException("Reading Iptc data is not supported by this PHP installation.");

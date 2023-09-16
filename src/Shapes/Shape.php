@@ -6,7 +6,7 @@ use SergiX44\ImageZen\Draws\Color;
 
 abstract class Shape
 {
-    protected Color $background;
+    protected ?Color $background = null;
 
     protected Color $borderColor;
 
@@ -32,7 +32,7 @@ abstract class Shape
         return $this;
     }
 
-    public function getBackground(): Color
+    public function getBackground(): ?Color
     {
         return $this->background;
     }
