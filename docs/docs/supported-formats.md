@@ -30,6 +30,23 @@ $image = Image::make('path/to/image.jpg', Backend::IMAGICK);
 $image = Image::canvas(300, 200, Backend::IMAGICK);
 ```
 
+## Switching Backends on-the-fly
+
+You can convert an image from one backend to another by using the `switchTo()` method.
+
+```php
+use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Backend;
+
+$image = Image::make('path/to/image.jpg', Backend::GD);
+
+// switch to imagick
+$image->switchTo(Backend::IMAGICK);
+
+// switch back to GD
+$image->switchTo(Backend::GD);
+```
+
 ## Supported Formats
 
 All the available formats are listed in the `SergiX44\ImageZen\Format` enum,
