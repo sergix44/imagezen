@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Backends
+# Supported Formats
 
 ImageZen supports two backends: GD and Imagick.
 Those are listed in the `SergiX44\ImageZen\Backend` enum.
@@ -48,27 +48,3 @@ here is a list of them, and the supported backends:
 
 Imagick supports more formats than GD, but it's not available by default in most PHP installations.
 It's also marginally faster than GD, but it's not noticeable in most cases.
-
-## Colors
-
-ImageZen supports different color formats as input, managed by the `SergiX44\ImageZen\Color` class, here an example:
-They gets automatically converted to the backend format, so you don't have to worry about it.
-
-```php
-use SergiX44\ImageZen\Draws\Color;
-
-$color = Color::from('#ff0000');
-$color = Color::from('#f00');
-
-$color = Color::rgb(255, 0, 0);
-$color= Color::rgba(255, 0, 0, 0.5);
-
-
-// has also a variety of built-in colors
-$color = Color::transparent();
-$color = Color::black();
-$color = Color::white();
-$color = Color::red();
-// ...
-
-```

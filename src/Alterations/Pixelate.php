@@ -28,8 +28,8 @@ class Pixelate extends Alteration implements GdAlteration, ImagickAlteration
         $size = $image->getSize();
 
         $image->getCore()->scaleImage(
-            max(1, intval($size->width / $this->size)),
-            max(1, intval($size->height / $this->size))
+            max(1, round($size->width / $this->size)),
+            max(1, round($size->height / $this->size))
         );
         $image->getCore()->scaleImage($size->width, $size->height);
 

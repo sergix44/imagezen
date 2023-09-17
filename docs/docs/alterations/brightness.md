@@ -1,6 +1,6 @@
 ---
 sidebar_position: 11
-_modified_: false
+_modified_: true
 ---
 # `brightness()`
 
@@ -24,6 +24,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->brightness([int $level = 0]);
+    ->brightness(20); // increases the brightness by 20
+    
+$image = Image::make('path/to/image.jpg')
+    ->brightness(-30); // decreases the brightness by 30
 
 ```

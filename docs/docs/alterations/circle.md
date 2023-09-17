@@ -25,8 +25,13 @@ Instance of `SergiX44\ImageZen\Image`.
 
 ```php
 use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Shapes\Circle;
+use SergiX44\ImageZen\Draws\Color;
 
-$image = Image::make('path/to/image.jpg')
-    ->circle(int $radius, int $x, int $y, [?Closure $callback = null]);
+$image = Image::make('path/to/image.jpg', Backend::IMAGICK)
+    ->circle(100, 50, 50, function (Circle $draw) {
+        $draw->background(Color::red());
+        $draw->border(1, Color::black());
+    }); // draws a red circle with a black border of 1px with imagick
 
 ```

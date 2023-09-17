@@ -258,6 +258,11 @@ class Image
         return new Size($this->width(), $this->height());
     }
 
+    public function __clone(): void
+    {
+        $this->image = $this->driver->clone($this);
+    }
+
     public function __destruct()
     {
         array_map(fn ($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 9
-_modified_: false
+_modified_: true
 ---
 # `blur()`
 
@@ -24,6 +24,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->blur([int $amount = 1]);
+    ->blur(20); // applies a blur effect with an amount of 20
 
 ```

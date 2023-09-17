@@ -1,6 +1,6 @@
 ---
 sidebar_position: 4
-_modified_: false
+_modified_: true
 ---
 # `basePath()`
 
@@ -22,7 +22,6 @@ Get the image path if it was loaded from a file.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->basePath();
+$path = Image::make('path/to/image.jpg')->basePath();
 
 ```
