@@ -4,40 +4,42 @@ sidebar_position: 1
 
 # Getting Started
 
-Get started by **creating a new site**.
+## Installation
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
-
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
+Install the package from Composer:
 
 ```bash
-npm init docusaurus@latest my-website classic
+composer require sergix44/imagezen
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+:::info
+ImageZen requires PHP 8.2 or higher.
+:::
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+## Basic Usage
 
-## Start your site
+Basically all you need to do is to create an instance of the `Image` class:
 
-Run the development server:
+```php
+use SergiX44\ImageZen\Image;
 
-```bash
-cd my-website
-npm run start
+$image = Image::make('path/to/image.jpg');
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+Basically almost every method call returns the same instance, so you can chain them:
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+```php
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Format;
+
+$image = Image::make('path/to/image.jpg')
+    ->resize(300, 200)
+    ->greyscale()
+    ->blur(10);
+    
+$image->save('path/to/destination.png', Format::PNG);
+$mime = $image->mime();
+```
+
+You can see all the available methods in the [API Reference](/docs/category/available-methods).
