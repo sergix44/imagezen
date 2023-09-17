@@ -1,11 +1,17 @@
+---
+sidebar_position: 44
+_modified_: false
+---
 # `sharpen()`
 
+```php
+->sharpen([int $amount = 10]): SergiX44\ImageZen\Image
 ```
-->sharpen([int $amount = 10]): self
-```
+Sharpen the image.
+
 ## Parameters
 
-- `int $amount`: 
+- `int $amount`: The amount of sharpening (1-100)
 
 
 ## Returns

@@ -1,12 +1,18 @@
+---
+sidebar_position: 33
+_modified_: false
+---
 # `mask()`
 
+```php
+->mask(SergiX44\ImageZen\Image $mask, bool $withAlpha): SergiX44\ImageZen\Image
 ```
-->mask(SergiX44\ImageZen\Image $mask, bool $withAlpha): self
-```
+Apply a mask to the image.
+
 ## Parameters
 
-- `SergiX44\ImageZen\Image $mask`: 
-- `bool $withAlpha`: 
+- `SergiX44\ImageZen\Image $mask`: The image to use as a mask
+- `bool $withAlpha`: Whether to apply the alpha channel or not
 
 
 ## Returns

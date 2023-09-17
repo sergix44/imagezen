@@ -1,11 +1,17 @@
+---
+sidebar_position: 15
+_modified_: false
+---
 # `contrast()`
 
+```php
+->contrast(int $level): SergiX44\ImageZen\Image
 ```
-->contrast(int $level): self
-```
+Changes the contrast of the image.
+
 ## Parameters
 
-- `int $level`: 
+- `int $level`: The amount of contrast to apply (-100 to 100)
 
 
 ## Returns

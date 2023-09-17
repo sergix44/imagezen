@@ -1,11 +1,17 @@
+---
+sidebar_position: 25
+_modified_: false
+---
 # `greyscale()`
 
+```php
+->greyscale(): SergiX44\ImageZen\Image
 ```
-->greyscale(): self
-```
+Convert the image to grayscale.
+
 ## Parameters
 
-
+<i>This method has no parameters.</i>
 
 ## Returns
 

@@ -11,8 +11,6 @@
 use SergiX44\ImageZen\DefaultAlterations;
 use SergiX44\ImageZen\Image;
 
-const AVOID_OVERWRITE = false;
-
 require __DIR__ . '/vendor/autoload.php';
 
 $imageReflection = new ReflectionClass(Image::class);
@@ -32,23 +30,45 @@ $availableMethods = [
 ];
 
 /** @var ReflectionMethod $method */
-foreach ($availableMethods as $method) {
+foreach ($availableMethods as $key => $method) {
     $id = $method->getName();
 
     $file = __DIR__ . "/docs/docs/alterations/$id.md";
-    if (file_exists($file) && AVOID_OVERWRITE) {
-        continue;
+    if (file_exists($file)) {
+        $content = file_get_contents($file);
+        if (str_contains($content, '_modified_: true')) {
+            fwrite(STDOUT, "Skipping $file\n");
+            continue;
+        }
     }
 
+    // parse docblock
+    $docComment = $method->getDocComment();
+    $description = null;
+    $paramDescriptions = [];
+    $returnDescription = null;
+
+    if ($docComment) {
+        $lines = explode("\n", $docComment);
+        foreach ($lines as $line) {
+            if ($description === null && preg_match('/^\s+\*\s+(.+)/', $line, $matches)) {
+                $description = trim($matches[1]);
+            } elseif (preg_match('/@param\s+([^$]+)\s+\$(\w+)\s+(.+)/', $line, $matches)) {
+                $paramDescriptions[trim($matches[2])] = trim($matches[3]);
+            } elseif (preg_match('/@return\s+(\S+)\s+(.+)/', $line, $matches)) {
+                $returnDescription = trim($matches[2]);
+            }
+        }
+    }
 
     // parse params
-
     $paramsList = '';
     $params = '';
     /** @var ReflectionParameter $parameter */
     $parameters = $method->getParameters() ?? [];
     foreach ($parameters as $parameter) {
-        $paramsList .= "- `{$parameter->getType()} \${$parameter->getName()}`: \n";
+        $paramDesc = $paramDescriptions[$parameter->getName()] ?? '';
+        $paramsList .= "- `{$parameter->getType()} \${$parameter->getName()}`: $paramDesc\n";
 
         if ($parameter->getType() instanceof ReflectionUnionType) {
             foreach ($parameter->getType()->getTypes() as $type) {
@@ -93,20 +113,30 @@ foreach ($availableMethods as $method) {
         $returnValue = $returnValue?->getName() ?? 'void';
     }
 
-    if ($returnValue === 'self') {
+    if ($returnValue === 'SergiX44\ImageZen\Image' || $returnValue === 'self') {
         $parsedReturnValue = 'Instance of `' . Image::class . '`.';
     } elseif ($returnValue === 'void') {
         $parsedReturnValue = '`void`, no return value.';
     } else {
-        $parsedReturnValue = "`{$returnValue}`: ";
+        $parsedReturnValue = "`{$returnValue}`: $returnDescription";
+    }
+
+    if (empty($paramsList)) {
+        $paramsList = '<i>This method has no parameters.</i>';
     }
 
     $markdown = <<<MARKDOWN
+---
+sidebar_position: $key
+_modified_: false
+---
 # `$id()`
 
-```
+```php
 ->$id($params): $returnValue
 ```
+$description
+
 ## Parameters
 
 $paramsList
@@ -128,4 +158,5 @@ use SergiX44\ImageZen\Image;
 MARKDOWN;
 
     file_put_contents($file, $markdown);
+    fwrite(STDOUT, "Generated $file\n");
 }

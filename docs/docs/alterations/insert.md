@@ -1,14 +1,20 @@
+---
+sidebar_position: 27
+_modified_: false
+---
 # `insert()`
 
+```php
+->insert(SergiX44\ImageZen\Image $image, [SergiX44\ImageZen\Draws\Position $position = SergiX44\ImageZen\Draws\Position::CENTER], [?int $x = null], [?int $y = null]): SergiX44\ImageZen\Image
 ```
-->insert(SergiX44\ImageZen\Image $image, [SergiX44\ImageZen\Draws\Position $position = SergiX44\ImageZen\Draws\Position::CENTER], [?int $x = null], [?int $y = null]): self
-```
+Insert another image on top of the current image.
+
 ## Parameters
 
-- `SergiX44\ImageZen\Image $image`: 
-- `SergiX44\ImageZen\Draws\Position $position`: 
-- `?int $x`: 
-- `?int $y`: 
+- `SergiX44\ImageZen\Image $image`: The image to insert
+- `SergiX44\ImageZen\Draws\Position $position`: The position where the image should be placed
+- `?int $x`: The x-coordinate of the top-left point
+- `?int $y`: The y-coordinate of the top-left point
 
 
 ## Returns

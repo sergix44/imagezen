@@ -1,12 +1,18 @@
+---
+sidebar_position: 31
+_modified_: false
+---
 # `limitColors()`
 
+```php
+->limitColors(int $count, [?SergiX44\ImageZen\Draws\Color $matte = null]): SergiX44\ImageZen\Image
 ```
-->limitColors(int $count, [?SergiX44\ImageZen\Draws\Color $matte = null]): self
-```
+Limit the number of colors of the image.
+
 ## Parameters
 
-- `int $count`: 
-- `?SergiX44\ImageZen\Draws\Color $matte`: 
+- `int $count`: The number of colors to limit the image to
+- `?SergiX44\ImageZen\Draws\Color $matte`: The color to use for non-opaque pixels
 
 
 ## Returns

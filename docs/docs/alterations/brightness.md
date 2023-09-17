@@ -1,11 +1,17 @@
+---
+sidebar_position: 11
+_modified_: false
+---
 # `brightness()`
 
+```php
+->brightness([int $level = 0]): SergiX44\ImageZen\Image
 ```
-->brightness([int $level = 0]): self
-```
+Changes the brightness of the image.
+
 ## Parameters
 
-- `int $level`: 
+- `int $level`: The amount of brightness to apply (-100 to 100)
 
 
 ## Returns

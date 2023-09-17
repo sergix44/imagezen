@@ -1,14 +1,20 @@
+---
+sidebar_position: 22
+_modified_: false
+---
 # `fit()`
 
+```php
+->fit(int $width, [?int $height = null], [?Closure $constraints = null], [SergiX44\ImageZen\Draws\Position $position = SergiX44\ImageZen\Draws\Position::CENTER]): SergiX44\ImageZen\Image
 ```
-->fit(int $width, [?int $height = null], [?Closure $constraints = null], [SergiX44\ImageZen\Draws\Position $position = SergiX44\ImageZen\Draws\Position::CENTER]): self
-```
+Fit the image into the given dimensions.
+
 ## Parameters
 
-- `int $width`: 
-- `?int $height`: 
-- `?Closure $constraints`: 
-- `SergiX44\ImageZen\Draws\Position $position`: 
+- `int $width`: The width to fit the image into
+- `?int $height`: The height to fit the image into
+- `?Closure $constraints`: A callback that is passed an instance of SergiX44\ImageZen\Constraints
+- `SergiX44\ImageZen\Draws\Position $position`: The position where the image should be placed
 
 
 ## Returns

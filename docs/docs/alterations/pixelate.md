@@ -1,11 +1,17 @@
+---
+sidebar_position: 38
+_modified_: false
+---
 # `pixelate()`
 
+```php
+->pixelate(int $size): SergiX44\ImageZen\Image
 ```
-->pixelate(int $size): self
-```
+Pixelate a given part of the image.
+
 ## Parameters
 
-- `int $size`: 
+- `int $size`: The amount of pixelation
 
 
 ## Returns

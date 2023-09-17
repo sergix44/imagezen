@@ -1,14 +1,20 @@
+---
+sidebar_position: 16
+_modified_: false
+---
 # `crop()`
 
+```php
+->crop(int $width, int $height, [?int $x = null], [?int $y = null]): SergiX44\ImageZen\Image
 ```
-->crop(int $width, int $height, [?int $x = null], [?int $y = null]): self
-```
+Crop the image to the given dimensions. If no x and y coordinates are given, the center of the image will be used.
+
 ## Parameters
 
-- `int $width`: 
-- `int $height`: 
-- `?int $x`: 
-- `?int $y`: 
+- `int $width`: The width of the crop
+- `int $height`: The height of the crop
+- `?int $x`: The x-coordinate of the crop's center
+- `?int $y`: The y-coordinate of the crop's center
 
 
 ## Returns

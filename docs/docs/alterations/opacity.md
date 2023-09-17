@@ -1,11 +1,17 @@
+---
+sidebar_position: 35
+_modified_: false
+---
 # `opacity()`
 
+```php
+->opacity(int $transparency): SergiX44\ImageZen\Image
 ```
-->opacity(int $transparency): self
-```
+Change the opacity of the image.
+
 ## Parameters
 
-- `int $transparency`: 
+- `int $transparency`: The opacity level (0-100)
 
 
 ## Returns

@@ -1,11 +1,17 @@
+---
+sidebar_position: 24
+_modified_: false
+---
 # `gamma()`
 
+```php
+->gamma(float $correction): SergiX44\ImageZen\Image
 ```
-->gamma(float $correction): self
-```
+Apply a gamma correction to the image.
+
 ## Parameters
 
-- `float $correction`: 
+- `float $correction`: The amount of gamma correction (0.1-9.99)
 
 
 ## Returns

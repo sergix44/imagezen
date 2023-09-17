@@ -58,11 +58,27 @@ class Image
         $this->registerDefaultAlterations();
     }
 
+    /**
+     * Initialize a new Image instance from a file path or a resource.
+     *
+     * @param GdImage|Imagick|string $image The image path or resource.
+     * @param Backend $driver The backend to use, default is GD.
+     * @return Image
+     */
     public static function make(GdImage|Imagick|string $image, Backend $driver = Backend::GD): self
     {
         return new self($image, $driver);
     }
 
+    /**
+     * Initialize an empty canvas.
+     *
+     * @param int $width The image width.
+     * @param int $height The image height.
+     * @param Color|null $color The image background color.
+     * @param Backend $backend The backend to use, default is GD.
+     * @return Image
+     */
     public static function canvas(int $width, int $height, Color $color = null, Backend $backend = Backend::GD): self
     {
         $image = $backend->getDriver()->newImage($width, $height, $color ?? Color::transparent());
@@ -97,7 +113,7 @@ class Image
     }
 
     /**
-     * @param  string  $alteration
+     * @param string $alteration
      * @param ...$args
      * @return mixed
      */
@@ -113,6 +129,12 @@ class Image
         return $value ?? $this;
     }
 
+    /**
+     * Apply a filter to the image.
+     *
+     * @param Filter $filter
+     * @return mixed
+     */
     public function filter(Filter $filter)
     {
         $value = $filter->apply($this);
@@ -120,6 +142,12 @@ class Image
         return $value ?? $this;
     }
 
+    /**
+     * Store a snapshot of the image for future restoration.
+     *
+     * @param string|null $name The snapshot name.
+     * @return Image
+     */
     public function backup(?string $name = null): self
     {
         if ($name === null) {
@@ -131,6 +159,12 @@ class Image
         return $this;
     }
 
+    /**
+     * Restore a snapshot of the image.
+     *
+     * @param string|null $name The snapshot name, if null the last snapshot will be restored.
+     * @return Image
+     */
     public function reset(?string $name = null): self
     {
         if ($name !== null) {
@@ -151,22 +185,49 @@ class Image
         return $this;
     }
 
+    /**
+     * Save the image to a file.
+     *
+     * @param string $path The file path.
+     * @param Format $format The image format, default is PNG.
+     * @param int $quality The image quality, default is 90, if supported by the format.
+     * @return bool True if the image was saved successfully, false otherwise.
+     */
     public function save(string $path, Format $format = Format::PNG, int $quality = 90): bool
     {
         return $this->driver->save($this, $path, $format, $quality);
     }
 
+    /**
+     * Get the image as stream.
+     *
+     * @param Format $format The image format, default is PNG.
+     * @param int $quality The image quality, default is 90, if supported by the format.
+     * @return StreamInterface The image stream.
+     */
     public function stream(Format $format = Format::PNG, int $quality = 90): StreamInterface
     {
         return $this->driver->getStream($this, $format, $quality);
     }
 
+    /**
+     * Get the image path if it was loaded from a file.
+     *
+     * @return string|null The image path.
+     */
     public function basePath(): ?string
     {
         return $this->basePath;
     }
 
-    public function response(Format $format, int $quality = 90): ResponseInterface
+    /**
+     * Return a PSR-7 response with the image as body.
+     *
+     * @param Format $format The image format, default is PNG.
+     * @param int $quality The image quality, default is 90, if supported by the format.
+     * @return ResponseInterface The PSR-7 response.
+     */
+    public function response(Format $format = Format::PNG, int $quality = 90): ResponseInterface
     {
         return new Response(
             status: 200,
@@ -182,6 +243,11 @@ class Image
         return $this->alterate($name, ...$arguments);
     }
 
+    /**
+     * Clear the image from memory, after this the image is no longer usable.
+     *
+     * @return void
+     */
     public function destroy(): void
     {
         $this->__destruct();
@@ -194,7 +260,7 @@ class Image
 
     public function __destruct()
     {
-        array_map(fn ($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
+        array_map(fn($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
         $this->driver->clear($this);
     }
 }

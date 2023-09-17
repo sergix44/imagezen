@@ -1,11 +1,17 @@
+---
+sidebar_position: 28
+_modified_: false
+---
 # `interlace()`
 
+```php
+->interlace([bool $interlace = true]): SergiX44\ImageZen\Image
 ```
-->interlace([bool $interlace = true]): self
-```
+Interlace the image.
+
 ## Parameters
 
-- `bool $interlace`: 
+- `bool $interlace`: Whether to interlace the image or not
 
 
 ## Returns

@@ -1,12 +1,18 @@
+---
+sidebar_position: 43
+_modified_: false
+---
 # `rotate()`
 
+```php
+->rotate(float $angle, [?SergiX44\ImageZen\Draws\Color $background = null]): SergiX44\ImageZen\Image
 ```
-->rotate(float $angle, [?SergiX44\ImageZen\Draws\Color $background = null]): self
-```
+Rotate the image by a given number of degrees.
+
 ## Parameters
 
-- `float $angle`: 
-- `?SergiX44\ImageZen\Draws\Color $background`: 
+- `float $angle`: The number of degrees to rotate the image by
+- `?SergiX44\ImageZen\Draws\Color $background`: The background color to use for the uncovered area, default is transparent
 
 
 ## Returns

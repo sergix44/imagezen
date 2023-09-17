@@ -1,15 +1,21 @@
+---
+sidebar_position: 34
+_modified_: false
+---
 # `mime()`
 
-```
+```php
 ->mime(): string
 ```
+Get the image mime type.
+
 ## Parameters
 
-
+<i>This method has no parameters.</i>
 
 ## Returns
 
-`string`: 
+`string`: The image mime type
 
 ## Example
 

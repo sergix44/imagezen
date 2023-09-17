@@ -1,12 +1,18 @@
+---
+sidebar_position: 47
+_modified_: false
+---
 # `widen()`
 
+```php
+->widen(int $width, [?Closure $callback = null]): SergiX44\ImageZen\Image
 ```
-->widen(int $width, [?Closure $callback = null]): self
-```
+Widen the image to the given width.
+
 ## Parameters
 
-- `int $width`: 
-- `?Closure $callback`: 
+- `int $width`: The width to widen the image to
+- `?Closure $callback`: A callback that is passed an instance of SergiX44\ImageZen\Constraints
 
 
 ## Returns

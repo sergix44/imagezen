@@ -1,15 +1,21 @@
+---
+sidebar_position: 17
+_modified_: false
+---
 # `width()`
 
-```
+```php
 ->width(): int
 ```
+Get the image width.
+
 ## Parameters
 
-
+<i>This method has no parameters.</i>
 
 ## Returns
 
-`int`: 
+`int`: The image width
 
 ## Example
 

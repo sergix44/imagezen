@@ -1,11 +1,17 @@
+---
+sidebar_position: 9
+_modified_: false
+---
 # `blur()`
 
+```php
+->blur([int $amount = 1]): SergiX44\ImageZen\Image
 ```
-->blur([int $amount = 1]): self
-```
+Apply a blur effect to the image.
+
 ## Parameters
 
-- `int $amount`: 
+- `int $amount`: The amount of blur to apply (1-100)
 
 
 ## Returns

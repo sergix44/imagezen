@@ -1,11 +1,17 @@
+---
+sidebar_position: 48
+_modified_: false
+---
 # `destroy()`
 
-```
+```php
 ->destroy(): void
 ```
+Clear the image from memory, after this the image is no longer usable.
+
 ## Parameters
 
-
+<i>This method has no parameters.</i>
 
 ## Returns
 

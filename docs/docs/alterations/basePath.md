@@ -1,15 +1,21 @@
+---
+sidebar_position: 4
+_modified_: false
+---
 # `basePath()`
 
-```
+```php
 ->basePath(): string
 ```
+Get the image path if it was loaded from a file.
+
 ## Parameters
 
-
+<i>This method has no parameters.</i>
 
 ## Returns
 
-`string`: 
+`string`: The image path.
 
 ## Example
 

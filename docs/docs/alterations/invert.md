@@ -1,11 +1,17 @@
+---
+sidebar_position: 29
+_modified_: false
+---
 # `invert()`
 
+```php
+->invert(): SergiX44\ImageZen\Image
 ```
-->invert(): self
-```
+Invert the colors of the image.
+
 ## Parameters
 
-
+<i>This method has no parameters.</i>
 
 ## Returns
 

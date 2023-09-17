@@ -1,11 +1,17 @@
+---
+sidebar_position: 23
+_modified_: false
+---
 # `flip()`
 
+```php
+->flip([SergiX44\ImageZen\Draws\Flip $flip = SergiX44\ImageZen\Draws\Flip::HORIZONTAL]): SergiX44\ImageZen\Image
 ```
-->flip([SergiX44\ImageZen\Draws\Flip $flip = SergiX44\ImageZen\Draws\Flip::HORIZONTAL]): self
-```
+Flip the image along the horizontal or vertical axis.
+
 ## Parameters
 
-- `SergiX44\ImageZen\Draws\Flip $flip`: 
+- `SergiX44\ImageZen\Draws\Flip $flip`: The direction to flip the image
 
 
 ## Returns
