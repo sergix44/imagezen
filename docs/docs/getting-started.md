@@ -15,9 +15,12 @@ fully compatible with PHP 8 and named arguments. It also has some new features a
 - **Driver Switch**: You can easily switch between GD and Imagick drivers, ImageZen will take care of converting from
   one to another. See [Driver Switching](/docs/supported-formats#switching-backends-on-the-fly) for more information.
 - **Extensible**: ImageZen is designed to be extended and customised, so you can easily add your own image manipulation
-  functionality. See [Custom Alterations](/docs/extend) for more information.
+  functionality. See [Extend](/docs/extend) for more information.
 - **Fast**: Some alteration has been refactored to be faster than the original library.
-- **Strict Types**: ImageZen is fully typed, so you can use it in your typed projects without any problem.
+- **Strict Types**: ImageZen is fully typed, and leverages Enums and Named Arguments to make the API more readable and
+  easy to use.
+- **Tested**: ImageZen is fully tested and output images are compared to reference images to ensure that the output is
+  correct and consistent.
 
 ## Installation
 

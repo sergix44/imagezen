@@ -1,6 +1,6 @@
 ---
 sidebar_position: 21
-_modified_: false
+_modified_: true
 ---
 # `filesize()`
 
@@ -22,7 +22,6 @@ Get the image filesize in bytes.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->filesize();
+$filesize = Image::make('path/to/image.jpg')->filesize(); // filesize in bytes
 
 ```
