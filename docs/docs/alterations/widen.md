@@ -1,5 +1,5 @@
 ---
-sidebar_position: 47
+sidebar_position: 48
 _modified_: false
 ---
 # `widen()`

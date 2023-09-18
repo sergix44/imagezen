@@ -1,6 +1,6 @@
 ---
 sidebar_position: 14
-_modified_: false
+_modified_: true
 ---
 # `colorize()`
 
@@ -26,6 +26,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->colorize(int $red, int $green, int $blue);
+    ->colorize(80, 0, 0); // add red color
 
 ```

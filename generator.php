@@ -18,6 +18,7 @@ $imageReflection = new ReflectionClass(Image::class);
 $availableMethods = [
     $imageReflection->getMethod('make'),
     $imageReflection->getMethod('canvas'),
+    $imageReflection->getMethod('register'),
     $imageReflection->getMethod('width'),
     $imageReflection->getMethod('height'),
     $imageReflection->getMethod('basePath'),
@@ -38,6 +39,7 @@ foreach ($availableMethods as $key => $method) {
         $content = file_get_contents($file);
         if (str_contains($content, '_modified_: true')) {
             fwrite(STDOUT, "Skipping $file\n");
+
             continue;
         }
     }
@@ -81,17 +83,21 @@ foreach ($availableMethods as $key => $method) {
         }
 
         if ($parameter->isOptional()) {
-            $val = $parameter->getDefaultValue() ?? 'null';
-            if (enum_exists($parameter->getType()->getName())) {
-                $e = new ReflectionEnumBackedCase($parameter->getType()->getName(), $val->name);
-                $val = "{$e->getDeclaringClass()->getName()}::{$e->getName()}";
-            }
+            if ($parameter->isVariadic()) {
+                $params .= "{$parameter->getType()} ...\${$parameter->getName()}";
+            } else {
+                $val = $parameter->getDefaultValue() ?? 'null';
+                if (enum_exists($parameter->getType()->getName())) {
+                    $e = new ReflectionEnumBackedCase($parameter->getType()->getName(), $val->name);
+                    $val = "{$e->getDeclaringClass()->getName()}::{$e->getName()}";
+                }
 
-            if (is_bool($val)) {
-                $val = $val ? 'true' : 'false';
-            }
+                if (is_bool($val)) {
+                    $val = $val ? 'true' : 'false';
+                }
 
-            $params .= "[{$parameter->getType()} \${$parameter->getName()} = {$val}]";
+                $params .= "[{$parameter->getType()} \${$parameter->getName()} = {$val}]";
+            }
         } else {
             $params .= "{$parameter->getType()} \${$parameter->getName()}";
         }

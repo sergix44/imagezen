@@ -1,5 +1,5 @@
 ---
-sidebar_position: 39
+sidebar_position: 40
 _modified_: false
 ---
 # `polygon()`

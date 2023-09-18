@@ -1,6 +1,6 @@
 ---
 sidebar_position: 15
-_modified_: false
+_modified_: true
 ---
 # `contrast()`
 
@@ -24,6 +24,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->contrast(int $level);
+    ->contrast(50); // increase contrast
+    
+$image = Image::make('path/to/image.jpg')
+    ->contrast(-50); // decrease contrast
 
 ```

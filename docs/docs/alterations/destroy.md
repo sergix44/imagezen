@@ -1,6 +1,6 @@
 ---
 sidebar_position: 48
-_modified_: false
+_modified_: true
 ---
 # `destroy()`
 
@@ -24,5 +24,6 @@ use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
     ->destroy();
+// $image is no longer usable
 
 ```

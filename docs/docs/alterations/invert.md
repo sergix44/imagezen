@@ -1,5 +1,5 @@
 ---
-sidebar_position: 29
+sidebar_position: 30
 _modified_: false
 ---
 # `invert()`

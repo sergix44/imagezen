@@ -1,6 +1,6 @@
 ---
 sidebar_position: 12
-_modified_: false
+_modified_: true
 ---
 # `ellipse()`
 
@@ -26,8 +26,12 @@ Instance of `SergiX44\ImageZen\Image`.
 
 ```php
 use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Shapes\Ellipse;
 
 $image = Image::make('path/to/image.jpg')
-    ->ellipse(int $width, int $height, int $x, int $y, [?Closure $callback = null]);
+    ->ellipse(100, 50, 50, 50, function (Ellipse $draw) {
+        $draw->background(Color::red());
+        $draw->border(1, Color::black());
+    }); // draws a red ellipse with a black border of 1px
 
 ```

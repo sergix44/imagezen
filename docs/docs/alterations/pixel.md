@@ -1,5 +1,5 @@
 ---
-sidebar_position: 37
+sidebar_position: 38
 _modified_: false
 ---
 # `pixel()`

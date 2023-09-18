@@ -86,18 +86,28 @@ class Image
         return new self($image, $backend);
     }
 
-    public function register(string $class): self
+    /**
+     * Register a new alteration.
+     *
+     * @param class-string ...$classes A class or a list of classes extending the Alteration base class.
+     * @return Image
+     * @throws AlterationAlreadyRegistered
+     * @throws InvalidAlterationException
+     */
+    public function register(string ...$classes): self
     {
-        if (!is_subclass_of($class, Alteration::class)) {
-            throw new InvalidAlterationException();
-        }
-        $id = $class::$id;
+        foreach ($classes as $class) {
+            if (!is_subclass_of($class, Alteration::class)) {
+                throw new InvalidAlterationException();
+            }
+            $id = $class::$id;
 
-        if (array_key_exists($id, $this->alterations)) {
-            throw new AlterationAlreadyRegistered();
-        }
+            if (array_key_exists($id, $this->alterations)) {
+                throw new AlterationAlreadyRegistered();
+            }
 
-        $this->alterations[$class::$id] = $class;
+            $this->alterations[$class::$id] = $class;
+        }
 
         return $this;
     }
@@ -265,7 +275,7 @@ class Image
 
     public function __destruct()
     {
-        array_map(fn ($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
+        array_map(fn($snapshot) => $this->driver->clear(raw: $snapshot), $this->snapshots);
         $this->driver->clear($this);
     }
 }

@@ -4,6 +4,21 @@ sidebar_position: 1
 
 # Getting Started
 
+## Why ImageZen?
+
+ImageZen is a PHP image manipulation library that is designed to be simple and easy to use. It's built to be fast and
+lightweight, and it's focused on doing one thing and doing it well: image manipulation.
+
+ImageZen is a refactored fork of the popular [Intervention Image](https://github.com/intervention/image) library, it's
+fully compatible with PHP 8 and named arguments. It also has some new features and improvements.
+
+- **Driver Switch**: You can easily switch between GD and Imagick drivers, ImageZen will take care of converting from
+  one to another. See [Driver Switching](/docs/supported-formats#switching-backends-on-the-fly) for more information.
+- **Extensible**: ImageZen is designed to be extended and customised, so you can easily add your own image manipulation
+  functionality. See [Custom Alterations](/docs/extend) for more information.
+- **Fast**: Some alteration has been refactored to be faster than the original library.
+- **Strict Types**: ImageZen is fully typed, so you can use it in your typed projects without any problem.
+
 ## Installation
 
 Install the package from Composer:
