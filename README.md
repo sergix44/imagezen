@@ -5,7 +5,7 @@
 > Yet another image manipulation library for PHP
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sergix44/imagezen.svg?style=flat-square)](https://packagist.org/packages/sergix44/imagezen)
-[![Tests](https://img.shields.io/github/actions/workflow/status/sergix44/imagezen/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/sergix44/imagezen/actions/workflows/run-tests.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/sergix44/imagezen/run-tests.yml?branch=master&label=tests&style=flat-square)](https://github.com/sergix44/imagezen/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/sergix44/imagezen.svg?style=flat-square)](https://packagist.org/packages/sergix44/imagezen)
 
 ImageZen is a PHP library that allows you to manipulate images in a simple way.
