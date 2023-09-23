@@ -19,8 +19,6 @@ enum Position: string
     case LEFT = 'left';
     case RIGHT = 'right';
 
-
-
     public function toImagickGravity(): int
     {
         return match ($this) {
