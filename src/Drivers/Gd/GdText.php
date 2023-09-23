@@ -71,4 +71,56 @@ class GdText extends Text
     {
         return $this->internalFont;
     }
+
+    private function linebreaks4imagettftext(
+        $size,
+        $angle,
+        $fontfile,
+        $text,
+        $maximumWidth,
+        $lineBreakCharacter = PHP_EOL
+    ): string {
+        // create an array with all the words
+        $words = explode(' ', $text);
+
+        // process all our words to generate $textWithLineBreaks
+        $textWithLineBreaks = '';
+        $currentLine = '';
+        foreach ($words as $position => $word) {
+            // place the first word into $currentLine without any processing (we
+            // always want to include the first word on the first line--obviously)
+            if ($position === 0) {
+                $currentLine = $word;
+            } else {
+                // calculate the text's size if we were to add the word
+                $textDimensions = imagettfbbox(
+                    $size,
+                    $angle,
+                    $fontfile,
+                    $currentLine.' '.$word
+                );
+                $textLeft = min($textDimensions[0], $textDimensions[6]);
+                $textRight = max($textDimensions[2], $textDimensions[4]);
+                $textWidth = $textRight - $textLeft;
+                if ($textWidth > $maximumWidth) {
+                    // the text is too wide with the added word so we add a line
+                    // break then start a new line with only the added word
+                    $textWithLineBreaks .= $currentLine;
+                    $textWithLineBreaks .= $lineBreakCharacter;
+
+                    $currentLine = $word;
+                } else {
+                    // we have space on the current line for the added word so we
+                    // add a space then the word
+                    $currentLine .= ' ';
+                    $currentLine .= $word;
+                }
+            }
+        }
+        // the current line is still unadded to $textWithLineBreaks so we add it
+        $textWithLineBreaks .= $currentLine;
+
+        // return $text with line breaks added
+        return $textWithLineBreaks;
+    }
 }

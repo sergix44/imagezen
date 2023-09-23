@@ -13,6 +13,7 @@ use SergiX44\ImageZen\Drivers\Imagick\Imagick;
 use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Drivers\Imagick\ImagickText;
 use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Shapes\Rectangle;
 
 class WriteText extends Alteration implements GdAlteration, ImagickAlteration
 {
@@ -43,6 +44,23 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
 
         $color = $driver->parseColor($text->color);
         $box = $text->getBox();
+
+        if ($text->background !== null) {
+            $lines = explode("\n", $text->parsedText());
+            $bgY = $y;
+            foreach ($lines as $line) {
+                $box = $text->getBox();
+                $image->rectangle(
+                    $x,
+                    $bgY,
+                    $x + $box->upperRight->x - 1,
+                    $bgY + $box->upperRight->y - 1,
+                    fn (Rectangle $r) => $r->background($text->background)
+                );
+                $bgY -= $box->upperRight->y - $text->getPointSize() * 0.75;
+            }
+        }
+
         if ($text->hasFont()) {
             if ($text->angle !== 0 || $text->align !== Position::TOP_LEFT) {
                 switch ($text->align) {
@@ -255,6 +273,10 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                 $y += $dimensions['characterHeight'];
 
                 break;
+        }
+
+        if ($text->background !== null) {
+            $draw->setTextUnderColor($driver->parseColor($text->background)->getPixel());
         }
 
         $image->getCore()->annotateImage($draw, $x, $y, $text->angle * (-1), $this->text);

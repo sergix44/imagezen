@@ -598,3 +598,35 @@ it('can trim an image', function ($driver, $file) {
         ->imageSimilarTo($expected);
     unlink($out);
 })->with('drivers', 'fruit');
+
+it('can draw a text with a background', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_background', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello World!", 100, 100, function (Text $text) {
+            $text->size(18)
+                ->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can draw a text with a background with new lines', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_background_newlines', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello \n World!", 100, 100, function (Text $text) {
+            $text->size(18)
+                ->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');

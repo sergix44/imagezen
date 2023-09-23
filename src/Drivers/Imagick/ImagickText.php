@@ -23,7 +23,7 @@ class ImagickText extends Text
         $draw->setFont($this->fontPath);
         $draw->setFontSize($this->size);
         $draw->setTextKerning($this->kerning);
-        $draw->setGravity($this->align);
+        $draw->setGravity($this->align->toImagickGravity());
         $draw->setStrokeWidth(0);
         $draw->setStrokeAntialias(false);
         $draw->setStrokeOpacity(1);
