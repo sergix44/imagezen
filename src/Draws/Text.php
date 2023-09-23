@@ -4,7 +4,7 @@ namespace SergiX44\ImageZen\Draws;
 
 abstract class Text
 {
-    protected string $text;
+    public string $text;
     public ?string $fontPath;
     public int $size;
     public Color $color;

@@ -46,18 +46,16 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
         $box = $text->getBox();
 
         if ($text->background !== null) {
-            $lines = explode("\n", $text->parsedText());
             $bgY = $y;
-            foreach ($lines as $line) {
-                $box = $text->getBox();
+            foreach ($text->getMultiLineBoxes() as $lineBox) {
                 $image->rectangle(
                     $x,
                     $bgY,
-                    $x + $box->upperRight->x - 1,
-                    $bgY + $box->upperRight->y - 1,
+                    $x + $lineBox->upperRight->x,
+                    $bgY + $lineBox->upperRight->y - 1,
                     fn (Rectangle $r) => $r->background($text->background)
                 );
-                $bgY -= $box->upperRight->y - $text->getPointSize() * 0.75;
+                $bgY -= $box->upperRight->y - ($text->getPointSize() * 0.7);
             }
         }
 
