@@ -10,14 +10,20 @@ abstract class Text
     public Color $color;
     public Position $align;
     public int $angle;
+    public float $stroke = 0;
+    public Color $strokeColor;
+    public ?Color $background = null;
+    public int $shadowX = 0;
+    public int $shadowY = 0;
+    public ?Color $shadowColor = null;
 
     /**
-     * @param  string  $text
-     * @param  int  $size
-     * @param  Color|null  $color
-     * @param  string|null  $fontPath
-     * @param  Position  $align
-     * @param  int  $angle
+     * @param string $text
+     * @param int $size
+     * @param Color|null $color
+     * @param string|null $fontPath
+     * @param Position $align
+     * @param int $angle
      */
     public function __construct(
         string $text,
@@ -28,7 +34,7 @@ abstract class Text
         int $angle = 0,
     ) {
         $this->text = $text;
-        $this->fontPath = $fontPath ?? __DIR__.'/../../assets/LiberationSans-Regular.ttf';
+        $this->fontPath = $fontPath ?? __DIR__ . '/../../assets/LiberationSans-Regular.ttf';
         $this->size = $size;
         $this->color = $color ?? Color::black();
         $this->align = $align;
@@ -70,6 +76,35 @@ abstract class Text
         $this->angle = $angle;
 
         return $this;
+    }
+
+    public function stroke(float $stroke, ?Color $color = null): self
+    {
+        $this->stroke = $stroke;
+        $this->strokeColor = $color ?? Color::white();
+
+        return $this;
+    }
+
+    public function background(?Color $color = null): self
+    {
+        $this->background = $color ?? Color::white();
+
+        return $this;
+    }
+
+    public function shadow(int $x, int $y, ?Color $color = null): self
+    {
+        $this->shadowX = $x;
+        $this->shadowY = $y;
+        $this->shadowColor = $color ?? Color::black();
+
+        return $this;
+    }
+
+    public function hasShadow(): bool
+    {
+        return $this->shadowX !== 0 || $this->shadowY !== 0;
     }
 
     public function hasFont(): bool
