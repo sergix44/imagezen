@@ -1,6 +1,6 @@
 ---
 sidebar_position: 11
-_modified_: false
+_modified_: true
 ---
 # `heavyBlur()`
 
@@ -24,6 +24,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->heavyBlur([int $amount = 10]);
+    ->heavyBlur(10); // apply a heavy blur effect
 
 ```

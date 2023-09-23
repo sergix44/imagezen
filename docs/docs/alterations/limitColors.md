@@ -1,6 +1,6 @@
 ---
 sidebar_position: 32
-_modified_: false
+_modified_: true
 ---
 # `limitColors()`
 
@@ -25,6 +25,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->limitColors(int $count, [?SergiX44\ImageZen\Draws\Color $matte = null]);
+    ->limitColors(255); // limit the image to 255 colors
+    
+$image = Image::make('path/to/image.jpg')
+    ->limitColors(255, \SergiX44\ImageZen\Draws\Color::red()); // limit the image to 255 colors and use red as the matte color
 
 ```

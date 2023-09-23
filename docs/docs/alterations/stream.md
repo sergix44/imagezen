@@ -1,6 +1,6 @@
 ---
 sidebar_position: 8
-_modified_: false
+_modified_: true
 ---
 # `stream()`
 
@@ -8,6 +8,8 @@ _modified_: false
 ->stream([SergiX44\ImageZen\Format $format = SergiX44\ImageZen\Format::PNG], [int $quality = 90]): Psr\Http\Message\StreamInterface
 ```
 Get the image as stream.
+
+See [Supported Formats](/docs/supported-formats#supported-formats-1) for a list of supported formats.
 
 ## Parameters
 
@@ -24,7 +26,13 @@ Get the image as stream.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->stream([SergiX44\ImageZen\Format $format = SergiX44\ImageZen\Format::PNG], [int $quality = 90]);
+$stream = Image::make('path/to/image.jpg')->stream();
+
+$stream = Image::make('path/to/image.jpg')
+    ->stream(\SergiX44\ImageZen\Format::PNG); // save the image as PNG
+    
+$stream = Image::make('path/to/image.jpg')
+    ->stream(\SergiX44\ImageZen\Format::\SergiX44\ImageZen\JPG, 50); // save the image as JPG with a quality of 50
+
 
 ```

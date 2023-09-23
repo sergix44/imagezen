@@ -1,6 +1,6 @@
 ---
 sidebar_position: 38
-_modified_: false
+_modified_: true
 ---
 # `pixel()`
 
@@ -26,6 +26,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->pixel(SergiX44\ImageZen\Draws\Color $color, int $x, int $y);
+    ->pixel(\SergiX44\ImageZen\Draws\Color::red(), 10, 10); // set the color of the pixel at (10, 10) to red
 
 ```

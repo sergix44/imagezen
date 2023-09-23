@@ -1,6 +1,6 @@
 ---
 sidebar_position: 23
-_modified_: false
+_modified_: true
 ---
 # `fit()`
 
@@ -27,6 +27,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->fit(int $width, [?int $height = null], [?Closure $constraints = null], [SergiX44\ImageZen\Draws\Position $position = SergiX44\ImageZen\Draws\Position::CENTER]);
+    ->fit(100, 100, fn (\SergiX44\ImageZen\Draws\Constraint $constraint) => $constraint->upsize();, SergiX44\ImageZen\Draws\Position::TOP_LEFT);
 
 ```

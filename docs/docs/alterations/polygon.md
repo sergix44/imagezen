@@ -1,6 +1,6 @@
 ---
 sidebar_position: 40
-_modified_: false
+_modified_: true
 ---
 # `polygon()`
 
@@ -25,6 +25,12 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->polygon(array $points, [?Closure $callback = null]);
+    ->polygon([
+        [0, 0],
+        [100, 100],
+        [100, 0],
+    ], function (\SergiX44\ImageZen\Shapes\Polygon $polygon)  {
+        $polygon->border(5, \SergiX44\ImageZen\Draws\Color::red());
+    }; // draw a red polygon with 3 points
 
 ```

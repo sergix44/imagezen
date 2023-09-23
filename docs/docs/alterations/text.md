@@ -1,6 +1,6 @@
 ---
 sidebar_position: 46
-_modified_: false
+_modified_: true
 ---
 # `text()`
 
@@ -27,6 +27,12 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->text(string $text, int $x, int $y, [?Closure $callback = null]);
+    ->text('The quick brown fox jumps over the lazy dog.', 0, 0, function (\SergiX44\ImageZen\Draws\Text $text) {
+        $text->font('path/to/font.ttf');
+        $text->size(24);
+        $text->color(\SergiX44\ImageZen\Draws\Color::blue());
+        $text->align(\SergiX44\ImageZen\Draws\Position::CENTER);
+        $text->angle(45);
+    });
 
 ```

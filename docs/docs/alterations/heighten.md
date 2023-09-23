@@ -1,6 +1,6 @@
 ---
 sidebar_position: 27
-_modified_: false
+_modified_: true
 ---
 # `heighten()`
 
@@ -25,6 +25,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->heighten(int $height, [?Closure $callback = null]);
+    ->heighten(720);
+    
+$image = Image::make('path/to/image.jpg')
+    ->heighten(720, fn (\SergiX44\ImageZen\Draws\Constraint $constraint) => $constraint->aspectRatio(););
 
 ```

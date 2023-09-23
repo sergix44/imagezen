@@ -1,6 +1,6 @@
 ---
 sidebar_position: 34
-_modified_: false
+_modified_: true
 ---
 # `mask()`
 
@@ -24,7 +24,9 @@ Instance of `SergiX44\ImageZen\Image`.
 ```php
 use SergiX44\ImageZen\Image;
 
+$mask = Image::make('path/to/mask.jpg');
+
 $image = Image::make('path/to/image.jpg')
-    ->mask(SergiX44\ImageZen\Image $mask, bool $withAlpha);
+    ->mask($mask, false); // apply the mask without the alpha channel
 
 ```

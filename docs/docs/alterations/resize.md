@@ -1,6 +1,6 @@
 ---
 sidebar_position: 42
-_modified_: false
+_modified_: true
 ---
 # `resize()`
 
@@ -26,6 +26,17 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->resize([?int $width = null], [?int $height = null], [?Closure $constraints = null]);
+    ->resize(100, 100); // resize the image to 100x100 pixels
+    
+$image = Image::make('path/to/image.jpg')
+    ->resize(null, 100); // resize the image to a width of 100 pixels and constrain aspect ratio (auto height)
+    
+$image = Image::make('path/to/image.jpg')
+    ->resize(100, null); // resize the image to a height of 100 pixels and constrain aspect ratio (auto width)
+    
+$image = Image::make('path/to/image.jpg')
+    ->resize(100, 100, function (\SergiX44\ImageZen\Constraints $constraints) {
+        $constraints->aspectRatio(); // constrain aspect ratio (auto width and height)
+    }); // resize the image to 100x100 pixels and constrain aspect ratio (auto width and height)
 
 ```

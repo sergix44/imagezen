@@ -1,6 +1,6 @@
 ---
 sidebar_position: 29
-_modified_: false
+_modified_: true
 ---
 # `interlace()`
 
@@ -24,6 +24,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->interlace([bool $interlace = true]);
+    ->interlace(true); // interlace the image
+    
+$image = Image::make('path/to/image.jpg')
+    ->interlace(false); // don't interlace the image
 
 ```

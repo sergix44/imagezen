@@ -1,6 +1,6 @@
 ---
 sidebar_position: 44
-_modified_: false
+_modified_: true
 ---
 # `rotate()`
 
@@ -25,6 +25,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->rotate(float $angle, [?SergiX44\ImageZen\Draws\Color $background = null]);
+    ->rotate(45); // rotate the image by 45 degrees
+    
+$image = Image::make('path/to/image.jpg')
+    ->rotate(45, \SergiX44\ImageZen\Draws\Color::red()); // rotate the image by 45 degrees and set the background color to red
 
 ```

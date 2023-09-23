@@ -1,6 +1,6 @@
 ---
 sidebar_position: 36
-_modified_: false
+_modified_: true
 ---
 # `opacity()`
 
@@ -24,6 +24,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->opacity(int $transparency);
+    ->opacity(50); // set the opacity to 50%
 
 ```

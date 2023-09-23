@@ -1,6 +1,6 @@
 ---
 sidebar_position: 35
-_modified_: false
+_modified_: true
 ---
 # `mime()`
 
@@ -22,7 +22,6 @@ Get the image mime type.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->mime();
+$mime = Image::make('path/to/image.jpg')->mime();
 
 ```

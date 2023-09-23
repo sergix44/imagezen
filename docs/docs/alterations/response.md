@@ -1,6 +1,6 @@
 ---
 sidebar_position: 9
-_modified_: false
+_modified_: true
 ---
 # `response()`
 
@@ -24,7 +24,12 @@ Return a PSR-7 response with the image as body.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->response([SergiX44\ImageZen\Format $format = SergiX44\ImageZen\Format::PNG], [int $quality = 90]);
+class MyController
+{
+    public function myImage(): Psr\Http\Message\ResponseInterface
+    {
+        return Image::make('path/to/image.jpg')->response();
+    }
+}
 
 ```

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 45
-_modified_: false
+_modified_: true
 ---
 # `sharpen()`
 
@@ -24,6 +24,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->sharpen([int $amount = 10]);
+    ->sharpen(20); // sharpen the image by 20%
 
 ```

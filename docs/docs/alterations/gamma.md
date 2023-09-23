@@ -1,6 +1,6 @@
 ---
 sidebar_position: 25
-_modified_: false
+_modified_: true
 ---
 # `gamma()`
 
@@ -24,6 +24,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->gamma(float $correction);
+    ->gamma(1.2); // apply a gamma correction of 1.2
 
 ```

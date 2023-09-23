@@ -1,6 +1,6 @@
 ---
 sidebar_position: 6
-_modified_: false
+_modified_: true
 ---
 # `filter()`
 
@@ -9,9 +9,11 @@ _modified_: false
 ```
 Apply a filter to the image.
 
+See [Filters](/docs/extend#filters) for more information.
+
 ## Parameters
 
-- `SergiX44\ImageZen\Filter $filter`: 
+- `SergiX44\ImageZen\Filter $filter`: An instance of a class implementing the `SergiX44\ImageZen\Filter` interface.
 
 
 ## Returns
@@ -24,6 +26,6 @@ Apply a filter to the image.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->filter(SergiX44\ImageZen\Filter $filter);
+    ->filter(new MyCustomFilter());
 
 ```

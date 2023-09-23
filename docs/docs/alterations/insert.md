@@ -1,6 +1,6 @@
 ---
 sidebar_position: 28
-_modified_: false
+_modified_: true
 ---
 # `insert()`
 
@@ -26,7 +26,9 @@ Instance of `SergiX44\ImageZen\Image`.
 ```php
 use SergiX44\ImageZen\Image;
 
+$toInsert = Image::make('path/to/image.jpg');
+
 $image = Image::make('path/to/image.jpg')
-    ->insert(SergiX44\ImageZen\Image $image, [SergiX44\ImageZen\Draws\Position $position = SergiX44\ImageZen\Draws\Position::CENTER], [?int $x = null], [?int $y = null]);
+    ->insert($toInsert, \SergiX44\ImageZen\Draws\Position::TOP_RIGHT);
 
 ```

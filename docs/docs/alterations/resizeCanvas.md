@@ -1,6 +1,6 @@
 ---
 sidebar_position: 43
-_modified_: false
+_modified_: true
 ---
 # `resizeCanvas()`
 
@@ -28,6 +28,16 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->resizeCanvas(?int $width, ?int $height, [SergiX44\ImageZen\Draws\Position $anchor = SergiX44\ImageZen\Draws\Position::CENTER], [bool $relative = false], [?SergiX44\ImageZen\Draws\Color $background = null]);
+    ->resizeCanvas(100, 100); // resize the image to 100x100 pixels without changing the aspect ratio
+
+$image = Image::make('path/to/image.jpg')
+    ->resizeCanvas(100, 100, \SergiX44\ImageZen\Draws\Position::CENTER); // resize the image to 100x100 pixels without changing the aspect ratio and center the image
+
+$image = Image::make('path/to/image.jpg')
+    ->resizeCanvas(100, 100, \SergiX44\ImageZen\Draws\Position::CENTER, true); // resize the image to 100x100 pixels without changing the aspect ratio and center the image, but only if it is larger than 100x100 pixels
+
+$image = Image::make('path/to/image.jpg')
+    ->resizeCanvas(100, 100, \SergiX44\ImageZen\Draws\Position::CENTER, true, \SergiX44\ImageZen\Draws\Color::red()); // resize the image to 100x100 pixels without changing the aspect ratio and center the image, but only if it is larger than 100x100 pixels and set the uncovered area to red
+
 
 ```

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 19
-_modified_: false
+_modified_: true
 ---
 # `height()`
 
@@ -22,7 +22,6 @@ Get the image height.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->height();
+$height = Image::make('path/to/image.jpg')->height();
 
 ```

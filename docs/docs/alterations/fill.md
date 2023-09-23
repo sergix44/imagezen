@@ -1,6 +1,6 @@
 ---
 sidebar_position: 22
-_modified_: false
+_modified_: true
 ---
 # `fill()`
 
@@ -25,7 +25,13 @@ Instance of `SergiX44\ImageZen\Image`.
 ```php
 use SergiX44\ImageZen\Image;
 
+// with another image
+$filling = Image::make('path/to/another_image.jpg');
+
+// or with a color
+$filling = new SergiX44\ImageZen\Draws\Color('#00ff00');
+
 $image = Image::make('path/to/image.jpg')
-    ->fill(SergiX44\ImageZen\Draws\Color|SergiX44\ImageZen\Image $filling, [?int $x = null], [?int $y = null]);
+    ->fill($filling, 10, 10);
 
 ```

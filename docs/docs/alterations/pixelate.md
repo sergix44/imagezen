@@ -1,6 +1,6 @@
 ---
 sidebar_position: 39
-_modified_: false
+_modified_: true
 ---
 # `pixelate()`
 
@@ -24,6 +24,6 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->pixelate(int $size);
+    ->pixelate(10); // pixelate the whole image
 
 ```

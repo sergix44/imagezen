@@ -1,6 +1,6 @@
 ---
 sidebar_position: 0
-_modified_: false
+_modified_: true
 ---
 # `make()`
 
@@ -24,7 +24,16 @@ Instance of `SergiX44\ImageZen\Image`.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->make(GdImage|Imagick|string $image, [SergiX44\ImageZen\Backend $driver = SergiX44\ImageZen\Backend::GD]);
+// with default driver
+$image = Image::make('path/to/image.jpg');
 
+// with Imagick driver
+$image = Image::make('path/to/image.jpg', \SergiX44\ImageZen\Backend::IMAGICK);
+
+// from an url
+$image = Image::make('https://example.com/image.jpg');
+
+// from a resource
+$gdResource = // ...
+$image = Image::make($gdResource);
 ```

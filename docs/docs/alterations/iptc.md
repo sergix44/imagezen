@@ -1,6 +1,6 @@
 ---
 sidebar_position: 31
-_modified_: false
+_modified_: true
 ---
 # `iptc()`
 
@@ -23,7 +23,10 @@ Retrieve the iptc data from the image.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->iptc([?string $key = null]);
+$ipcArray = Image::make('path/to/image.jpg')
+    ->iptc(); // retrieve all iptc data
+    
+$ipcValue = Image::make('path/to/image.jpg')
+    ->iptc('ObjectName'); // retrieve the ObjectName iptc value
 
 ```

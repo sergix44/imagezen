@@ -1,6 +1,6 @@
 ---
 sidebar_position: 41
-_modified_: false
+_modified_: true
 ---
 # `rectangle()`
 
@@ -28,6 +28,8 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->rectangle(int $x1, int $y1, int $x2, int $y2, [?Closure $callback = null]);
+    ->rectangle(0, 0, 100, 100, function (\SergiX44\ImageZen\Shapes\Rectangle $rectangle)  {
+        $rectangle->border(5, \SergiX44\ImageZen\Draws\Color::red());
+    }; // draw a red rectangle from (0, 0) to (100, 100)
 
 ```

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 7
-_modified_: false
+_modified_: true
 ---
 # `save()`
 
@@ -8,6 +8,8 @@ _modified_: false
 ->save(string $path, [SergiX44\ImageZen\Format $format = SergiX44\ImageZen\Format::PNG], [int $quality = 90]): bool
 ```
 Save the image to a file.
+
+See [Supported Formats](/docs/supported-formats#supported-formats-1) for a list of supported formats.
 
 ## Parameters
 
@@ -25,7 +27,10 @@ Save the image to a file.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->save(string $path, [SergiX44\ImageZen\Format $format = SergiX44\ImageZen\Format::PNG], [int $quality = 90]);
+$success = Image::make('path/to/image.jpg')
+    ->save('path/to/image.png', \SergiX44\ImageZen\Format::PNG); // save the image as PNG
+    
+$success = Image::make('path/to/image.jpg')
+    ->save('path/to/image.png', \SergiX44\ImageZen\Format::\SergiX44\ImageZen\JPG, 50); // save the image as JPG with a quality of 50
 
 ```

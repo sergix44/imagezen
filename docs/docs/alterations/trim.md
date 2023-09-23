@@ -1,6 +1,6 @@
 ---
 sidebar_position: 47
-_modified_: false
+_modified_: true
 ---
 # `trim()`
 
@@ -27,6 +27,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->trim([SergiX44\ImageZen\Draws\TrimFrom $base = SergiX44\ImageZen\Draws\TrimFrom::TOP_LEFT], SergiX44\ImageZen\Draws\Position|array|null $away, [int $tolerance = 0], [int $feather = 0]);
+    ->trim(); // trim away all sides
+
+$image = Image::make('path/to/image.jpg')
+    ->trim(SergiX44\ImageZen\Draws\TrimFrom::TOP_LEFT); // trim away top left
 
 ```

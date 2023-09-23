@@ -1,6 +1,6 @@
 ---
 sidebar_position: 18
-_modified_: false
+_modified_: true
 ---
 # `width()`
 
@@ -22,7 +22,6 @@ Get the image width.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->width();
+$width = Image::make('path/to/image.jpg')->width();
 
 ```

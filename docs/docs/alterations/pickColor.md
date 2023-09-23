@@ -1,6 +1,6 @@
 ---
 sidebar_position: 37
-_modified_: false
+_modified_: true
 ---
 # `pickColor()`
 
@@ -24,7 +24,6 @@ Get text color at a given position.
 ```php
 use SergiX44\ImageZen\Image;
 
-$image = Image::make('path/to/image.jpg')
-    ->pickColor(int $x, int $y);
+$color = Image::make('path/to/image.jpg')->pickColor(10, 10);
 
 ```

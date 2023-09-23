@@ -1,6 +1,6 @@
 ---
 sidebar_position: 24
-_modified_: false
+_modified_: true
 ---
 # `flip()`
 
@@ -24,6 +24,9 @@ Instance of `SergiX44\ImageZen\Image`.
 use SergiX44\ImageZen\Image;
 
 $image = Image::make('path/to/image.jpg')
-    ->flip([SergiX44\ImageZen\Draws\Flip $flip = SergiX44\ImageZen\Draws\Flip::HORIZONTAL]);
+    ->flip(SergiX44\ImageZen\Draws\Flip::HORIZONTAL);
+    
+$image = Image::make('path/to/image.jpg')
+    ->flip(SergiX44\ImageZen\Draws\Flip::VERTICAL);
 
 ```
