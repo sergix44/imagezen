@@ -665,5 +665,3 @@ it('can draw a text with a shadow', function ($driver, $file) {
         ->imageSimilarTo($expected);
     unlink($out);
 })->with('drivers', 'fruit');
-
-
