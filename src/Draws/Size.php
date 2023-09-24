@@ -12,9 +12,9 @@ class Size
     public ?Point $pivot;
 
     /**
-     * @param  int|null  $width
-     * @param  int|null  $height
-     * @param  Point|null  $pivot
+     * @param int|null $width
+     * @param int|null $height
+     * @param Point|null $pivot
      */
     public function __construct(?int $width, ?int $height, ?Point $pivot = null)
     {
@@ -26,8 +26,8 @@ class Size
     /**
      * Set the width and height absolutely
      *
-     * @param  int  $width
-     * @param  int  $height
+     * @param int $width
+     * @param int $height
      */
     public function set(int $width, int $height): void
     {
@@ -38,7 +38,7 @@ class Size
     /**
      * Set current pivot point
      *
-     * @param  Point  $point
+     * @param Point $point
      */
     public function setPivot(Point $point): void
     {
@@ -78,9 +78,9 @@ class Size
     /**
      * Resize to desired width and/or height
      *
-     * @param  int|null  $width
-     * @param  int|null  $height
-     * @param  Closure|null  $callback
+     * @param int|null $width
+     * @param int|null $height
+     * @param Closure|null $callback
      * @return Size
      */
     public function resize(?int $width, ?int $height, ?Closure $callback = null): self
@@ -108,8 +108,8 @@ class Size
     /**
      * Scale size according to given constraints
      *
-     * @param  int|null  $width
-     * @param  Closure|null  $callback
+     * @param int|null $width
+     * @param Closure|null $callback
      */
     private function resizeWidth(?int $width, Closure $callback = null): void
     {
@@ -133,7 +133,7 @@ class Size
         }
 
         if ($constraint->isFixed(Constraint::ASPECT_RATIO)) {
-            $h = max(1, (int) round($this->width / $constraint->getSize()->getRatio()));
+            $h = max(1, (int)round($this->width / $constraint->getSize()->getRatio()));
 
             if ($constraint->isFixed(Constraint::UPSIZE)) {
                 $this->height = ($h > $maxHeight) ? $maxHeight : $h;
@@ -146,8 +146,8 @@ class Size
     /**
      * Scale size according to given constraints
      *
-     * @param  int|null  $height
-     * @param  Closure|null  $callback
+     * @param int|null $height
+     * @param Closure|null $callback
      */
     private function resizeHeight(?int $height, Closure $callback = null): void
     {
@@ -171,7 +171,7 @@ class Size
         }
 
         if ($constraint->isFixed(Constraint::ASPECT_RATIO)) {
-            $w = max(1, (int) round($this->height * $constraint->getSize()->getRatio()));
+            $w = max(1, (int)round($this->height * $constraint->getSize()->getRatio()));
 
             if ($constraint->isFixed(Constraint::UPSIZE)) {
                 $this->width = ($w > $maxWidth) ? $maxWidth : $w;
@@ -185,7 +185,7 @@ class Size
      * Calculate the relative position to another Size
      * based on the pivot point settings of both sizes.
      *
-     * @param  Size  $size
+     * @param Size $size
      * @return Point
      */
     public function relativePosition(Size $size): Point
@@ -199,8 +199,8 @@ class Size
     /**
      * Resize given Size to best fitting size of current size.
      *
-     * @param  Size  $size
-     * @param  Position  $position
+     * @param Size $size
+     * @param Position $position
      * @return Size
      */
     public function fit(Size $size, Position $position = Position::CENTER): self
@@ -236,7 +236,7 @@ class Size
     /**
      * Checks if given size fits into current size
      *
-     * @param  Size  $size
+     * @param Size $size
      * @return bool
      */
     public function fitsInto(Size $size): bool
@@ -248,9 +248,9 @@ class Size
      * Aligns current size's pivot point to given position
      * and moves point automatically by offset.
      *
-     * @param  Position  $position
-     * @param  int|null  $offsetX
-     * @param  int|null  $offsetY
+     * @param Position $position
+     * @param int|null $offsetX
+     * @param int|null $offsetY
      * @return Size
      */
     public function align(Position $position, ?int $offsetX = 0, ?int $offsetY = 0): self
@@ -258,10 +258,9 @@ class Size
         $offsetX ??= 0;
         $offsetY ??= 0;
         switch ($position) {
-
             case Position::TOP:
             case Position::TOP_MIDDLE:
-                $x = (int) ($this->width / 2);
+                $x = (int)($this->width / 2);
                 $y = $offsetY;
 
                 break;
@@ -275,14 +274,14 @@ class Size
             case Position::LEFT:
             case Position::CENTER_LEFT:
                 $x = $offsetX;
-                $y = (int) ($this->height / 2);
+                $y = (int)($this->height / 2);
 
                 break;
 
             case Position::RIGHT:
             case Position::CENTER_RIGHT:
                 $x = $this->width - $offsetX;
-                $y = (int) ($this->height / 2);
+                $y = (int)($this->height / 2);
 
                 break;
 
@@ -294,7 +293,7 @@ class Size
 
             case Position::BOTTOM:
             case Position::BOTTOM_MIDDLE:
-                $x = (int) ($this->width / 2);
+                $x = (int)($this->width / 2);
                 $y = $this->height - $offsetY;
 
                 break;
@@ -307,8 +306,8 @@ class Size
 
             case Position::CENTER:
             case Position::CENTER_MIDDLE:
-                $x = ((int) $this->width / 2) + $offsetX;
-                $y = ((int) $this->height / 2) + $offsetY;
+                $x = ((int)$this->width / 2) + $offsetX;
+                $y = ((int)$this->height / 2) + $offsetY;
 
                 break;
 
@@ -327,7 +326,7 @@ class Size
     /**
      * Runs constraints on current size
      *
-     * @param  Closure|null  $callback
+     * @param Closure|null $callback
      * @return Constraint
      */
     private function getConstraint(Closure $callback = null): Constraint
@@ -353,10 +352,10 @@ class Size
         }
 
         return new Box(
-            lowerLeft: new Point($this->pivot->x, $this->pivot->y + $this->height),
-            lowerRight: new Point($this->pivot->x + $this->width, $this->pivot->y + $this->height),
-            upperRight: new Point($this->pivot->x + $this->width, $this->pivot->y),
-            upperLeft: $this->pivot,
+            lowerLeft: $this->pivot,
+            lowerRight: new Point($this->pivot->x + $this->width, $this->pivot->y),
+            upperRight: new Point($this->pivot->x + $this->width, $this->pivot->y - $this->height),
+            upperLeft: new Point($this->pivot->x, $this->pivot->y - $this->height),
         );
     }
 }

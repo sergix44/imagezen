@@ -10,12 +10,13 @@ abstract class Text
     public Color $color;
     public Position $align;
     public int $angle;
-    public float $stroke = 0;
+    public ?float $stroke = null;
     public Color $strokeColor;
     public ?Color $background = null;
     public int $shadowX = 0;
     public int $shadowY = 0;
     public ?Color $shadowColor = null;
+    public ?float $interline = null;
 
     /**
      * @param string $text
@@ -37,6 +38,7 @@ abstract class Text
         $this->fontPath = $fontPath ?? __DIR__ . '/../../assets/LiberationSans-Regular.ttf';
         $this->size = $size;
         $this->color = $color ?? Color::black();
+        $this->strokeColor = $color ?? Color::white();
         $this->align = $align;
         $this->angle = $angle;
     }

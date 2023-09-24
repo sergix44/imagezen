@@ -53,7 +53,7 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                     $bgY,
                     $x + $lineBox->upperRight->x,
                     $bgY + $lineBox->upperRight->y - 1,
-                    fn (Rectangle $r) => $r->background($text->background)
+                    fn(Rectangle $r) => $r->background($text->background)
                 );
                 $bgY -= $box->upperRight->y - ($text->getPointSize() * 0.7);
             }
@@ -116,11 +116,39 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                 }
             }
 
+            if ($text->stroke !== null) {
+                $strokeColor = $driver->parseColor($text->strokeColor);
+                $stroke = $text->stroke;
+                for ($sx = ($x - abs($stroke)); $sx <= ($x + abs($stroke)); $sx++) {
+                    for ($sy = ($y - abs($stroke)); $sy <= ($y + abs($stroke)); $sy++) {
+                        imagettftext(
+                            $image->getCore(),
+                            $text->getPointSize(),
+                            $text->angle,
+                            $sx,
+                            $sy,
+                            $strokeColor->getInt(),
+                            $text->fontPath,
+                            $text->parsedText()
+                        );
+                    }
+                }
+            }
+
             // enable alphablending for imagettftext
             imagealphablending($image->getCore(), true);
 
             // draw ttf text
-            imagettftext($image->getCore(), $text->getPointSize(), $text->angle, $x, $y, $color->getInt(), $text->fontPath, $text->parsedText());
+            imagettftext(
+                $image->getCore(),
+                $text->getPointSize(),
+                $text->angle,
+                $x,
+                $y,
+                $color->getInt(),
+                $text->fontPath,
+                $text->parsedText()
+            );
 
             return null;
         }
@@ -189,6 +217,23 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                 break;
         }
 
+        if ($text->stroke !== null) {
+            $strokeColor = $driver->parseColor($text->strokeColor);
+            $stroke = $text->stroke;
+            for ($sx = ($x - abs($stroke)); $sx <= ($x + abs($stroke)); $sx++) {
+                for ($sy = ($y - abs($stroke)); $sy <= ($y + abs($stroke)); $sy++) {
+                    imagestring(
+                        $image->getCore(),
+                        $text->getInternalFont(),
+                        $sx,
+                        $sy,
+                        $this->text,
+                        $strokeColor->getInt()
+                    );
+                }
+            }
+        }
+
         // draw text
         imagestring($image->getCore(), $text->getInternalFont(), $x, $y, $this->text, $color->getInt());
 
@@ -213,12 +258,14 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
         $color = $driver->parseColor($text->color);
 
         $draw = new \ImagickDraw();
-        $draw->setStrokeAntialias(true);
         $draw->setTextAntialias(true);
         $draw->setFont($text->fontPath);
         $draw->setFontSize($text->size);
         $draw->setFillColor($color->getPixel());
         $draw->setTextKerning($text->kerning);
+        if ($text->interline !== null) {
+            $draw->setTextInterLineSpacing($text->interline);
+        }
 
         switch ($text->align) {
             case Position::CENTER:
@@ -275,6 +322,12 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
 
         if ($text->background !== null) {
             $draw->setTextUnderColor($driver->parseColor($text->background)->getPixel());
+        }
+
+        if ($text->stroke !== null) {
+            $draw->setStrokeColor($driver->parseColor($text->strokeColor)->getPixel());
+            $draw->setStrokeWidth($text->stroke);
+            $draw->setStrokeAntialias(true);
         }
 
         $image->getCore()->annotateImage($draw, $x, $y, $text->angle * (-1), $this->text);

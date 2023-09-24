@@ -15,8 +15,8 @@ function prepare($instance, string $name, Backend $driver, string $ext = 'png'):
         $instance->markTestSkipped("{$driver->name()} is not available.");
     }
 
-    $out = __DIR__."/Tmp/{$driver->name()}/$name.$ext";
-    $expected = __DIR__."/Images/{$driver->name()}/$name.$ext";
+    $out = __DIR__ . "/Tmp/{$driver->name()}/$name.$ext";
+    $expected = __DIR__ . "/Images/{$driver->name()}/$name.$ext";
 
     return [$out, $expected];
 }
@@ -622,6 +622,24 @@ it('can draw a text with a background with new lines', function ($driver, $file)
         ->text("Hello \n World!", 100, 100, function (Text $text) {
             $text->size(18)
                 ->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can draw a text with a stroke', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_stroke', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello World!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->color(Color::gold())
+                ->background(Color::white())
+                ->stroke(3, Color::fuchsia());
         })
         ->save($out, quality: 100);
 
