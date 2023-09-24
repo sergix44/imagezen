@@ -53,7 +53,7 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                     $bgY,
                     $x + $lineBox->upperRight->x,
                     $bgY + $lineBox->upperRight->y - 1,
-                    fn(Rectangle $r) => $r->background($text->background)
+                    fn (Rectangle $r) => $r->background($text->background)
                 );
                 $bgY -= $box->upperRight->y - ($text->getPointSize() * 0.7);
             }
