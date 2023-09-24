@@ -619,8 +619,25 @@ it('can draw a text with a background with new lines', function ($driver, $file)
     [$out, $expected] = prepare($this, 'fruit_with_text_background_newlines', $driver);
 
     Image::make($file, $driver)
-        ->text("Hello \n World!", 100, 100, function (Text $text) {
-            $text->size(18)
+        ->text("Hello\nWorld!\nMore strings!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can draw a text with a background with new lines and interline', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_background_newlines_interline', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello\nWorld!\nMore strings!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->interline(0.1)
                 ->background(Color::fuchsia());
         })
         ->save($out, quality: 100);

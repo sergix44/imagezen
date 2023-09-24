@@ -28,11 +28,6 @@ class GdText extends Text
         return parent::font($font);
     }
 
-    public function getPointSize(): int
-    {
-        return (int) ceil($this->size * 0.75);
-    }
-
     public function getBox(): Box
     {
         return $this->getBoxFor($this->parsedText());

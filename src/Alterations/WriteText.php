@@ -47,16 +47,22 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
 
         if ($text->background !== null) {
             $bgY = $y;
+            $bgOffset = -4.25 * (1 / 50 * $text->size);
             foreach ($text->getMultiLineBoxes() as $lineBox) {
                 $image->rectangle(
-                    $x,
-                    $bgY,
-                    $x + $lineBox->upperRight->x,
-                    $bgY + $lineBox->upperRight->y - 1,
+                    $x + $bgOffset,
+                    $bgY - $bgOffset,
+                    $x + $lineBox->upperRight->x - $bgOffset,
+                    $bgY + $lineBox->upperRight->y + $bgOffset,
                     fn (Rectangle $r) => $r->background($text->background)
                 );
-                $bgY -= $box->upperRight->y - ($text->getPointSize() * 0.7);
+                $bgY -= $box->upperRight->y - ($text->getPointSize() * 0.72);
             }
+        }
+
+        $opt = [];
+        if ($text->interline !== null) {
+            $opt['linespacing'] = $text->interline;
         }
 
         if ($text->hasFont()) {
@@ -129,7 +135,8 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                             $sy,
                             $strokeColor->getInt(),
                             $text->fontPath,
-                            $text->parsedText()
+                            $text->parsedText(),
+                            $opt
                         );
                     }
                 }
@@ -145,7 +152,8 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                     $y + $text->shadowY,
                     $shadowColor->getInt(),
                     $text->fontPath,
-                    $text->parsedText()
+                    $text->parsedText(),
+                    $opt
                 );
             }
 
@@ -161,7 +169,8 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                 $y,
                 $color->getInt(),
                 $text->fontPath,
-                $text->parsedText()
+                $text->parsedText(),
+                $opt
             );
 
             return null;

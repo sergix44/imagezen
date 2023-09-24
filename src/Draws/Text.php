@@ -104,6 +104,13 @@ abstract class Text
         return $this;
     }
 
+    public function interline(float $interline): self
+    {
+        $this->interline = $interline;
+
+        return $this;
+    }
+
     public function hasShadow(): bool
     {
         return $this->shadowX !== 0 || $this->shadowY !== 0;
@@ -112,5 +119,11 @@ abstract class Text
     public function hasFont(): bool
     {
         return $this->fontPath !== null && file_exists($this->fontPath);
+    }
+
+
+    public function getPointSize(): int
+    {
+        return (int) ceil($this->size * 0.75);
     }
 }
