@@ -78,7 +78,7 @@ class Color
     /**
      * Reads RGBA values from string into array
      *
-     * @param string $value
+     * @param  string  $value
      * @return array
      */
     protected function rgbaFromString($value)
@@ -94,24 +94,62 @@ class Color
 
         $result = [];
         if (preg_match($hexPattern, $value, $matches)) {
-            $result[0] = strlen($matches[1]) === 1 ? hexdec($matches[1] . $matches[1]) : hexdec($matches[1]);
-            $result[1] = strlen($matches[2]) === 1 ? hexdec($matches[2] . $matches[2]) : hexdec($matches[2]);
-            $result[2] = strlen($matches[3]) === 1 ? hexdec($matches[3] . $matches[3]) : hexdec($matches[3]);
+            $result[0] = strlen($matches[1]) === 1 ? hexdec($matches[1].$matches[1]) : hexdec($matches[1]);
+            $result[1] = strlen($matches[2]) === 1 ? hexdec($matches[2].$matches[2]) : hexdec($matches[2]);
+            $result[2] = strlen($matches[3]) === 1 ? hexdec($matches[3].$matches[3]) : hexdec($matches[3]);
             $result[3] = 1;
         } elseif (preg_match($rgbPattern, $value, $matches)) {
-            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int)$matches[1] : 0;
-            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int)$matches[2] : 0;
-            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int)$matches[3] : 0;
+            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int) $matches[1] : 0;
+            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int) $matches[2] : 0;
+            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int) $matches[3] : 0;
             $result[3] = 1;
         } elseif (preg_match($rgbaPattern, $value, $matches)) {
-            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int)$matches[1] : 0;
-            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int)$matches[2] : 0;
-            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int)$matches[3] : 0;
+            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int) $matches[1] : 0;
+            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int) $matches[2] : 0;
+            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int) $matches[3] : 0;
             $result[3] = ($matches[4] >= 0 && $matches[4] <= 1) ? $matches[4] : 0;
         } else {
             throw new InvalidArgumentException("Unable to read color ({$value}).");
         }
 
         return $result;
+    }
+
+    public function copy(): self
+    {
+        return new self(
+            red: $this->red,
+            green: $this->green,
+            blue: $this->blue,
+            alpha: $this->alpha
+        );
+    }
+
+    public function red(int $value): self
+    {
+        $this->red = $value;
+
+        return $this;
+    }
+
+    public function green(int $value): self
+    {
+        $this->green = $value;
+
+        return $this;
+    }
+
+    public function blue(int $value): self
+    {
+        $this->blue = $value;
+
+        return $this;
+    }
+
+    public function alpha(float $value): self
+    {
+        $this->alpha = $value;
+
+        return $this;
     }
 }
