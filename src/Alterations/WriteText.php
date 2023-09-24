@@ -135,6 +135,20 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
                 }
             }
 
+            if ($text->hasShadow()) {
+                $shadowColor = $driver->parseColor($text->shadowColor);
+                imagettftext(
+                    $image->getCore(),
+                    $text->getPointSize(),
+                    $text->angle,
+                    $x + $text->shadowX,
+                    $y + $text->shadowY,
+                    $shadowColor->getInt(),
+                    $text->fontPath,
+                    $text->parsedText()
+                );
+            }
+
             // enable alphablending for imagettftext
             imagealphablending($image->getCore(), true);
 
@@ -234,6 +248,18 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
             }
         }
 
+        if ($text->hasShadow()) {
+            $shadowColor = $driver->parseColor($text->shadowColor);
+            imagestring(
+                $image->getCore(),
+                $text->getInternalFont(),
+                $x + $text->shadowX,
+                $y + $text->shadowY,
+                $this->text,
+                $shadowColor->getInt()
+            );
+        }
+
         // draw text
         imagestring($image->getCore(), $text->getInternalFont(), $x, $y, $this->text, $color->getInt());
 
@@ -328,6 +354,18 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
             $draw->setStrokeColor($driver->parseColor($text->strokeColor)->getPixel());
             $draw->setStrokeWidth($text->stroke);
             $draw->setStrokeAntialias(true);
+        }
+
+        if ($text->hasShadow()) {
+            $draw->setFillColor($driver->parseColor($text->shadowColor)->getPixel());
+            $image->getCore()->annotateImage(
+                $draw,
+                $x + $text->shadowX,
+                $y + $text->shadowY,
+                $text->angle * (-1),
+                $this->text
+            );
+            $draw->setFillColor($color->getPixel());
         }
 
         $image->getCore()->annotateImage($draw, $x, $y, $text->angle * (-1), $this->text);

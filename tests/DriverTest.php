@@ -648,3 +648,22 @@ it('can draw a text with a stroke', function ($driver, $file) {
         ->imageSimilarTo($expected);
     unlink($out);
 })->with('drivers', 'fruit');
+
+it('can draw a text with a shadow', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_shadow', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello World!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->color(Color::gold())
+                ->shadow(3, 3, Color::blue());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+
