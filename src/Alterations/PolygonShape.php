@@ -11,16 +11,34 @@ use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Imagick\Imagick;
 use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
 use SergiX44\ImageZen\Image;
+use SergiX44\ImageZen\Shapes\Point;
 use SergiX44\ImageZen\Shapes\Polygon;
 
 class PolygonShape extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'polygon';
 
+    protected array $points = [];
+
     public function __construct(
-        protected array $points,
+        array $points,
         protected ?Closure $callback = null
     ) {
+        foreach ($points as $point) {
+            if ($point instanceof Point) {
+                $this->points[] = $point->x;
+                $this->points[] = $point->y;
+            } elseif (is_array($point)) {
+                array_walk_recursive($point, function ($value) {
+                    if (!is_int($value)) {
+                        throw new InvalidArgumentException("The given array must contain only integers.");
+                    }
+                    $this->points[] = $value;
+                });
+            } else {
+                $this->points[] = $point;
+            }
+        }
     }
 
     public function applyWithGd(Image $image): null

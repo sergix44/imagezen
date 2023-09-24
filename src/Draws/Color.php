@@ -125,28 +125,28 @@ class Color
         );
     }
 
-    public function red(int $value): self
+    public function setRed(int $value): self
     {
         $this->red = $value;
 
         return $this;
     }
 
-    public function green(int $value): self
+    public function setGreen(int $value): self
     {
         $this->green = $value;
 
         return $this;
     }
 
-    public function blue(int $value): self
+    public function setBlue(int $value): self
     {
         $this->blue = $value;
 
         return $this;
     }
 
-    public function alpha(float $value): self
+    public function setAlpha(float $value): self
     {
         $this->alpha = $value;
 
