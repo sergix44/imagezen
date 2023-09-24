@@ -121,7 +121,6 @@ abstract class Text
         return $this->fontPath !== null && file_exists($this->fontPath);
     }
 
-
     public function getPointSize(): int
     {
         return (int) ceil($this->size * 0.75);
