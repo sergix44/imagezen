@@ -52,7 +52,7 @@ class Size
      */
     public function getWidth(): int
     {
-        return $this->width;
+        return abs($this->width);
     }
 
     /**
@@ -62,7 +62,7 @@ class Size
      */
     public function getHeight(): int
     {
-        return $this->height;
+        return abs($this->height);
     }
 
     /**
