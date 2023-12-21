@@ -31,6 +31,6 @@ $success = Image::make('path/to/image.jpg')
     ->save('path/to/image.png', \SergiX44\ImageZen\Format::PNG); // save the image as PNG
     
 $success = Image::make('path/to/image.jpg')
-    ->save('path/to/image.png', \SergiX44\ImageZen\Format::\SergiX44\ImageZen\JPG, 50); // save the image as JPG with a quality of 50
+    ->save('path/to/image.png', \SergiX44\ImageZen\Format::JPG, 50); // save the image as JPG with a quality of 50
 
 ```

@@ -6,11 +6,17 @@ use SergiX44\ImageZen\Draws\Color;
 
 abstract class Shape
 {
-    protected ?Color $background = null;
+    protected Color $background;
 
     protected Color $borderColor;
 
-    protected int $borderWidth = 0;
+    protected int $borderWidth = 1;
+
+    public function __construct()
+    {
+        $this->background = Color::transparent();
+        $this->borderColor = Color::black();
+    }
 
     public function hasBorder(): bool
     {
@@ -20,7 +26,7 @@ abstract class Shape
     public function border(int $width, Color $color = null): self
     {
         $this->borderWidth = $width;
-        $this->borderColor = $color ?? Color::transparent();
+        $this->borderColor = $color ?? Color::black();
 
         return $this;
     }

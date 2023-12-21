@@ -476,7 +476,28 @@ it('can draw a polygon on an image', function ($driver, $file) {
             100,
         ], function ($draw) {
             $draw->background(Color::fuchsia());
+            $draw->border(0);
         })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'baboon');
+
+it('can draw a polygon on an image with no arguments', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'baboon_polygon_no_arguments', $driver);
+
+    Image::make($file, $driver)
+        ->polygon([
+            10,
+            10,
+            100,
+            100,
+            10,
+            100,
+        ])
         ->save($out, quality: 100);
 
     expect($out)
@@ -491,6 +512,7 @@ it('can draw a rectangle on an image', function ($driver, $file) {
     Image::make($file, $driver)
         ->rectangle(10, 30, 100, 100, function ($draw) {
             $draw->background(Color::fuchsia());
+            $draw->border(0);
         })
         ->save($out, quality: 100);
 
@@ -598,6 +620,18 @@ it('can trim an image', function ($driver, $file) {
         ->imageSimilarTo($expected);
     unlink($out);
 })->with('drivers', 'fruit');
+
+it('can output an image as base64 with png', function ($driver, $file) {
+    prepare($this, '_', $driver);
+    $b64 = Image::make($file, $driver)->base64();
+    expect($b64)->toStartWith('data:image/png;base64,iVBORw0KGgo');
+})->with('drivers', 'tile');
+
+it('can output an image as base64 with jpg', function ($driver, $file) {
+    prepare($this, '_', $driver);
+    $b64 = Image::make($file, $driver)->base64(\SergiX44\ImageZen\Format::JPG);
+    expect($b64)->toStartWith('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ');
+})->with('drivers', 'tile');
 
 it('can draw a text with a background', function ($driver, $file) {
     [$out, $expected] = prepare($this, 'fruit_with_text_background', $driver);
