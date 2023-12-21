@@ -17,6 +17,8 @@ use SergiX44\ImageZen\Support\Common;
 
 class Gd implements Driver
 {
+    private $data = [];
+
     public function isAvailable(): bool
     {
         return extension_loaded('gd') && function_exists('gd_info');
@@ -55,9 +57,12 @@ class Gd implements Driver
      */
     public function loadImageFrom(string $path): GdImage
     {
-        if (file_exists($path)) {
-            $resource = imagecreatefromstring(file_get_contents($path));
+        if (file_exists($path) || filter_var($path, FILTER_VALIDATE_URL) !== false) {
+            $data = file_get_contents($path);
+            $this->data = getimagesizefromstring($data);
+            $resource = imagecreatefromstring($data);
         } else {
+            $this->data = getimagesizefromstring($path);
             $resource = imagecreatefromstring($path);
         }
 
@@ -137,5 +142,10 @@ class Gd implements Driver
         imagecopy($canvas, $resource, 0, 0, 0, 0, $width, $height);
 
         return $canvas;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
     }
 }

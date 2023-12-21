@@ -620,3 +620,15 @@ it('can trim an image', function ($driver, $file) {
         ->imageSimilarTo($expected);
     unlink($out);
 })->with('drivers', 'fruit');
+
+it('can output an image as base64 with png', function ($driver, $file) {
+    prepare($this, '_', $driver);
+    $b64 = Image::make($file, $driver)->base64();
+    expect($b64)->toStartWith('data:image/png;base64,iVBORw0KGgo');
+})->with('drivers', 'tile');
+
+it('can output an image as base64 with jpg', function ($driver, $file) {
+    prepare($this, '_', $driver);
+    $b64 = Image::make($file, $driver)->base64(\SergiX44\ImageZen\Format::JPG);
+    expect($b64)->toStartWith('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ');
+})->with('drivers', 'tile');

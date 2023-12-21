@@ -261,4 +261,9 @@ class Imagick implements Driver
     {
         return clone $image->getCore();
     }
+
+    public function getData(): array
+    {
+        return [];
+    }
 }

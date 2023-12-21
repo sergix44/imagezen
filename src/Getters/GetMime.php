@@ -2,7 +2,6 @@
 
 namespace SergiX44\ImageZen\Getters;
 
-use RuntimeException;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Drivers\Gd\GdAlteration;
 use SergiX44\ImageZen\Drivers\Imagick\ImagickAlteration;
@@ -12,26 +11,15 @@ class GetMime extends Alteration implements GdAlteration, ImagickAlteration
 {
     public static string $id = 'mime';
 
-    protected function getMimeType(Image $image): string
-    {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime = finfo_buffer($finfo, $image->stream()->getContents());
-        finfo_close($finfo);
-
-        if ($mime === false) {
-            throw new RuntimeException('Unable to get mime type');
-        }
-
-        return $mime;
-    }
-
     public function applyWithGd(Image $image): string
     {
-        return $this->getMimeType($image);
+        $imageInfo = $image->getDriver()->getData();
+
+        return $imageInfo['mime'];
     }
 
     public function applyWithImagick(Image $image): string
     {
-        return $this->getMimeType($image);
+        return str_ireplace('/x-', '/', $image->getCore()->getImageMimeType());
     }
 }

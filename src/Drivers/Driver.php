@@ -29,4 +29,6 @@ interface Driver
     public function clear(?Image $image = null, ?object $raw = null): void;
 
     public function apply(Alteration $alteration, Image $image): mixed;
+
+    public function getData(): array;
 }
