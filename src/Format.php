@@ -26,4 +26,18 @@ enum Format: int
             self::AVIF => 'avif',
         };
     }
+
+    public function mime()
+    {
+        return match ($this) {
+            self::PNG => 'image/png',
+            self::JPG => 'image/jpeg',
+            self::WEBP => 'image/webp',
+            self::GIF => 'image/gif',
+            self::BMP => 'image/bmp',
+            self::TIFF => 'image/tiff',
+            self::HEIC => 'image/heic',
+            self::AVIF => 'image/avif',
+        };
+    }
 }

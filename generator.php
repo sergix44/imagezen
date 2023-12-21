@@ -17,6 +17,7 @@ $imageReflection = new ReflectionClass(Image::class);
 
 $availableMethods = [
     $imageReflection->getMethod('make'),
+    $imageReflection->getMethod('base64'),
     $imageReflection->getMethod('canvas'),
     $imageReflection->getMethod('register'),
     $imageReflection->getMethod('width'),

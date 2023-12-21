@@ -221,6 +221,18 @@ class Image
     }
 
     /**
+     * Return the image as base64 string.
+     *
+     * @param  Format  $format The image format, default is PNG.
+     * @param  int  $quality The image quality, default is 90, if supported by the format.
+     * @return string The image as base64 string.
+     */
+    public function base64(Format $format = Format::PNG, int $quality = 90): string
+    {
+        return 'data:'.$format->mime().';base64,'.base64_encode($this->stream($format, $quality)->getContents());
+    }
+
+    /**
      * Get the image path if it was loaded from a file.
      *
      * @return string|null The image path.
@@ -242,7 +254,7 @@ class Image
         return new Response(
             status: 200,
             headers: [
-                'Content-Type' => $this->mime(),
+                'Content-Type' => $format->mime(),
             ],
             body: $this->stream($format, $quality),
         );
