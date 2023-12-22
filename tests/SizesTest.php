@@ -7,12 +7,15 @@ it('gets the same text sizes across drivers', closure: function () {
     $gdbox = $gd->getBox();
     $imbox = $im->getBox();
 
-    expect($gdbox->lowerLeft->x)->toBe($imbox->lowerLeft->x)
-        ->and($gdbox->lowerLeft->y)->toBe($imbox->lowerLeft->y)
-        ->and($gdbox->lowerRight->x)->toBe($imbox->lowerRight->x - 2)
-        ->and($gdbox->lowerRight->y)->toBe($imbox->lowerRight->y)
-        ->and($gdbox->upperLeft->x)->toBe($imbox->upperLeft->x)
-        ->and($gdbox->upperLeft->y)->toBe($imbox->upperLeft->y + 6)
-        ->and($gdbox->upperRight->x)->toBe($imbox->upperRight->x - 2)
-        ->and($gdbox->upperRight->y)->toBe($imbox->upperRight->y + 6);
+    // sadly the box computation is not exactly the same across drivers and OSes
+    // so we have to allow a small margin of error
+    $marginError = 6;
+    expect($gdbox->lowerLeft->x)->toBeBetween($imbox->lowerLeft->x - $marginError, $imbox->lowerLeft->x + $marginError)
+        ->and($gdbox->lowerLeft->y)->toBeBetween($imbox->lowerLeft->y - $marginError, $imbox->lowerLeft->y + $marginError)
+        ->and($gdbox->lowerRight->x)->toBeBetween($imbox->lowerRight->x - $marginError, $imbox->lowerRight->x + $marginError)
+        ->and($gdbox->lowerRight->y)->toBeBetween($imbox->lowerRight->y - $marginError, $imbox->lowerRight->y + $marginError)
+        ->and($gdbox->upperLeft->x)->toBeBetween($imbox->upperLeft->x - $marginError, $imbox->upperLeft->x + $marginError)
+        ->and($gdbox->upperLeft->y)->toBeBetween($imbox->upperLeft->y - $marginError, $imbox->upperLeft->y + $marginError)
+        ->and($gdbox->upperRight->x)->toBeBetween($imbox->upperRight->x - $marginError, $imbox->upperRight->x + $marginError)
+        ->and($gdbox->upperRight->y)->toBeBetween($imbox->upperRight->y - $marginError, $imbox->upperRight->y + $marginError);
 });
