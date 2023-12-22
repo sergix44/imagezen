@@ -45,24 +45,31 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
         $color = $driver->parseColor($text->color);
         $box = $text->getBox();
 
+        $opt = [];
+        $interlinePixels = 0;
+        if ($text->interline !== null) {
+            $opt['linespacing'] = $text->interline;
+            $interlinePixels = $text->interline * $text->getPointSize();
+            $interlinePixels -= $text->getPointSize();
+        }
+
         if ($text->background !== null) {
             $bgY = $y;
             $bgOffset = -4.25 * (1 / 50 * $text->size);
+            if ($text->interline !== null) {
+                $interlinePixels += $bgOffset;
+                $interlinePixels /= 0.65;
+            }
             foreach ($text->getMultiLineBoxes() as $lineBox) {
                 $image->rectangle(
                     $x + $bgOffset,
                     $bgY - $bgOffset,
                     $x + $lineBox->upperRight->x - $bgOffset,
                     $bgY + $lineBox->upperRight->y + $bgOffset,
-                    fn (Rectangle $r) => $r->background($text->background)
+                    fn (Rectangle $r) => $r->background($text->background)->border(0)
                 );
-                $bgY -= $box->upperRight->y - ($text->getPointSize() * 0.72);
+                $bgY -= $box->upperRight->y - ($text->getPointSize() * 0.72) - $interlinePixels;
             }
-        }
-
-        $opt = [];
-        if ($text->interline !== null) {
-            $opt['linespacing'] = $text->interline;
         }
 
         if ($text->hasFont()) {
@@ -299,7 +306,9 @@ class WriteText extends Alteration implements GdAlteration, ImagickAlteration
         $draw->setFillColor($color->getPixel());
         $draw->setTextKerning($text->kerning);
         if ($text->interline !== null) {
-            $draw->setTextInterLineSpacing($text->interline);
+            $interline = $text->interline * $text->getPointSize();
+            $interline -= $text->getPointSize();
+            $draw->setTextInterLineSpacing($interline);
         }
 
         switch ($text->align) {

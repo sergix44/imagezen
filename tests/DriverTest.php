@@ -671,7 +671,7 @@ it('can draw a text with a background with new lines and interline', function ($
     Image::make($file, $driver)
         ->text("Hello\nWorld!\nMore strings!", 100, 100, function (Text $text) {
             $text->size(80)
-                ->interline(0.1)
+                ->interline(1.2)
                 ->background(Color::fuchsia());
         })
         ->save($out, quality: 100);
