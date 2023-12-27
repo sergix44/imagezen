@@ -4,7 +4,6 @@ namespace SergiX44\ImageZen\Drivers;
 
 trait DecodeDataUriImage
 {
-
     public function isDataUriImage(string $string): bool
     {
         return str_starts_with($string, 'data:image/');
