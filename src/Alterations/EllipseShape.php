@@ -38,7 +38,7 @@ class EllipseShape extends Alteration implements GdAlteration, ImagickAlteration
     {
         $shape = new static::$shape();
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $shape);
+            call_user_func($this->callback, $shape);
         }
 
         return $shape;

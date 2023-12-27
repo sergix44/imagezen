@@ -26,7 +26,7 @@ class WriteTextFit extends AbstractText
     {
         $text = new GdText($this->text);
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $text);
+            call_user_func($this->callback, $text);
         }
 
         $driver = $image->getDriver();
@@ -55,7 +55,7 @@ class WriteTextFit extends AbstractText
     {
         $text = new ImagickText($this->text);
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $text);
+            call_user_func($this->callback, $text);
         }
 
         $driver = $image->getDriver();

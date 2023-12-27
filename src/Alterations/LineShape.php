@@ -29,7 +29,7 @@ class LineShape extends Alteration implements GdAlteration, ImagickAlteration
     {
         $line = new Line();
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $line);
+            call_user_func($this->callback, $line);
         }
 
         $driver = $image->getDriver();
@@ -46,7 +46,7 @@ class LineShape extends Alteration implements GdAlteration, ImagickAlteration
     {
         $line = new Line();
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $line);
+            call_user_func($this->callback, $line);
         }
 
         $driver = $image->getDriver();

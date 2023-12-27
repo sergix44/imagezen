@@ -60,7 +60,7 @@ class PolygonShape extends Alteration implements GdAlteration, ImagickAlteration
 
         $polygon = new Polygon();
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $polygon);
+            call_user_func($this->callback, $polygon);
         }
 
         $driver = $image->getDriver();
@@ -84,7 +84,7 @@ class PolygonShape extends Alteration implements GdAlteration, ImagickAlteration
     {
         $polygon = new Polygon();
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $polygon);
+            call_user_func($this->callback, $polygon);
         }
 
         $driver = $image->getDriver();

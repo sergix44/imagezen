@@ -29,7 +29,7 @@ class RectangleShape extends Alteration implements GdAlteration, ImagickAlterati
     {
         $rectangle = new Rectangle();
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $rectangle);
+            call_user_func($this->callback, $rectangle);
         }
 
         $driver = $image->getDriver();
@@ -53,7 +53,7 @@ class RectangleShape extends Alteration implements GdAlteration, ImagickAlterati
     {
         $rectangle = new Rectangle();
         if ($this->callback instanceof Closure) {
-            $this->callback->call($this, $rectangle);
+            call_user_func($this->callback, $rectangle);
         }
 
         $driver = $image->getDriver();
