@@ -632,3 +632,134 @@ it('can output an image as base64 with jpg', function ($driver, $file) {
     $b64 = Image::make($file, $driver)->base64(\SergiX44\ImageZen\Format::JPG);
     expect($b64)->toStartWith('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ');
 })->with('drivers', 'tile');
+
+it('can draw a text with a background', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_background', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello World!", 100, 100, function (Text $text) {
+            $text->size(18)
+                ->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can draw a text with a background with new lines', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_background_newlines', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello\nWorld!\nMore strings!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can draw a text with a background with new lines and interline', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_background_newlines_interline', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello\nWorld!\nMore strings!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->interline(1.2)
+                ->background(Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can draw a text with a stroke', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_stroke', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello World!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->color(Color::gold())
+                ->background(Color::white())
+                ->stroke(3, Color::fuchsia());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can draw a text with a shadow', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_shadow', $driver);
+
+    Image::make($file, $driver)
+        ->text("Hello World!", 100, 100, function (Text $text) {
+            $text->size(80)
+                ->color(Color::gold())
+                ->shadow(3, 3, Color::blue());
+        })
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+it('can fit a text in a box', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_fit', $driver);
+
+    Image::make($file, $driver)
+        ->rectangle(100, 100, 200, 200, function ($draw) {
+            $draw->border(1, Color::fuchsia());
+        })
+        ->fitText(
+            "Hello World!",
+            new \SergiX44\ImageZen\Draws\Size(100, 100, new \SergiX44\ImageZen\Shapes\Point(100, 100)),
+            function (Text $text) {
+                $text->size(72)
+                    ->color(Color::gold());
+            }
+        )
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected, 95);
+    unlink($out);
+})->with('drivers', 'fruit');
+
+
+it('can fit a text in a box with multi lines', function ($driver, $file) {
+    [$out, $expected] = prepare($this, 'fruit_with_text_fit_multiline', $driver);
+
+    Image::make($file, $driver)
+        ->rectangle(100, 100, 200, 200, function ($draw) {
+            $draw->border(1, Color::fuchsia());
+        })
+        ->fitText(
+            "Hello World!\nMore strings!\nAnd more longer and longer!\nmany\nmany\nmore and more\nlines",
+            new \SergiX44\ImageZen\Draws\Size(100, 100, new \SergiX44\ImageZen\Shapes\Point(100, 100)),
+            function (Text $text) {
+                $text->size(72)
+                    ->color(Color::gold());
+            }
+        )
+        ->save($out, quality: 100);
+
+    expect($out)
+        ->toBeFile()
+        ->imageSimilarTo($expected, 95);
+    unlink($out);
+})->with('drivers', 'fruit');

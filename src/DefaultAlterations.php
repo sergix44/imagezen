@@ -6,6 +6,7 @@ use Closure;
 use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Draws\Flip;
 use SergiX44\ImageZen\Draws\Position;
+use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Draws\TrimFrom;
 
 trait DefaultAlterations
@@ -53,6 +54,7 @@ trait DefaultAlterations
             Alterations\WriteText::class,
             Alterations\Trim::class,
             Alterations\Widen::class,
+            Alterations\WriteTextFit::class
         );
     }
 
@@ -560,7 +562,7 @@ trait DefaultAlterations
      * @param string $text The text to write to the image
      * @param int $x The x-coordinate of the text
      * @param int $y The y-coordinate of the text
-     * @param Closure|null $callback A callback that is passed an instance of SergiX44\ImageZen\Fonts\Font
+     * @param Closure|null $callback A callback that is passed an instance of SergiX44\ImageZen\Draws\Text
      * @return Image
      */
     public function text(string $text, int $x, int $y, ?Closure $callback = null): Image
@@ -604,6 +606,21 @@ trait DefaultAlterations
     public function widen(int $width, ?Closure $callback = null): Image
     {
         $this->alterate(__FUNCTION__, $width, $callback);
+
+        return $this;
+    }
+
+    /**
+     * Write text to the image and fit it into the given dimensions.
+     *
+     * @param  string  $text  The text to write to the image
+     * @param  Size  $size The size to fit the text into
+     * @param  Closure|null  $callback  A callback that is passed an instance of SergiX44\ImageZen\Draws\Text
+     * @return Image
+     */
+    public function fitText(string $text, Size $size, ?Closure $callback = null): Image
+    {
+        $this->alterate(__FUNCTION__, $text, $size, $callback);
 
         return $this;
     }

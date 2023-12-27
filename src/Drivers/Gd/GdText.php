@@ -28,19 +28,18 @@ class GdText extends Text
         return parent::font($font);
     }
 
-    public function getPointSize(): int
-    {
-        return (int) ceil($this->size * 0.75);
-    }
-
     public function getBox(): Box
     {
-        if (grapheme_strlen($this->text) === 0) {
+        return $this->getBoxFor($this->parsedText());
+    }
+
+    public function getBoxFor(string $text): Box
+    {
+        if (grapheme_strlen($text) === 0) {
             return new Box(new Point(), new Point(), new Point(), new Point());
         }
 
         if ($this->hasFont()) {
-            $text = $this->parsedText();
             $box = imagettfbbox($this->getPointSize(), $this->angle, $this->fontPath, $text);
 
             return new Box(new Point($box[0], $box[1]), new Point($box[2], $box[3]), new Point($box[4], $box[5]), new Point($box[6], $box[7]));
@@ -54,6 +53,18 @@ class GdText extends Text
         };
 
         return (new Size(strlen($this->text) * $width, $height, new Point()))->getBox();
+    }
+
+    public function getMultiLineBoxes(): array
+    {
+        $text = $this->parsedText();
+        $lines = explode("\n", $text);
+        $boxes = [];
+        foreach ($lines as $line) {
+            $boxes[$line] = $this->getBoxFor($line);
+        }
+
+        return $boxes;
     }
 
     public function parsedText(): string

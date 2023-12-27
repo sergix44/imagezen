@@ -3,6 +3,7 @@
 namespace SergiX44\ImageZen\Drivers\Imagick;
 
 use SergiX44\ImageZen\Draws\Box;
+use SergiX44\ImageZen\Draws\Size;
 use SergiX44\ImageZen\Draws\Text;
 use SergiX44\ImageZen\Shapes\Point;
 
@@ -23,8 +24,10 @@ class ImagickText extends Text
         $draw->setFont($this->fontPath);
         $draw->setFontSize($this->size);
         $draw->setTextKerning($this->kerning);
-        $draw->setGravity($this->align);
-        $draw->setStrokeWidth(0);
+        $draw->setGravity($this->align->toImagickGravity());
+        if ($this->stroke !== null) {
+            $draw->setStrokeWidth($this->stroke);
+        }
         $draw->setStrokeAntialias(false);
         $draw->setStrokeOpacity(1);
         $draw->setFillOpacity(1);
@@ -35,11 +38,6 @@ class ImagickText extends Text
         $metrics = $im->queryFontMetrics($draw, $this->text);
         $im->destroy();
 
-        return new Box(
-            new Point($metrics['boundingBox']['x1'], $metrics['boundingBox']['y1']),
-            new Point($metrics['boundingBox']['x2'], $metrics['boundingBox']['y2']),
-            new Point($metrics['boundingBox']['x2'], $metrics['boundingBox']['y2']),
-            new Point($metrics['boundingBox']['x2'], $metrics['boundingBox']['y2'])
-        );
+        return (new Size($metrics['textWidth'], $metrics['textHeight'], new Point()))->getBox();
     }
 }
