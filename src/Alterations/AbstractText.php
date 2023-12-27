@@ -14,7 +14,6 @@ use SergiX44\ImageZen\Shapes\Rectangle;
 
 abstract class AbstractText extends Alteration implements GdAlteration, ImagickAlteration
 {
-
     public function writeWithGd(Image $image, GdText $text, Driver $driver, int $x, int $y): void
     {
         $color = $driver->parseColor($text->color);
@@ -349,5 +348,4 @@ abstract class AbstractText extends Alteration implements GdAlteration, ImagickA
 
         $image->getCore()->annotateImage($draw, $x, $y, $text->angle * (-1), $text->text);
     }
-
 }
