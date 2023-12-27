@@ -633,6 +633,15 @@ it('can output an image as base64 with jpg', function ($driver, $file) {
     expect($b64)->toStartWith('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ');
 })->with('drivers', 'tile');
 
+it('it can load a data uri string', function ($driver, $file) {
+    prepare($this, '_', $driver);
+    $b64 = Image::make($file, $driver)->base64(\SergiX44\ImageZen\Format::JPG);
+    expect($b64)->toStartWith('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ');
+
+    $image = Image::make($b64, $driver);
+    expect($image->width())->toBe(16)->and($image->height())->toBe(16);
+})->with('drivers', 'tile');
+
 it('can draw a text with a background', function ($driver, $file) {
     [$out, $expected] = prepare($this, 'fruit_with_text_background', $driver);
 

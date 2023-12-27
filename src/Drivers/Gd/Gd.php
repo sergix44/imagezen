@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Color;
+use SergiX44\ImageZen\Drivers\DecodeDataUriImage;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Exceptions\AlterationNotImplementedException;
 use SergiX44\ImageZen\Exceptions\CannotLoadImageException;
@@ -17,6 +18,8 @@ use SergiX44\ImageZen\Support\Common;
 
 class Gd implements Driver
 {
+    use DecodeDataUriImage;
+
     private $data = [];
 
     public function isAvailable(): bool
@@ -62,6 +65,10 @@ class Gd implements Driver
             $this->data = getimagesizefromstring($data);
             $resource = imagecreatefromstring($data);
         } else {
+            if ($this->isDataUriImage($path)) {
+                $path = $this->decodeDataUriImage($path);
+            }
+
             $this->data = getimagesizefromstring($path);
             $resource = imagecreatefromstring($path);
         }

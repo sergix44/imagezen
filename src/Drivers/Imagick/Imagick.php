@@ -7,6 +7,7 @@ use Imagick as ImagickBackend;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\ImageZen\Alteration;
 use SergiX44\ImageZen\Draws\Color;
+use SergiX44\ImageZen\Drivers\DecodeDataUriImage;
 use SergiX44\ImageZen\Drivers\Driver;
 use SergiX44\ImageZen\Exceptions\AlterationNotImplementedException;
 use SergiX44\ImageZen\Exceptions\CannotLoadImageException;
@@ -16,6 +17,8 @@ use SergiX44\ImageZen\Image;
 
 class Imagick implements Driver
 {
+    use DecodeDataUriImage;
+
     public function isAvailable(): bool
     {
         return class_exists(class: \Imagick::class) && extension_loaded('imagick');
@@ -46,6 +49,9 @@ class Imagick implements Driver
                 $imagick->readImage($path);
                 $imagick->setImageType(defined('\Imagick::IMGTYPE_TRUECOLORALPHA') ? \Imagick::IMGTYPE_TRUECOLORALPHA : \Imagick::IMGTYPE_TRUECOLORMATTE);
             } else {
+                if ($this->isDataUriImage($path)) {
+                    $path = $this->decodeDataUriImage($path);
+                }
                 $imagick->readImageBlob($path);
             }
         } catch (\ImagickException $e) {
