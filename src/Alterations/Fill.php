@@ -106,7 +106,7 @@ class Fill extends Alteration implements GdAlteration, ImagickAlteration
 
                 // replace image core
                 $this->replaceCore($image, $canvas);
-            // flood fill with color
+                // flood fill with color
             } elseif ($this->color !== null) {
                 // create canvas with filling
                 $canvas = new \Imagick();
