@@ -772,3 +772,15 @@ it('can fit a text in a box with multi lines', function ($driver, $file) {
         ->imageSimilarTo($expected, 95);
     unlink($out);
 })->with('drivers', 'fruit');
+
+it('returns an http response', function ($driver, $file) {
+    prepare($this, '_', $driver);
+    $response = Image::make($file, $driver)->response();
+    expect($response->getStatusCode())->toBe(200);
+})->with('drivers', 'tile');
+
+it('can open a remote image', function ($driver) {
+    prepare($this, '_', $driver);
+    $image = Image::make('https://via.placeholder.com/150', $driver);
+    expect($image->width())->toBe(150)->and($image->height())->toBe(150);
+})->with('drivers');

@@ -48,6 +48,9 @@ class Imagick implements Driver
             if (file_exists($path)) {
                 $imagick->readImage($path);
                 $imagick->setImageType(defined('\Imagick::IMGTYPE_TRUECOLORALPHA') ? \Imagick::IMGTYPE_TRUECOLORALPHA : \Imagick::IMGTYPE_TRUECOLORMATTE);
+            } elseif (filter_var($path, FILTER_VALIDATE_URL)) {
+                $imagick->readImageBlob(file_get_contents($path));
+                $imagick->setImageType(defined('\Imagick::IMGTYPE_TRUECOLORALPHA') ? \Imagick::IMGTYPE_TRUECOLORALPHA : \Imagick::IMGTYPE_TRUECOLORMATTE);
             } else {
                 if ($this->isDataUriImage($path)) {
                     $path = $this->decodeDataUriImage($path);
